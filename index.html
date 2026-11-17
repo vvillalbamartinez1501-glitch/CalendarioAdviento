@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#8f2638">
+  <meta name="description" content="Un calendario de Adviento lleno de pequeños recuerdos, sorpresas y mucho amor.">
+  <title>Nuestro Adviento — 25 días de amor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <h1>Nuestro <em>Adviento</em></h1>
+    <p class="hero__signature">Con todo mi amor <span aria-hidden="true">♥</span></p>
+    <div class="hero__rule" aria-hidden="true"><span>❄</span></div>
+  </header>
+
+  <main class="page">
+    <section class="calendar-section" aria-labelledby="main-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">1 — 24 de diciembre</p>
+          <h2 id="main-heading">Cada día, un pedacito de nosotros</h2>
+        </div>
+        <p class="section-note">Las ventanas se abren a su debido tiempo <span aria-hidden="true">♡</span></p>
+      </div>
+      <div class="calendar-grid" id="main-calendar" aria-label="Calendario de Adviento"></div>
+    </section>
+
+    <p class="closing-note">Hecho con cariño, especialmente para ti <span aria-hidden="true">♥</span></p>
+  </main>
+
+  <dialog class="lock-dialog" id="lock-dialog" aria-labelledby="dialog-title">
+    <form method="dialog">
+      <button class="dialog-close" aria-label="Cerrar">×</button>
+      <span class="dialog-icon" aria-hidden="true">🔒</span>
+      <p class="section-kicker">Un poquito de paciencia...</p>
+      <h2 id="dialog-title">¡Esa sorpresa aún duerme!</h2>
+      <p id="dialog-message">Vuelve cuando llegue su día. La espera también forma parte de la magia.</p>
+      <button class="dialog-button">Esperaré con ilusión</button>
+    </form>
+  </dialog>
+</body>
+</html>
