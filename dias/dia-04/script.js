@@ -54,9 +54,14 @@ function renderBoard() {
     if (tile === EMPTY) piece.classList.add("tile--last");
     piece.type = "button";
     piece.setAttribute("role", "gridcell");
-    piece.setAttribute("aria-label", `Pieza ${tile + 1}${isSolved ? ", colocada" : ""}`);
+    piece.setAttribute("aria-label", `Pieza ${tile + 1}, casilla correcta ${tile + 1}${isSolved ? ", colocada" : ""}`);
     piece.disabled = isSolved || !isAdjacent(position, emptyPosition);
-    piece.style.backgroundPosition = `${(column / (SIZE - 1)) * 100}% ${(row / (SIZE - 1)) * 100}%`;
+    piece.style.setProperty("--tile-position", `${(column / (SIZE - 1)) * 100}% ${(row / (SIZE - 1)) * 100}%`);
+    const number = document.createElement("span");
+    number.className = "tile-number";
+    number.setAttribute("aria-hidden", "true");
+    number.textContent = String(tile + 1);
+    piece.append(number);
     piece.addEventListener("click", () => moveTile(position));
     fragment.append(piece);
   });
