@@ -3,38 +3,434 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 03 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#16141C">
+  <meta name="description" content="Día 3 de nuestro Adviento: una pequeña fórmula musical para Sally.">
+  <title>Día 3 — 3 de diciembre · Nuestro Adviento</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #16141C;
+      --teal: #4A8B7C;
+      --ochre: #D49B35;
+      --rose: #9E3B4B;
+      --plum: #584266;
+      --skin: #A8C5D1;
+      --thread: #E6DEC8;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --typewriter: "Special Elite", "Courier New", monospace;
+      --display: "Cinzel Decorative", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-width: 320px; min-height: 100%; margin: 0; }
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #F1EBDD;
+      background: var(--night);
+      font-family: var(--serif);
+    }
+
+    .day-layout {
+      display: grid;
+      min-height: 100vh;
+      grid-template-columns: 38% minmax(0, 62%);
+    }
+
+    .portrait-panel {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(ellipse at 48% 30%, rgba(168, 197, 209, .35), transparent 25%),
+        radial-gradient(ellipse at 45% 88%, rgba(158, 59, 75, .52), transparent 48%),
+        linear-gradient(155deg, #253c42, #4a756e 35%, #402d45 72%, #17141c);
+    }
+
+    .portrait-panel::after {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(13, 12, 16, .08), transparent 44%, rgba(13, 12, 16, .5));
+      content: "";
+      pointer-events: none;
+    }
+
+    /* [HUECO_IMAGEN_1_SALLY_LATERAL] Sustituye el src por la fotografía vertical definitiva. */
+    .sally-portrait {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .portrait-placeholder {
+      position: absolute;
+      right: 12%;
+      bottom: 8%;
+      left: 12%;
+      z-index: 2;
+      margin: 0;
+      color: rgba(241, 235, 221, .72);
+      font-family: var(--typewriter);
+      font-size: .73rem;
+      letter-spacing: .04em;
+      line-height: 1.65;
+      text-align: center;
+      text-shadow: 0 2px 12px #0D0C10;
+    }
+
+    .portrait-placeholder[hidden] { display: none; }
+
+    .seam {
+      position: absolute;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .seam--vertical { top: 0; right: -1px; width: 27px; height: 100%; }
+    .seam--horizontal { display: none; }
+    .seam path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .seam__shadow { stroke: #0D0C10; stroke-width: 5; }
+    .seam__thread { stroke: var(--thread); stroke-width: 1.7; }
+
+    .main-panel {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      min-height: 100vh;
+      place-items: center;
+      padding: 48px clamp(22px, 5vw, 76px);
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, transparent 0 49.7%, rgba(74, 139, 124, .055) 49.8% 50.2%, transparent 50.3%) 0 0 / 290px 250px,
+        linear-gradient(45deg, transparent 0 49.7%, rgba(158, 59, 75, .055) 49.8% 50.2%, transparent 50.3%) 0 0 / 340px 310px,
+        radial-gradient(ellipse at 60% 48%, rgba(88, 66, 102, .16), transparent 56%),
+        var(--night);
+    }
+
+    .main-panel::before,
+    .main-panel::after {
+      position: absolute;
+      z-index: 0;
+      width: min(36vw, 420px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(230, 222, 200, .035);
+      content: "";
+      pointer-events: none;
+      transform: rotate(28deg);
+    }
+
+    .main-panel::before { top: -15%; right: -18%; background: rgba(74, 139, 124, .035); }
+    .main-panel::after { bottom: -22%; left: -17%; background: rgba(158, 59, 75, .04); transform: rotate(45deg); }
+
+    .back-link {
+      position: absolute;
+      z-index: 5;
+      top: 24px;
+      left: 30px;
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      padding: 0 15px;
+      border: 1px solid rgba(230, 222, 200, .2);
+      border-radius: 2px 12px 2px 12px;
+      color: rgba(241, 235, 221, .82);
+      background: rgba(13, 12, 16, .38);
+      font-family: var(--typewriter);
+      font-size: .78rem;
+      text-decoration: none;
+      transition: border-color .2s ease, color .2s ease, background .2s ease;
+    }
+
+    .back-link:hover {
+      border-color: var(--ochre);
+      color: #fff;
+      background: rgba(13, 12, 16, .8);
+    }
+
+    .back-link:focus-visible { outline: 2px solid var(--thread); outline-offset: 4px; }
+
+    .day-content {
+      position: relative;
+      z-index: 1;
+      width: min(560px, 100%);
+      text-align: center;
+    }
+
+    .day-heading { margin: 0 0 30px; }
+    .day-kicker {
+      margin: 0 0 10px;
+      color: var(--teal);
+      font-family: var(--typewriter);
+      font-size: .76rem;
+      letter-spacing: .19em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #F1EBDD;
+      font-family: var(--display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.25;
+      text-shadow: 0 0 28px rgba(168, 197, 209, .13);
+    }
+
+    .day-date { margin: 8px 0 0; color: var(--skin); font-size: 1.18rem; font-style: italic; }
+    .dedication {
+      max-width: 420px;
+      margin: 28px auto 0;
+      color: rgba(241, 235, 221, .8);
+      font-size: clamp(1.12rem, 2vw, 1.35rem);
+      line-height: 1.5;
+    }
+
+    .dedication em { color: var(--skin); }
+
+    .playlist-skin {
+      position: relative;
+      isolation: isolate;
+      width: min(480px, 100%);
+      margin: 0 auto;
+      padding: 20px 13px 14px;
+    }
+
+    .patch {
+      position: absolute;
+      z-index: -1;
+      border: 1px solid rgba(13, 12, 16, .78);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .28);
+    }
+
+    .patch--teal {
+      inset: 9px 19px 12px 4px;
+      background: var(--teal);
+      transform: rotate(-1.5deg);
+    }
+
+    .patch--rose {
+      inset: 15px 3px 4px 16px;
+      background: var(--rose);
+      transform: rotate(1deg);
+    }
+
+    .patch--ochre {
+      inset: 4px 10px 19px 11px;
+      background: var(--ochre);
+      transform: rotate(.5deg);
+      opacity: .8;
+    }
+
+    .apothecary-tag {
+      position: absolute;
+      z-index: 4;
+      top: -3px;
+      left: 50%;
+      display: inline-flex;
+      min-height: 30px;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 16px 3px;
+      border: 1px solid rgba(13, 12, 16, .82);
+      color: #201a1b;
+      background: #d7c6a5;
+      box-shadow: 0 3px 9px rgba(0, 0, 0, .35);
+      font-family: var(--typewriter);
+      font-size: .68rem;
+      letter-spacing: .055em;
+      white-space: nowrap;
+      transform: translateX(-50%) rotate(-1deg);
+    }
+
+    .apothecary-tag::before,
+    .apothecary-tag::after {
+      position: absolute;
+      top: 50%;
+      width: 15px;
+      border-top: 1px dashed #0D0C10;
+      content: "";
+    }
+
+    .apothecary-tag::before { left: -9px; }
+    .apothecary-tag::after { right: -9px; }
+
+    .spotify-frame {
+      position: relative;
+      z-index: 2;
+      display: block;
+      width: 100%;
+      height: 420px;
+      border: 1px solid rgba(230, 222, 200, .32);
+      border-radius: 14px;
+      background: #121116;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .75);
+      filter: saturate(.9) contrast(1.04);
+    }
+
+    .player-stitches {
+      position: absolute;
+      z-index: 3;
+      inset: 8px 4px 3px;
+      width: calc(100% - 8px);
+      height: calc(100% - 11px);
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .player-stitches path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 2 7;
+      stroke-width: 2;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .player-stitches .stitch-shadow { stroke: #0D0C10; }
+    .player-stitches .stitch-light { stroke: rgba(230, 222, 200, .8); stroke-dasharray: 1 11; stroke-width: 1; }
+
+    .footer-note {
+      margin: 21px 0 0;
+      color: rgba(168, 197, 209, .68);
+      font-family: var(--typewriter);
+      font-size: .68rem;
+      letter-spacing: .06em;
+    }
+
+    .footer-note span { color: var(--rose); }
+
+    @media (max-width: 767px) {
+      .day-layout { display: block; }
+
+      .portrait-panel {
+        position: relative;
+        top: auto;
+        width: 100%;
+        height: 38vh;
+      }
+
+      .sally-portrait { object-position: center 32%; }
+      .portrait-placeholder { right: 8%; bottom: 12%; left: 8%; font-size: .65rem; }
+      .seam--vertical { display: none; }
+      .seam--horizontal { right: 0; bottom: -1px; left: 0; display: block; width: 100%; height: 25px; }
+
+      .main-panel {
+        min-height: 62vh;
+        padding: 40px 20px;
+      }
+
+      .back-link {
+        position: fixed;
+        top: 13px;
+        left: 13px;
+        min-height: 38px;
+        padding: 0 12px;
+        background: rgba(13, 12, 16, .68);
+        backdrop-filter: blur(7px);
+      }
+
+      .day-heading { margin-bottom: 22px; }
+      .day-kicker { font-size: .68rem; }
+      h1 { font-size: clamp(1.8rem, 8vw, 2.7rem); }
+      .day-date { font-size: 1.06rem; }
+      .playlist-skin { max-width: 480px; }
+      .spotify-frame { height: 380px; }
+      .dedication { margin-top: 23px; }
+    }
+
+    @media (max-width: 390px) {
+      .main-panel { padding-right: 14px; padding-left: 14px; }
+      .playlist-skin { padding-right: 9px; padding-left: 9px; }
+      .apothecary-tag { font-size: .61rem; }
+      .spotify-frame { height: 380px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
-<body data-day="3">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 03</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+<body>
+  <div class="day-layout">
+    <aside class="portrait-panel" aria-label="Retrato de Sally">
+      <!-- [HUECO_IMAGEN_1_SALLY_LATERAL] Imagen vertical a sangre; conserva las reglas object-fit del CSS. -->
+      <img class="sally-portrait" id="sally-portrait" src="../../assets/images/sally-dia-03.jpg" alt="Retrato de Sally entre retales de colores" hidden>
+      <p class="portrait-placeholder" id="portrait-placeholder">Aquí irá el retrato de Sally.<br>Un pequeño retal de nuestra historia.</p>
+      <svg class="seam seam--vertical" viewBox="0 0 27 1000" preserveAspectRatio="none" aria-hidden="true">
+        <path class="seam__shadow" d="M22 -12 L5 0 L22 12 L5 24 L22 36 L5 48 L22 60 L5 72 L22 84 L5 96 L22 108 L5 120 L22 132 L5 144 L22 156 L5 168 L22 180 L5 192 L22 204 L5 216 L22 228 L5 240 L22 252 L5 264 L22 276 L5 288 L22 300 L5 312 L22 324 L5 336 L22 348 L5 360 L22 372 L5 384 L22 396 L5 408 L22 420 L5 432 L22 444 L5 456 L22 468 L5 480 L22 492 L5 504 L22 516 L5 528 L22 540 L5 552 L22 564 L5 576 L22 588 L5 600 L22 612 L5 624 L22 636 L5 648 L22 660 L5 672 L22 684 L5 696 L22 708 L5 720 L22 732 L5 744 L22 756 L5 768 L22 780 L5 792 L22 804 L5 816 L22 828 L5 840 L22 852 L5 864 L22 876 L5 888 L22 900 L5 912 L22 924 L5 936 L22 948 L5 960 L22 972 L5 984 L22 996 L5 1008"></path>
+        <path class="seam__thread" d="M22 -12 L5 0 L22 12 L5 24 L22 36 L5 48 L22 60 L5 72 L22 84 L5 96 L22 108 L5 120 L22 132 L5 144 L22 156 L5 168 L22 180 L5 192 L22 204 L5 216 L22 228 L5 240 L22 252 L5 264 L22 276 L5 288 L22 300 L5 312 L22 324 L5 336 L22 348 L5 360 L22 372 L5 384 L22 396 L5 408 L22 420 L5 432 L22 444 L5 456 L22 468 L5 480 L22 492 L5 504 L22 516 L5 528 L22 540 L5 552 L22 564 L5 576 L22 588 L5 600 L22 612 L5 624 L22 636 L5 648 L22 660 L5 672 L22 684 L5 696 L22 708 L5 720 L22 732 L5 744 L22 756 L5 768 L22 780 L5 792 L22 804 L5 816 L22 828 L5 840 L22 852 L5 864 L22 876 L5 888 L22 900 L5 912 L22 924 L5 936 L22 948 L5 960 L22 972 L5 984 L22 996 L5 1008"></path>
+      </svg>
+      <svg class="seam seam--horizontal" viewBox="0 0 1000 25" preserveAspectRatio="none" aria-hidden="true">
+        <path class="seam__shadow" d="M-12 20 L0 4 L12 20 L24 4 L36 20 L48 4 L60 20 L72 4 L84 20 L96 4 L108 20 L120 4 L132 20 L144 4 L156 20 L168 4 L180 20 L192 4 L204 20 L216 4 L228 20 L240 4 L252 20 L264 4 L276 20 L288 4 L300 20 L312 4 L324 20 L336 4 L348 20 L360 4 L372 20 L384 4 L396 20 L408 4 L420 20 L432 4 L444 20 L456 4 L468 20 L480 4 L492 20 L504 4 L516 20 L528 4 L540 20 L552 4 L564 20 L576 4 L588 20 L600 4 L612 20 L624 4 L636 20 L648 4 L660 20 L672 4 L684 20 L696 4 L708 20 L720 4 L732 20 L744 4 L756 20 L768 4 L780 20 L792 4 L804 20 L816 4 L828 20 L840 4 L852 20 L864 4 L876 20 L888 4 L900 20 L912 4 L924 20 L936 4 L948 20 L960 4 L972 20 L984 4 L996 20 L1008 4"></path>
+        <path class="seam__thread" d="M-12 20 L0 4 L12 20 L24 4 L36 20 L48 4 L60 20 L72 4 L84 20 L96 4 L108 20 L120 4 L132 20 L144 4 L156 20 L168 4 L180 20 L192 4 L204 20 L216 4 L228 20 L240 4 L252 20 L264 4 L276 20 L288 4 L300 20 L312 4 L324 20 L336 4 L348 20 L360 4 L372 20 L384 4 L396 20 L408 4 L420 20 L432 4 L444 20 L456 4 L468 20 L480 4 L492 20 L504 4 L516 20 L528 4 L540 20 L552 4 L564 20 L576 4 L588 20 L600 4 L612 20 L624 4 L636 20 L648 4 L660 20 L672 4 L684 20 L696 4 L708 20 L720 4 L732 20 L744 4 L756 20 L768 4 L780 20 L792 4 L804 20 L816 4 L828 20 L840 4 L852 20 L864 4 L876 20 L888 4 L900 20 L912 4 L924 20 L936 4 L948 20 L960 4 L972 20 L984 4 L996 20 L1008 4"></path>
+      </svg>
+    </aside>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-03.jpg" alt="TODO: Añadir descripción de la foto del día 03" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 03">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-03.jpg</code></small>
+    <main class="main-panel">
+      <a class="back-link" href="../../index.html">← Volver</a>
+      <div class="day-content">
+        <header class="day-heading">
+          <p class="day-kicker">Una pequeña fórmula para Sally</p>
+          <h1>Día 3</h1>
+          <p class="day-date">3 de diciembre</p>
+        </header>
+
+        <section class="playlist-skin" aria-label="Playlist de Spotify del Día 3">
+          <span class="patch patch--teal" aria-hidden="true"></span>
+          <span class="patch patch--rose" aria-hidden="true"></span>
+          <span class="patch patch--ochre" aria-hidden="true"></span>
+          <span class="apothecary-tag">Fórmula Musical — Día 3</span>
+          <!-- [HUECO_SPOTIFY_EMBED_URL] Reemplaza REEMPLAZA_CON_EL_ID_DE_TU_PLAYLIST por el ID de inserción de Spotify. -->
+          <iframe
+            class="spotify-frame"
+            title="Playlist de Spotify: Fórmula Musical — Día 3"
+            src="https://open.spotify.com/embed/playlist/REEMPLAZA_CON_EL_ID_DE_TU_PLAYLIST?utm_source=generator&amp;theme=0"
+            width="100%"
+            height="420"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          <svg class="player-stitches" viewBox="0 0 480 450" preserveAspectRatio="none" aria-hidden="true">
+            <path class="stitch-shadow" d="M24 24 H456 Q468 24 468 36 V414 Q468 426 456 426 H24 Q12 426 12 414 V36 Q12 24 24 24 Z"></path>
+            <path class="stitch-light" d="M24 24 H456 Q468 24 468 36 V414 Q468 426 456 426 H24 Q12 426 12 414 V36 Q12 24 24 24 Z"></path>
+            <path class="stitch-shadow" d="M24 44 l12 12 M456 44 l-12 12 M24 406 l12 -12 M456 406 l-12 -12"></path>
+            <path class="stitch-light" d="M24 44 l12 12 M456 44 l-12 12 M24 406 l12 -12 M456 406 l-12 -12"></path>
+          </svg>
+        </section>
+
+        <p class="dedication">Como Sally, tú sabes que hasta los retales más distintos pueden encontrar su lugar. <em>Esta melodía es para ti.</em></p>
+        <p class="footer-note">Hecho con amor, entre puntadas <span aria-hidden="true">♥</span></p>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
+    </main>
+  </div>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
-  </main>
+  <script>
+    const portrait = document.querySelector("#sally-portrait");
+    const placeholder = document.querySelector("#portrait-placeholder");
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+    function showPortrait() {
+      portrait.hidden = false;
+      placeholder.hidden = true;
+    }
+
+    portrait.addEventListener("load", showPortrait);
+    portrait.addEventListener("error", () => {
+      portrait.hidden = true;
+      placeholder.hidden = false;
+    });
+
+    if (portrait.complete && portrait.naturalWidth > 0) showPortrait();
+  </script>
 </body>
 </html>
