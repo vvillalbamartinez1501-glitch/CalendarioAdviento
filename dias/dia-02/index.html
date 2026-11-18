@@ -3,38 +3,511 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 02 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#07080c">
+  <meta name="description" content="Día 2 de nuestro Adviento: eres mi canción favorita.">
+  <title>Día 2 — 2 de diciembre · Nuestro Adviento</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #07080c;
+      --sky: #121829;
+      --paper: #131622;
+      --ink: #f3ead8;
+      --muted: #c1b9ad;
+      --moon: #f4e285;
+      --moon-deep: #e9c46a;
+      --teal: #4a8b7c;
+      --ochre: #d49b35;
+      --rose: #9e3b4b;
+      --plum: #4b365f;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --display: "Cinzel Decorative", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { min-width: 320px; background: var(--night); }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      padding: 26px 22px 56px;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 50% 8%, rgba(35, 48, 77, .44), transparent 42rem),
+        linear-gradient(180deg, var(--sky), var(--night) 68%);
+      font-family: var(--serif);
+    }
+
+    button { color: inherit; font: inherit; }
+
+    .back-link {
+      position: fixed;
+      z-index: 20;
+      top: max(18px, env(safe-area-inset-top));
+      left: max(18px, env(safe-area-inset-left));
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      padding: 0 15px;
+      border: 1px solid rgba(244, 226, 133, .32);
+      border-radius: 999px;
+      color: var(--ink);
+      background: rgba(19, 22, 34, .82);
+      font-size: .95rem;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .back-link:hover { border-color: var(--moon); background: rgba(30, 34, 49, .96); }
+
+    .day-page { width: min(1050px, 100%); margin: 0 auto; }
+
+    .day-heading { position: relative; z-index: 5; margin: 22px 0 8px; text-align: center; }
+    .day-kicker { margin: 0; color: var(--moon-deep); font-size: .85rem; letter-spacing: .2em; text-transform: uppercase; }
+    h1 {
+      margin: 9px 0 3px;
+      font-family: var(--display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.25;
+      text-shadow: 0 0 28px rgba(244, 226, 133, .15);
+    }
+    .day-date { margin: 0; color: var(--muted); font-size: 1.15rem; font-style: italic; }
+
+    .scene {
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      height: clamp(440px, 61vw, 610px);
+      min-height: 440px;
+      margin: 6px auto 0;
+      overflow: hidden;
+      border-radius: 48% 48% 18px 18px / 17% 17% 18px 18px;
+      background:
+        radial-gradient(ellipse at 50% 75%, rgba(54, 72, 104, .16), transparent 42%),
+        linear-gradient(180deg, rgba(18, 24, 41, .18), rgba(7, 8, 12, .48));
+    }
+
+    .scene::before {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 39%, rgba(244, 226, 133, .07), transparent 38%);
+      content: "";
+      pointer-events: none;
+    }
+
+    .stars { position: absolute; z-index: 0; inset: 0; pointer-events: none; }
+    .star { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #f3ead8; opacity: .68; animation: twinkle 3.2s ease-in-out infinite alternate; }
+    .star:nth-child(3n) { width: 2px; height: 2px; animation-delay: -1.6s; }
+    .star:nth-child(4n) { animation-delay: -2.3s; }
+    .star:nth-child(1) { top: 12%; left: 14%; }
+    .star:nth-child(2) { top: 22%; left: 28%; }
+    .star:nth-child(3) { top: 9%; left: 41%; }
+    .star:nth-child(4) { top: 17%; right: 18%; }
+    .star:nth-child(5) { top: 29%; right: 12%; }
+    .star:nth-child(6) { top: 34%; left: 9%; }
+    .star:nth-child(7) { top: 7%; right: 33%; }
+    .star:nth-child(8) { top: 39%; right: 28%; }
+    .star:nth-child(9) { top: 25%; left: 20%; }
+    .star:nth-child(10) { top: 13%; right: 8%; }
+    .star:nth-child(11) { top: 43%; left: 34%; }
+    .star:nth-child(12) { top: 31%; right: 40%; }
+
+    .record-wrap {
+      position: absolute;
+      z-index: 1;
+      top: 3%;
+      left: 50%;
+      width: clamp(245px, 38vw, 340px);
+      aspect-ratio: 1;
+      transform: translateX(-50%);
+    }
+
+    .record-control {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      overflow: visible;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      filter: drop-shadow(0 0 20px rgba(244, 226, 133, .2));
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .record {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border: 1px solid rgba(244, 226, 133, .55);
+      border-radius: 50%;
+      background:
+        repeating-radial-gradient(circle at center, transparent 0 9px, rgba(20, 20, 25, .48) 10px 11px, rgba(255, 255, 255, .13) 12px 13px),
+        radial-gradient(circle at 50% 50%, #574e35 0 15%, #292a2b 16% 28%, #101216 62%, #24252a 74%, #090a0d 100%);
+      box-shadow: 0 0 60px rgba(244, 226, 133, .45), inset 0 0 24px rgba(0, 0, 0, .55);
+      animation: spin 14s linear infinite;
+      animation-play-state: paused;
+      transition: box-shadow .35s ease, filter .35s ease;
+    }
+
+    .record-control[aria-pressed="true"] .record {
+      animation-play-state: running;
+      box-shadow: 0 0 72px rgba(244, 226, 133, .55), inset 0 0 24px rgba(0, 0, 0, .55);
+    }
+
+    /* [HUECO_IMAGEN_1_DISCO_GIRATORIO] Sustituye el src por tu caratula o foto circular. */
+    .record-art {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      opacity: .88;
+      mix-blend-mode: screen;
+    }
+
+    .record-grooves {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle at center, transparent 0 9px, rgba(7, 8, 12, .23) 10px 11px, rgba(255, 255, 255, .1) 12px 13px);
+      pointer-events: none;
+    }
+
+    .record-label {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      width: 29%;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid rgba(244, 226, 133, .65);
+      border-radius: 50%;
+      color: #281f18;
+      background: radial-gradient(circle, #f4e285 0 52%, #d49b35 54% 100%);
+      box-shadow: 0 0 12px rgba(244, 226, 133, .3);
+      font-family: var(--display);
+      font-size: clamp(.55rem, 1.5vw, .8rem);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .record-label::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      aspect-ratio: 1;
+      border: 1px solid #b5a777;
+      border-radius: 50%;
+      background: #17191f;
+      content: "";
+      transform: translate(-50%, -50%);
+    }
+
+    .tonearm {
+      position: absolute;
+      z-index: 4;
+      top: 2%;
+      left: calc(100% - 105px);
+      width: clamp(88px, 13vw, 125px);
+      height: clamp(130px, 19vw, 180px);
+      overflow: visible;
+      transform: rotate(7deg);
+      transform-origin: 83% 9%;
+      transition: transform .45s cubic-bezier(.2, .8, .2, 1);
+      pointer-events: none;
+    }
+
+    .tonearm__rod { fill: none; stroke: #d7d1c3; stroke-linecap: round; stroke-linejoin: round; stroke-width: 5; }
+    .tonearm__detail { fill: #242630; stroke: #e9c46a; stroke-width: 2; }
+    .tonearm__needle { stroke: #f4e285; stroke-linecap: round; stroke-width: 2; }
+    .scene.is-playing .tonearm { transform: rotate(0deg); }
+
+    /* [HUECO_IMAGEN_2_JACK_SALLY_SIN_FONDO] PNG transparente centrado sobre el disco y la colina. */
+    .characters {
+      position: absolute;
+      z-index: 3;
+      bottom: 1%;
+      left: 50%;
+      display: block;
+      width: min(76%, 610px);
+      max-height: 71%;
+      object-fit: contain;
+      object-position: center bottom;
+      transform: translateX(-50%);
+      pointer-events: none;
+      filter: drop-shadow(0 0 14px rgba(244, 226, 133, .14));
+    }
+
+    .character-fallback {
+      position: absolute;
+      z-index: 3;
+      bottom: 13%;
+      left: 50%;
+      width: min(78%, 480px);
+      padding: 15px 20px;
+      border: 1px dashed rgba(244, 226, 133, .42);
+      border-radius: 8px;
+      color: rgba(243, 234, 216, .78);
+      background: rgba(7, 8, 12, .7);
+      font-size: 1.05rem;
+      text-align: center;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .scene-caption {
+      position: absolute;
+      z-index: 5;
+      right: 15px;
+      bottom: 13px;
+      left: 15px;
+      margin: 0;
+      color: rgba(243, 234, 216, .63);
+      font-size: .9rem;
+      font-style: italic;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .patch-card {
+      position: relative;
+      z-index: 6;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(260px, .9fr);
+      gap: 24px;
+      width: min(850px, 100%);
+      margin: -8px auto 0;
+      padding: clamp(22px, 4vw, 34px);
+      border: 2px dashed rgba(212, 155, 53, .78);
+      border-radius: 4px 22px 5px 22px;
+      background: rgba(19, 22, 34, .9);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, .3);
+      backdrop-filter: blur(8px);
+    }
+
+    .patch-card::before,
+    .patch-card::after {
+      position: absolute;
+      z-index: -1;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(243, 234, 216, .12);
+      content: "";
+    }
+
+    .patch-card::before { top: -8px; left: -8px; background: var(--teal); transform: rotate(-8deg); }
+    .patch-card::after { right: -8px; bottom: -8px; background: var(--rose); transform: rotate(7deg); }
+
+    .note-kicker { margin: 0 0 6px; color: var(--ochre); font-size: .82rem; letter-spacing: .15em; text-transform: uppercase; }
+    .patch-card h2 { margin: 0 0 9px; color: var(--ink); font-family: var(--display); font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 400; }
+    .dedication { margin: 0; color: var(--muted); font-size: 1.2rem; line-height: 1.55; }
+    .dedication em { color: #e6c6b7; }
+
+    .music-panel {
+      align-self: center;
+      padding: 17px;
+      border: 1px solid rgba(74, 139, 124, .52);
+      border-radius: 4px 15px 4px 15px;
+      background: linear-gradient(135deg, rgba(74, 139, 124, .12), rgba(75, 54, 95, .15));
+    }
+
+    .track-label { margin: 0 0 4px; color: var(--teal); font-size: .8rem; letter-spacing: .13em; text-transform: uppercase; }
+    .track-title { margin: 0; color: var(--ink); font-size: 1.35rem; font-weight: 600; }
+    .track-artist { margin: 1px 0 14px; color: var(--muted); font-size: 1rem; font-style: italic; }
+
+    .music-controls { display: flex; align-items: center; gap: 12px; }
+    .play-button {
+      display: inline-flex;
+      min-width: 132px;
+      min-height: 43px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 15px;
+      border: 1px solid rgba(244, 226, 133, .5);
+      border-radius: 999px;
+      color: var(--ink);
+      background: rgba(7, 8, 12, .65);
+      cursor: pointer;
+      transition: border-color .2s ease, background .2s ease, transform .2s ease;
+    }
+
+    .play-button:hover { border-color: var(--moon); background: rgba(7, 8, 12, .95); transform: translateY(-1px); }
+    .play-icon { color: var(--moon); font-family: Arial, sans-serif; font-size: .9rem; }
+    .playing-status { color: var(--muted); font-size: .9rem; font-style: italic; }
+
+    .audio-slot {
+      margin-top: 13px;
+      padding: 9px 11px;
+      border: 1px dashed rgba(158, 59, 75, .7);
+      border-radius: 5px;
+      color: rgba(193, 185, 173, .88);
+      font-size: .9rem;
+      line-height: 1.35;
+    }
+
+    .audio-slot strong { color: #d9959d; font-weight: 600; }
+    .footer-note { margin: 24px 0 0; color: rgba(193, 185, 173, .68); font-size: .95rem; font-style: italic; text-align: center; }
+    .footer-note span { color: var(--rose); }
+
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--moon); outline-offset: 4px; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes twinkle { from { opacity: .25; transform: scale(.75); } to { opacity: .9; transform: scale(1.2); } }
+
+    @media (max-width: 650px) {
+      body { padding: 74px 14px 36px; }
+      .day-heading { margin-top: 7px; }
+      .scene { height: clamp(400px, 112vw, 520px); min-height: 400px; margin-top: 14px; }
+      .record-wrap { top: 5%; width: clamp(220px, 64vw, 310px); }
+      .tonearm { top: 4%; left: calc(100% - 74px); width: 88px; height: 132px; }
+      .hill { height: 43%; }
+      .characters { bottom: 1%; width: 89%; max-height: 64%; }
+      .patch-card { grid-template-columns: 1fr; gap: 18px; margin-top: -1px; }
+      .music-panel { padding: 15px; }
+    }
+
+    @media (max-width: 390px) {
+      body { padding-right: 11px; padding-left: 11px; }
+      .back-link { min-height: 38px; padding: 0 12px; font-size: .88rem; }
+      .scene { height: 410px; min-height: 410px; }
+      .record-wrap { width: 220px; }
+      .scene-caption { font-size: .8rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .record { animation-play-state: paused !important; }
+    }
+  </style>
 </head>
-<body data-day="2">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 02</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+<body>
+  <a class="back-link" href="../../index.html">← Volver</a>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-02.jpg" alt="TODO: Añadir descripción de la foto del día 02" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 02">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-02.jpg</code></small>
+  <main class="day-page">
+    <header class="day-heading">
+      <p class="day-kicker">Una noche para recordar</p>
+      <h1>Día 2 — 2 de diciembre</h1>
+      <p class="day-date">Bajo una luna hecha de música</p>
+    </header>
+
+    <section class="scene" aria-label="Escena nocturna con un disco de vinilo como luna">
+      <div class="stars" aria-hidden="true">
+        <i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i>
+        <i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i>
+        <i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+      <div class="record-wrap">
+        <button class="record-control" id="record-control" type="button" aria-label="Reproducir la escena" aria-pressed="false">
+          <span class="record" aria-hidden="true">
+            <!-- [HUECO_IMAGEN_1_DISCO_GIRATORIO] Reemplaza el src por la imagen de caratula del vinilo. -->
+            <img class="record-art" src="../../assets/images/jackysally.jpg" alt="" aria-hidden="true">
+            <span class="record-grooves"></span>
+            <span class="record-label" aria-hidden="true">Día 2</span>
+          </span>
+        </button>
+        <svg class="tonearm" viewBox="0 0 125 180" role="img" aria-label="Aguja del tocadiscos">
+          <circle class="tonearm__detail" cx="105" cy="17" r="11"></circle>
+          <path class="tonearm__rod" d="M105 17 L82 43 Q75 50 80 61 L96 133"></path>
+          <path class="tonearm__rod" d="M91 125 L101 139"></path>
+          <path class="tonearm__detail" d="M91 128 L105 137 L100 149 L89 141 Z"></path>
+          <path class="tonearm__needle" d="M95 145 L92 155"></path>
+        </svg>
+      </div>
+
+      <!-- [HUECO_IMAGEN_2_JACK_SALLY_SIN_FONDO] Usa aqui un PNG transparente de Jack y Sally sobre la colina. -->
+      <img class="characters" id="characters-image" src="../../assets/images/jackysally.png" alt="Siluetas de Jack y Sally sobre una colina en espiral">
+      <div class="character-fallback" id="character-fallback" hidden>Añade aquí el PNG transparente de Jack y Sally para completar la escena.</div>
+      <p class="scene-caption">Dos corazones distintos, una misma luna.</p>
+    </section>
+
+    <section class="patch-card" aria-label="Dedicatoria y música del Día 2">
+      <article class="note">
+        <p class="note-kicker">Un retal de nuestro cuento</p>
+        <h2>Una canción para dos</h2>
+        <p class="dedication">Si la noche se vuelve demasiado grande, <em>siempre encontraremos una melodía que nos lleve de vuelta el uno al otro.</em> Hoy, esta luna gira por nosotros.</p>
+      </article>
+
+      <div class="music-panel">
+        <p class="track-label">La canción de hoy</p>
+        <p class="track-title">Bajo la luna de vinilo</p>
+        <p class="track-artist">Nuestra pequeña banda sonora</p>
+        <div class="music-controls">
+          <button class="play-button" id="play-button" type="button" aria-label="Reproducir la escena" aria-pressed="false">
+            <span class="play-icon" id="play-icon" aria-hidden="true">▶</span>
+            <span id="play-label">Reproducir</span>
+          </button>
+          <span class="playing-status" id="playing-status" aria-live="polite">Aguja en pausa</span>
+        </div>
+        <div class="audio-slot">
+          <strong>Tu espacio musical</strong> · Añade aquí un reproductor de Spotify o un archivo de audio.
+          <!-- Puedes reemplazar este bloque por un iframe de Spotify o por un elemento <audio controls> con su <source>. -->
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">Hecho con amor, para ti <span aria-hidden="true">♥</span></p>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <script>
+    const recordControl = document.querySelector("#record-control");
+    const playButton = document.querySelector("#play-button");
+    const playLabel = document.querySelector("#play-label");
+    const playIcon = document.querySelector("#play-icon");
+    const playingStatus = document.querySelector("#playing-status");
+    const recordArt = document.querySelector(".record-art");
+    const charactersImage = document.querySelector("#characters-image");
+    const characterFallback = document.querySelector("#character-fallback");
+
+    function setPlaying(isPlaying) {
+      const label = isPlaying ? "Pausar la escena" : "Reproducir la escena";
+      recordControl.closest(".scene").classList.toggle("is-playing", isPlaying);
+      recordControl.setAttribute("aria-pressed", String(isPlaying));
+      recordControl.setAttribute("aria-label", label);
+      playButton.setAttribute("aria-pressed", String(isPlaying));
+      playButton.setAttribute("aria-label", label);
+      playLabel.textContent = isPlaying ? "Pausar" : "Reproducir";
+      playIcon.textContent = isPlaying ? "Ⅱ" : "▶";
+      playingStatus.textContent = isPlaying ? "La luna está girando" : "Aguja en pausa";
+    }
+
+    function togglePlaying() {
+      setPlaying(recordControl.getAttribute("aria-pressed") !== "true");
+    }
+
+    recordControl.addEventListener("click", togglePlaying);
+    playButton.addEventListener("click", togglePlaying);
+
+    recordArt.addEventListener("error", () => {
+      recordArt.hidden = true;
+    });
+
+    charactersImage.addEventListener("error", () => {
+      charactersImage.hidden = true;
+      characterFallback.hidden = false;
+    });
+
+    if (charactersImage.complete && charactersImage.naturalWidth === 0) {
+      charactersImage.dispatchEvent(new Event("error"));
+    }
+  </script>
 </body>
 </html>
