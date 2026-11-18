@@ -2,39 +2,166 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 10 · Nuestro Adviento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#008069">
+  <title>Día 10 · Chat de stickers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="10">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 10</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+<body>
+  <div class="desktop-bar" aria-hidden="true"></div>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-10.jpg" alt="TODO: Añadir descripción de la foto del día 10" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 10">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-10.jpg</code></small>
+  <main class="chat-shell" aria-label="Conversación del Día 10">
+    <header class="chat-header">
+      <div class="contact">
+        <!-- HUECO AVATAR CONTACTO: reemplaza estas iniciales por una imagen si quieres -->
+        <div class="avatar" role="img" aria-label="Avatar del contacto">TÚ</div>
+        <div class="contact-info">
+          <!-- PERSONALIZAR NOMBRE DEL CONTACTO -->
+          <h1 contenteditable="true" spellcheck="true" aria-label="Nombre del contacto">Mi persona favorita</h1>
+          <p><span class="online-dot" aria-hidden="true"></span> en línea</p>
+        </div>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+      <nav class="header-actions" aria-label="Acciones del chat">
+        <button type="button" aria-label="Videollamada">
+          <svg viewBox="0 0 24 24"><path d="M15 8.5v7l5.2 3V5.5l-5.2 3ZM4 6.5h9.5c.8 0 1.5.7 1.5 1.5v8c0 .8-.7 1.5-1.5 1.5H4A1.5 1.5 0 0 1 2.5 16V8A1.5 1.5 0 0 1 4 6.5Z"/></svg>
+        </button>
+        <button type="button" aria-label="Llamada">
+          <svg viewBox="0 0 24 24"><path d="M6.6 3.7 9 3.2c.7-.1 1.4.3 1.6 1l1 3.2c.2.6 0 1.2-.5 1.6l-1.4 1.1a15.1 15.1 0 0 0 4.2 4.2l1.1-1.4c.4-.5 1-.7 1.6-.5l3.2 1c.7.2 1.1.9 1 1.6l-.5 2.4c-.1.7-.7 1.2-1.4 1.2C10 20.2 3.8 14 3.5 5.1c0-.7.5-1.3 1.2-1.4Z"/></svg>
+        </button>
+        <button type="button" aria-label="Más opciones">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
+        </button>
+      </nav>
+    </header>
+
+    <section class="conversation" id="conversation" aria-label="Conversación" aria-live="polite">
+      <div class="date-chip">10 DE DICIEMBRE · DÍA 10</div>
+
+      <div class="message-row incoming reveal" data-reveal>
+        <div class="text-bubble"><!-- EDITAR MENSAJE AQUÍ -->Llegó el momento de mandar stickers sin parar 😂</div>
+      </div>
+
+      <div class="message-row outgoing reveal" data-reveal>
+        <div class="text-bubble"><!-- EDITAR MENSAJE AQUÍ -->Yo tengo justo uno para decirte algo importante…</div>
+      </div>
+
+      <!-- Cambia la extensión a .webp o .jpg si tus archivos tienen otro formato.
+           Para sticker09, sticker10, etc., duplica uno de estos bloques y cambia el src. -->
+      <div class="message-row incoming sticker-row reveal" data-reveal>
+        <figure class="sticker" data-sticker="sticker01" tabindex="0" role="button" aria-label="Ampliar sticker 01">
+          <img src="sticker01.png" alt="Sticker personalizado 1" data-fallback="🐻‍❄️">
+          <figcaption class="sticker-meta"><span>10:10</span><b aria-label="Mensaje leído">✓✓</b></figcaption>
+        </figure>
+      </div>
+
+      <div class="message-row outgoing sticker-row reveal" data-reveal>
+        <figure class="sticker" data-sticker="sticker02" tabindex="0" role="button" aria-label="Ampliar sticker 2">
+          <img src="sticker02.png" alt="Sticker personalizado 2" data-fallback="😍">
+          <figcaption class="sticker-meta"><span>10:11</span><b aria-label="Mensaje leído">✓✓</b></figcaption>
+        </figure>
+      </div>
+
+      <div class="message-row incoming sticker-row reveal" data-reveal>
+        <figure class="sticker" data-sticker="sticker03" tabindex="0" role="button" aria-label="Ampliar sticker 3">
+          <img src="sticker03.png" alt="Sticker personalizado 3" data-fallback="✨">
+          <figcaption class="sticker-meta"><span>10:12</span><b aria-label="Mensaje leído">✓✓</b></figcaption>
+        </figure>
+      </div>
+
+      <div class="message-row outgoing text-sticker-gap reveal" data-reveal>
+        <div class="text-bubble">¿Te gusta esta colección? Porque está hecha con mucho cariño 💚</div>
+      </div>
+
+      <div class="message-row outgoing sticker-row reveal" data-reveal>
+        <figure class="sticker" data-sticker="sticker04" tabindex="0" role="button" aria-label="Ampliar sticker 4">
+          <img src="sticker04.png" alt="Sticker personalizado 4" data-fallback="💌">
+          <figcaption class="sticker-meta"><span>10:13</span><b aria-label="Mensaje leído">✓✓</b></figcaption>
+        </figure>
+      </div>
+
+      <div class="message-row incoming sticker-row reveal" data-reveal>
+        <figure class="sticker" data-sticker="sticker05" tabindex="0" role="button" aria-label="Ampliar sticker 5">
+          <img src="sticker05.png" alt="Sticker personalizado 5" data-fallback="🥰">
+          <figcaption class="sticker-meta"><span>10:14</span><b aria-label="Mensaje leído">✓✓</b></figcaption>
+        </figure>
+      </div>
+
+      <div class="message-row outgoing sticker-row reveal" data-reveal>
+        <figure class="sticker" data-sticker="sticker06" tabindex="0" role="button" aria-label="Ampliar sticker 6">
+          <img src="sticker06.png" alt="Sticker personalizado 6" data-fallback="😂">
+          <figcaption class="sticker-meta"><span>10:15</span><b aria-label="Mensaje leído">✓✓</b></figcaption>
+        </figure>
+      </div>
+
+      <div class="message-row incoming reveal" data-reveal>
+        <div class="text-bubble">La parte bonita de este día es poder compartir stickers contigo ✨</div>
+      </div>
+
+      <div class="message-row incoming sticker-row reveal" data-reveal>
+        <figure class="sticker" data-sticker="sticker07" tabindex="0" role="button" aria-label="Ampliar sticker 7">
+          <img src="sticker07.png" alt="Sticker personalizado 7" data-fallback="🌟">
+          <figcaption class="sticker-meta"><span>10:16</span><b aria-label="Mensaje leído">✓✓</b></figcaption>
+        </figure>
+      </div>
+
+      <div class="message-row outgoing sticker-row reveal" data-reveal>
+        <figure class="sticker" data-sticker="sticker08" tabindex="0" role="button" aria-label="Ampliar sticker 8">
+          <img src="sticker08.png" alt="Sticker personalizado 8" data-fallback="💚">
+          <figcaption class="sticker-meta"><span>10:17</span><b aria-label="Mensaje leído">✓✓</b></figcaption>
+        </figure>
+      </div>
+
+      <div class="message-row outgoing reveal" data-reveal>
+        <div class="text-bubble">Ahora descárgalos y dile hola a tus favoritos también 🥹</div>
+      </div>
+    </section>
+
+    <aside class="pack-banner" aria-label="Pack de stickers">
+      <div class="pack-preview" aria-hidden="true">
+        <span>01</span><span>02</span><span>03</span>
+      </div>
+      <div class="pack-copy">
+        <strong>Pack exclusivo del Día 10</strong>
+        <small>8 stickers personalizados</small>
+      </div>
+      <!-- PEGA AQUÍ EL ENLACE DE TU PACK EN STICKER.LY -->
+      <a class="download-button" href="https://www.sticker.ly/" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14"/></svg>
+        Descargar stickers
+      </a>
+    </aside>
+
+    <div class="sticker-tray" id="stickerTray" aria-hidden="true">
+      <div class="tray-search"><span aria-hidden="true">✦</span> Tus stickers</div>
+      <div class="tray-grid" id="trayGrid"></div>
+    </div>
+
+    <footer class="composer">
+      <button class="sticker-toggle" id="stickerToggle" type="button" aria-label="Abrir bandeja de stickers" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M8 14c1 2 2.3 3 4 3s3-1 4-3"/></svg>
+      </button>
+      <form class="message-form" id="messageForm">
+        <label class="sr-only" for="messageInput">Escribe un mensaje</label>
+        <input id="messageInput" type="text" autocomplete="off" placeholder="Mensaje">
+        <button class="send-button" id="sendButton" type="submit" aria-label="Enviar mensaje">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 20 18-8L3 4v6l13 2-13 2v6Z"/></svg>
+        </button>
+      </form>
+    </footer>
+
+    <a class="back-button" href="../../index.html" aria-label="Volver al calendario">
+      <span>Volver al calendario</span>
+    </a>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Sticker ampliado" aria-hidden="true">
+    <button type="button" class="lightbox-close" aria-label="Cerrar">×</button>
+    <img id="lightboxImage" alt="Sticker ampliado">
+  </div>
 </body>
 </html>
