@@ -3,38 +3,77 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 08 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#3e2723">
+  <meta name="description" content="Crea un rincón de recuerdos en este tablero de corcho navideño.">
+  <title>Día 8 · Nuestro tablero de recuerdos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="script.js" defer></script>
 </head>
-<body data-day="8">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 08</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
-
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-08.jpg" alt="TODO: Añadir descripción de la foto del día 08" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 08">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-08.jpg</code></small>
+<body>
+  <main class="board-frame" id="capture-area" aria-label="Tablero de corcho interactivo">
+    <div class="frame-lights" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <section class="cork-board" id="cork-board" aria-label="Superficie del tablero">
+      <div class="board-heading" aria-hidden="true">
+        <span class="board-heading__eyebrow">DICIEMBRE · UN LUGAR PARA NOSOTROS</span>
+        <span class="board-heading__title">Pequeños recuerdos, grandes momentos</span>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
-
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+      <div class="board-hint" id="board-hint" aria-live="polite">Crea, escribe y coloca tus recuerdos por todo el corcho</div>
+    </section>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <a class="back-link" href="../../index.html">← Volver al calendario</a>
+
+  <section class="toolbar" aria-label="Herramientas del tablero">
+    <div class="tool-group tool-group--create">
+      <label class="sr-only" for="note-color">Color de Post-it</label>
+      <select id="note-color" aria-label="Color de Post-it">
+        <option value="#FEF08A">Amarillo</option>
+        <option value="#FBCFE8">Rosa</option>
+        <option value="#BBF7D0">Menta</option>
+        <option value="#BAE6FD">Azul</option>
+        <option value="#FED7AA">Melocotón</option>
+      </select>
+      <button class="tool-button" id="add-note" type="button">＋ Nuevo Post-it</button>
+    </div>
+
+    <span class="toolbar-divider" aria-hidden="true"></span>
+
+    <div class="tool-group tool-group--pin">
+      <label class="sr-only" for="pin-color">Color de chincheta</label>
+      <select id="pin-color" aria-label="Color de chincheta">
+        <option value="#DC2626">Roja</option>
+        <option value="#16A34A">Verde</option>
+        <option value="#EAB308">Dorada</option>
+        <option value="#2563EB">Azul</option>
+        <option value="#F8FAFC">Blanca</option>
+      </select>
+      <button class="tool-button tool-button--secondary" id="add-pin" type="button">＋ Chincheta</button>
+    </div>
+
+    <span class="toolbar-divider" aria-hidden="true"></span>
+
+    <div class="tool-group tool-group--draw">
+      <button class="tool-button tool-button--mode" id="mode-toggle" type="button" aria-pressed="false">✎ Mover / Escribir</button>
+      <label class="sr-only" for="pen-color">Color de rotulador</label>
+      <select id="pen-color" aria-label="Color de rotulador">
+        <option value="#1C1917">Negro</option>
+        <option value="#DC2626">Rojo</option>
+        <option value="#2563EB">Azul</option>
+        <option value="#15803D">Verde</option>
+      </select>
+      <label class="range-control"><span class="sr-only">Grosor del trazo</span><input id="pen-size" type="range" min="2" max="14" value="5" aria-label="Grosor del trazo"></label>
+      <button class="tool-button tool-button--icon" id="clear-drawing" type="button" aria-label="Borrar el dibujo de la nota seleccionada" title="Borrar dibujo">⌫</button>
+    </div>
+
+    <button class="tool-button tool-button--save" id="save-board" type="button">Guardar foto del corcho <span aria-hidden="true">↗</span></button>
+    <span class="toolbar-status" id="toolbar-status" role="status" aria-live="polite"></span>
+  </section>
 </body>
 </html>

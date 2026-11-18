@@ -3,38 +3,341 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 25 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#F4F4F0">
+  <meta name="description" content="Un Wrapped de nuestra historia: los momentos, las risas y todo lo que aún nos queda por vivir.">
+  <title>Día 25 · Nuestro Wrapped</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="25">
-  <main class="memory-page">
-    <p class="memory-kicker">Día bonus <span aria-hidden="true">✦</span></p>
-    <h1>Día 25</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
-
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-25.jpg" alt="TODO: Añadir descripción de la foto del día 25" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 25">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-25.jpg</code></small>
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Navegación principal">
+      <a class="btn-3d nav-back" href="../../index.html">← Calendario</a>
+      <a class="brand" href="#wrapped" aria-label="Nuestro Wrapped, Día 25">
+        <span class="brand-badge" aria-hidden="true">25</span>
+        <span>NUESTRO WRAPPED <span class="brand-dot" aria-hidden="true">•</span> DÍA 25</span>
+      </a>
+      <div class="nav-links" aria-label="Saltar a una sección">
+        <a class="nav-pill" href="#wrapped">Wrapped</a>
+        <a class="nav-pill" href="#estadisticas">Estadísticas</a>
+        <a class="nav-pill" href="#historia">Línea cronológica</a>
+        <a class="nav-pill" href="#momentos">Top momentos</a>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
+    </nav>
+  </header>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+  <main>
+    <section class="intro page-width" aria-labelledby="page-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Una historia que merece repetirse</p>
+      <h1 id="page-title">Nuestro año,<br><span>en modo nosotros.</span></h1>
+      <p class="intro-copy">Un resumen pequeñito de todo lo bonito que construimos juntos. <strong>Desliza, sonríe y guarda lo mejor.</strong></p>
+    </section>
+
+    <!-- PERSONALIZAR AQUÍ: cambia titulares, cifras, fotos y textos de cada diapositiva. -->
+    <section class="wrapped-section page-width" id="wrapped" aria-labelledby="wrapped-heading">
+      <div class="section-heading wrapped-heading">
+        <div>
+          <p class="eyebrow">01 / Reproduciendo nuestra historia</p>
+          <h2 id="wrapped-heading">Nuestro Wrapped</h2>
+        </div>
+        <p class="section-aside">Toca un segmento o usa ← →</p>
+      </div>
+
+      <div class="wrapped-card" id="wrapped-player" aria-roledescription="presentación" aria-label="Nuestro Wrapped, 5 diapositivas">
+        <div class="progress-track" role="group" aria-label="Progreso del Wrapped">
+          <button class="progress-segment is-active" type="button" aria-label="Ir a diapositiva 1" aria-current="step"><span></span></button>
+          <button class="progress-segment" type="button" aria-label="Ir a diapositiva 2"><span></span></button>
+          <button class="progress-segment" type="button" aria-label="Ir a diapositiva 3"><span></span></button>
+          <button class="progress-segment" type="button" aria-label="Ir a diapositiva 4"><span></span></button>
+          <button class="progress-segment" type="button" aria-label="Ir a diapositiva 5"><span></span></button>
+        </div>
+
+        <div class="slide-stage" aria-live="polite">
+          <!-- PERSONALIZAR AQUÍ: portada del Wrapped. -->
+          <article class="wrapped-slide slide-cover" data-slide="0" aria-labelledby="slide-title-1">
+            <div class="slide-copy">
+              <span class="sticker sticker-black">EDICIÓN ESPECIAL</span>
+              <h3 id="slide-title-1">Este ha sido<br><span>nuestro año.</span></h3>
+              <p>Un año de momentos que se sienten como casa.</p>
+              <span class="round-sticker">25<br><small>DIC</small></span>
+            </div>
+            <figure class="slide-photo cover-photo">
+              <!-- HUECO FOTO PORTADA WRAPPED -->
+              <img src="../../assets/images/nosotros01.jpg" alt="Un recuerdo juntos para la portada de nuestro Wrapped">
+              <figcaption>Nosotros, en nuestra mejor versión.</figcaption>
+            </figure>
+          </article>
+
+          <!-- PERSONALIZAR AQUÍ: actualiza las cifras para que cuenten vuestra historia. -->
+          <article class="wrapped-slide slide-record" data-slide="1" aria-labelledby="slide-title-2" hidden>
+            <span class="sticker">NUESTRO RÉCORD</span>
+            <p class="giant-stat">365 <span>DÍAS</span></p>
+            <h3 id="slide-title-2">y un montón de razones para elegirnos.</h3>
+            <p class="slide-note">La mejor racha: seguir encontrando alegría en las cosas más sencillas.</p>
+            <div class="record-stamp" aria-hidden="true">∞<br><small>RISAS</small></div>
+          </article>
+
+          <!-- PERSONALIZAR AQUÍ: sustituye estos tres vibes por vuestros favoritos. -->
+          <article class="wrapped-slide slide-vibes" data-slide="2" aria-labelledby="slide-title-3" hidden>
+            <span class="sticker">EN REPEAT</span>
+            <h3 id="slide-title-3">Nuestra banda sonora</h3>
+            <p class="slide-note">Tres vibes que siempre suenan a nosotros.</p>
+            <ol class="vibe-list">
+              <li><span class="vibe-number">#1</span><span><strong>Risas sin motivo</strong><small>El hit que nunca cansa</small></span><span class="vibe-mark" aria-hidden="true">♪</span></li>
+              <li><span class="vibe-number">#2</span><span><strong>Plan improvisado</strong><small>Un clásico instantáneo</small></span><span class="vibe-mark" aria-hidden="true">♫</span></li>
+              <li><span class="vibe-number">#3</span><span><strong>Un abrazo a tiempo</strong><small>Nuestra canción tranquila</small></span><span class="vibe-mark" aria-hidden="true">♥</span></li>
+            </ol>
+          </article>
+
+          <!-- PERSONALIZAR AQUÍ: cuenta el momento que te gustaría volver a vivir. -->
+          <article class="wrapped-slide slide-star" data-slide="3" aria-labelledby="slide-title-4" hidden>
+            <div class="star-copy">
+              <span class="sticker">EL MOMENTO ESTRELLA</span>
+              <h3 id="slide-title-4">Ese día que<br>se quedó con nosotros.</h3>
+              <p>De esos recuerdos que vuelven solitos y hacen que todo lo demás se detenga un ratito.</p>
+              <span class="star-caption">Un recuerdo para volver siempre ✦</span>
+            </div>
+            <figure class="slide-photo star-photo">
+              <!-- HUECO FOTO MOMENTO ESTRELLA -->
+              <img src="../../assets/images/nosotros02.jpg" alt="Un momento especial de nuestra historia">
+              <figcaption>Un instante, mil veces nuestro.</figcaption>
+            </figure>
+          </article>
+
+          <!-- PERSONALIZAR AQUÍ: modifica el porcentaje y las pegatinas del veredicto. -->
+          <article class="wrapped-slide slide-verdict" data-slide="4" aria-labelledby="slide-title-5" hidden>
+            <span class="sticker sticker-black">EL VEREDICTO</span>
+            <h3 id="slide-title-5">Compatibilidad<br>de otro planeta.</h3>
+            <p class="compatibility">100<span>%</span></p>
+            <div class="verdict-stickers">
+              <span class="sticker sticker-pink">Mi lugar seguro</span>
+              <span class="sticker sticker-green">Mi persona favorita</span>
+              <span class="sticker sticker-blue">Mi mejor equipo</span>
+            </div>
+            <p class="slide-note">Y lo mejor: nuestra historia sigue.</p>
+          </article>
+        </div>
+
+        <div class="player-controls">
+          <button class="btn-3d btn-secondary" id="previous-slide" type="button" aria-label="Diapositiva anterior">← Anterior</button>
+          <span class="slide-counter" id="slide-counter" aria-live="polite">01 <span>/</span> 05</span>
+          <button class="btn-3d btn-primary" id="next-slide" type="button">Siguiente →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERSONALIZAR AQUÍ: cambia las cifras y descripciones de cada bloque. -->
+    <section class="section-block page-width" id="estadisticas" aria-labelledby="stats-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">02 / Pequeños grandes números</p>
+          <h2 id="stats-heading">Lo nuestro, en cifras</h2>
+        </div>
+        <span class="section-badge">BENTO DE RECUERDOS</span>
+      </div>
+      <div class="stats-grid">
+        <article class="card-3d stat-card stat-pink">
+          <div class="stat-card-top"><span>TIEMPO JUNTOS</span><span class="mini-badge">♡</span></div>
+          <p class="stat-number">∞</p>
+          <h3>Horas hablando</h3>
+          <p>Y todavía nos quedan mil cosas por contarnos.</p>
+        </article>
+        <article class="card-3d stat-card stat-green">
+          <div class="stat-card-top"><span>FUERA DE CASA</span><span class="mini-badge">✦</span></div>
+          <p class="stat-number">24</p>
+          <h3>Citas inolvidables</h3>
+          <p>Cada plan es mejor cuando es contigo.</p>
+        </article>
+        <article class="card-3d stat-card stat-blue">
+          <div class="stat-card-top"><span>NOTIFICACIONES</span><span class="mini-badge">✉</span></div>
+          <p class="stat-number">1.2k</p>
+          <h3>Mensajes enviados</h3>
+          <p>Un “¿ya llegaste?” también cuenta como amor.</p>
+        </article>
+        <article class="card-3d stat-card stat-yellow">
+          <div class="stat-card-top"><span>ESPONTANEIDAD</span><span class="mini-badge">↗</span></div>
+          <p class="stat-number">∞</p>
+          <h3>Planes improvisados</h3>
+          <p>Las mejores historias no estaban en el calendario.</p>
+        </article>
+        <article class="card-3d stat-card stat-coral">
+          <div class="stat-card-top"><span>LA FRASE FAVORITA</span><span class="mini-badge">♥</span></div>
+          <p class="stat-number">∞</p>
+          <h3>“Te quiero”</h3>
+          <p>Dicho, escrito y demostrado todos los días.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PERSONALIZAR AQUÍ: ajusta fechas, títulos, historias y fotos de los seis hitos. -->
+    <section class="section-block page-width" id="historia" aria-labelledby="timeline-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">03 / Los capítulos que nos trajeron aquí</p>
+          <h2 id="timeline-heading">Nuestra línea del tiempo</h2>
+        </div>
+        <span class="section-badge badge-yellow">CAPÍTULO A CAPÍTULO</span>
+      </div>
+      <ol class="timeline">
+        <li class="timeline-item">
+          <span class="timeline-date date-pink">FECHA · DD/MM/AA</span>
+          <article class="card-3d timeline-card">
+            <div class="timeline-card-head head-pink"><span>01</span><span>Todo empezó</span></div>
+            <div class="timeline-content">
+              <h3>La primera página de lo nuestro</h3>
+              <p>Ese primer momento en que algo hizo clic y empezó una historia que no sabíamos cuánto íbamos a querer.</p>
+              <figure class="timeline-photo"><!-- HUECO FOTO HITO 1 --><img src="../../assets/images/nosotros01.jpg" alt="El comienzo de nuestra historia"></figure>
+            </div>
+          </article>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-date date-green">FECHA · DD/MM/AA</span>
+          <article class="card-3d timeline-card">
+            <div class="timeline-card-head head-green"><span>02</span><span>Una aventura más</span></div>
+            <div class="timeline-content">
+              <h3>Salir a descubrir el mundo</h3>
+              <p>Un paseo, una conversación que se alargó y esa sensación de que cualquier lugar es el indicado si vamos juntos.</p>
+              <figure class="timeline-photo"><!-- HUECO FOTO HITO 2 --><img src="../../assets/images/nosotros02.jpg" alt="Un plan para descubrir juntos"></figure>
+            </div>
+          </article>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-date date-blue">FECHA · DD/MM/AA</span>
+          <article class="card-3d timeline-card">
+            <div class="timeline-card-head head-blue"><span>03</span><span>Risa compartida</span></div>
+            <div class="timeline-content">
+              <h3>Cuando no podíamos parar de reír</h3>
+              <p>Una de esas anécdotas que seguro vamos a volver a contar, aunque ya sepamos el final.</p>
+              <figure class="timeline-photo"><!-- HUECO FOTO HITO 3 --><img src="../../assets/images/nosotros03.jpg" alt="Un momento feliz compartido"></figure>
+            </div>
+          </article>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-date date-yellow">FECHA · DD/MM/AA</span>
+          <article class="card-3d timeline-card">
+            <div class="timeline-card-head head-yellow"><span>04</span><span>Un recuerdo favorito</span></div>
+            <div class="timeline-content">
+              <h3>Un día normal que fue perfecto</h3>
+              <p>Sin grandes planes ni prisa: solo nosotros, guardando otro recuerdo para la colección.</p>
+              <figure class="timeline-photo"><!-- HUECO FOTO HITO 4 --><img src="../../assets/images/jackysally.jpg" alt="Un recuerdo favorito de los dos"></figure>
+            </div>
+          </article>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-date date-coral">FECHA · DD/MM/AA</span>
+          <article class="card-3d timeline-card">
+            <div class="timeline-card-head head-coral"><span>05</span><span>Mucho cariño</span></div>
+            <div class="timeline-content">
+              <h3>Los detalles que dicen “te quiero”</h3>
+              <p>Estar, escuchar, acompañarnos y elegirnos también en los días de siempre.</p>
+              <figure class="timeline-photo"><!-- HUECO FOTO HITO 5 --><img src="../../assets/images/jackysallyheart.jpg" alt="Un detalle lleno de cariño"></figure>
+            </div>
+          </article>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-date date-pink">FECHA · DD/MM/AA</span>
+          <article class="card-3d timeline-card">
+            <div class="timeline-card-head head-pink"><span>06</span><span>Continuará...</span></div>
+            <div class="timeline-content">
+              <h3>El capítulo que empieza ahora</h3>
+              <p>Más planes, más abrazos y todas las aventuras que todavía nos esperan.</p>
+              <figure class="timeline-photo"><!-- HUECO FOTO HITO 6 --><img src="../../assets/images/sally.webp" alt="Una imagen para el capítulo que viene"></figure>
+            </div>
+          </article>
+        </li>
+      </ol>
+    </section>
+
+    <!-- PERSONALIZAR AQUÍ: sustituye los rankings por recuerdos y detalles vuestros. -->
+    <section class="section-block page-width" id="momentos" aria-labelledby="moments-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">04 / Favoritos del año</p>
+          <h2 id="moments-heading">Los tops de nuestro corazón</h2>
+        </div>
+        <span class="section-badge badge-pink">SIN ORDEN DE IMPORTANCIA</span>
+      </div>
+      <div class="rankings-grid">
+        <section class="ranking-column" aria-labelledby="top-moments-heading">
+          <h3 class="ranking-title" id="top-moments-heading">Top 5 momentos inolvidables <span>✦</span></h3>
+          <ol class="ranking-list">
+            <li class="ranking-row"><span class="ranking-number rank-pink">01</span><span><strong>La primera gran aventura</strong><small>Un recuerdo que siempre vuelve</small></span><span class="ranking-icon" aria-hidden="true">↗</span></li>
+            <li class="ranking-row"><span class="ranking-number rank-green">02</span><span><strong>Ese ataque de risa</strong><small>Y no podíamos parar</small></span><span class="ranking-icon" aria-hidden="true">☻</span></li>
+            <li class="ranking-row"><span class="ranking-number rank-yellow">03</span><span><strong>El plan improvisado</strong><small>El mejor “¿y si vamos?”</small></span><span class="ranking-icon" aria-hidden="true">✦</span></li>
+            <li class="ranking-row"><span class="ranking-number rank-blue">04</span><span><strong>Una tarde sin mirar la hora</strong><small>Solo nosotros y el momento</small></span><span class="ranking-icon" aria-hidden="true">♡</span></li>
+            <li class="ranking-row"><span class="ranking-number rank-coral">05</span><span><strong>Cada abrazo de “ya estoy aquí”</strong><small>Mi lugar favorito</small></span><span class="ranking-icon" aria-hidden="true">♥</span></li>
+          </ol>
+        </section>
+        <section class="ranking-column love-column" aria-labelledby="top-love-heading">
+          <h3 class="ranking-title" id="top-love-heading">Top 5 cosas que amo de ti <span>♥</span></h3>
+          <ol class="ranking-list">
+            <li class="ranking-row"><span class="love-badge love-pink">♥</span><span><strong>Tu forma de hacerme reír</strong><small>Mi sonido favorito</small></span><span class="ranking-icon" aria-hidden="true">01</span></li>
+            <li class="ranking-row"><span class="love-badge love-green">✿</span><span><strong>Cómo cuidas los detalles</strong><small>Siempre tienes un gesto bonito</small></span><span class="ranking-icon" aria-hidden="true">02</span></li>
+            <li class="ranking-row"><span class="love-badge love-yellow">✦</span><span><strong>Tu manera de escuchar</strong><small>Contigo puedo ser yo</small></span><span class="ranking-icon" aria-hidden="true">03</span></li>
+            <li class="ranking-row"><span class="love-badge love-blue">☻</span><span><strong>La calma que me das</strong><small>Un abrazo y todo está bien</small></span><span class="ranking-icon" aria-hidden="true">04</span></li>
+            <li class="ranking-row"><span class="love-badge love-coral">♡</span><span><strong>Que seas tú, siempre</strong><small>Mi persona favorita</small></span><span class="ranking-icon" aria-hidden="true">05</span></li>
+          </ol>
+        </section>
+      </div>
+    </section>
+
+    <!-- PERSONALIZAR AQUÍ: escribe aquí tu dedicatoria navideña y cambia su firma. -->
+    <section class="section-block page-width finale-section" id="carta" aria-labelledby="letter-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">05 / La última página de este año</p>
+          <h2 id="letter-heading">Una carta para ti</h2>
+        </div>
+        <span class="section-badge badge-coral">DÍA 25 · CON AMOR</span>
+      </div>
+      <article class="letter-card card-3d">
+        <div class="letter-header"><span>PARA MI PERSONA FAVORITA</span><span aria-hidden="true">♥</span></div>
+        <div class="letter-body">
+          <!-- ESCRIBE AQUÍ TU CARTA FINAL DEL DÍA 25 -->
+          <p>Mi amor:</p>
+          <p>Si pudiera guardar este año en una cajita, pondría ahí cada risa, cada abrazo y todos esos momentos sencillos que se volvieron especiales solo porque los compartimos.</p>
+          <p>Gracias por estar, por escucharme, por hacerme reír y por ser ese lugar al que siempre quiero volver. Lo que más me ilusiona de todo lo que vivimos es saber que todavía nos esperan un montón de primeras veces.</p>
+          <p>Ojalá el próximo año nos encuentre así: haciendo planes, inventando otros sobre la marcha y eligiéndonos en los días grandes y en los pequeñitos.</p>
+          <p class="letter-signoff">Feliz Navidad. Te quiero con todo mi corazón.<br><strong>Siempre tuyo/a ♡</strong></p>
+        </div>
+      </article>
+
+      <!-- PERSONALIZAR AQUÍ: añade planes o deseos para vuestro próximo año. -->
+      <section class="wishes-panel" aria-labelledby="wishes-heading">
+        <div class="wishes-heading">
+          <div>
+            <p class="eyebrow">EL PRÓXIMO CAPÍTULO</p>
+            <h3 id="wishes-heading">Una cápsula de deseos</h3>
+          </div>
+          <span class="wish-doodle" aria-hidden="true">✧</span>
+        </div>
+        <p class="wishes-copy">Añade un deseo o plan para nuestro próximo año y pégalo en el tablero.</p>
+        <form class="wish-form" id="wish-form">
+          <label class="sr-only" for="wish-input">Tu deseo o plan</label>
+          <input class="input-3d" id="wish-input" name="wish" type="text" maxlength="120" placeholder="Ej. Ver un atardecer juntos..." required>
+          <label class="sr-only" for="wish-color">Color de la pegatina</label>
+          <select class="input-3d color-select" id="wish-color" name="color" aria-label="Color de la pegatina">
+            <option value="pink">Rosa</option>
+            <option value="yellow">Amarillo</option>
+            <option value="green">Verde</option>
+            <option value="blue">Azul</option>
+            <option value="coral">Coral</option>
+          </select>
+          <button class="btn-3d btn-primary" id="save-wish" type="submit">+ Pegar deseo</button>
+          <button class="btn-3d btn-secondary" id="cancel-edit" type="button" hidden>Cancelar</button>
+        </form>
+        <p class="form-status" id="wish-status" role="status" aria-live="polite"></p>
+        <div class="wish-board" id="wish-board" aria-label="Deseos para el próximo año"></div>
+      </section>
+    </section>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <footer class="page-footer">
+    <a class="btn-3d btn-primary footer-back" href="../../index.html">← Volver al calendario</a>
+    <p>Fin del Wrapped. <strong>Lo nuestro sigue.</strong> <span aria-hidden="true">♥</span></p>
+  </footer>
 </body>
 </html>

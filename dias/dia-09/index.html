@@ -3,38 +3,162 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 09 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#0b192c">
+  <meta name="description" content="Candidatura oficial para el puesto de tu pareja, con contrato indefinido y exclusivo.">
+  <title>Día 9 · Candidatura oficial</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="9">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 09</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+<body>
+  <div class="page-shell">
+    <nav class="topbar" aria-label="Navegación y acciones del currículum">
+      <a class="topbar__back" href="../../index.html"><span aria-hidden="true">←</span> Volver al calendario</a>
+      <span class="topbar__label">EXPEDIENTE SENTIMENTAL <span aria-hidden="true">·</span> DÍA 09</span>
+      <button class="topbar__print" id="print-cv" type="button"><span aria-hidden="true">▤</span> Imprimir / Guardar PDF</button>
+    </nav>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-09.jpg" alt="TODO: Añadir descripción de la foto del día 09" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 09">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-09.jpg</code></small>
-      </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
+    <main>
+      <article class="cv-sheet" id="cv-document" aria-label="Currículum para el puesto de pareja oficial">
+        <div class="paper-rules" aria-hidden="true"><span></span><span></span></div>
+        <div class="cv-layout">
+          <aside class="sidebar" aria-label="Perfil y competencias">
+            <section class="profile">
+              <!-- PERSONALIZAR AQUÍ -->
+              <div class="portrait" role="img" aria-label="Espacio reservado para la fotografía formal del candidato">
+                <span class="portrait__monogram" contenteditable="true" spellcheck="false" aria-label="Iniciales del candidato">TÚ</span>
+                <span class="portrait__corner portrait__corner--tl" aria-hidden="true"></span>
+                <span class="portrait__corner portrait__corner--br" aria-hidden="true"></span>
+              </div>
+              <p class="availability"><span class="availability__dot" aria-hidden="true"></span> DISPONIBILIDAD INMEDIATA</p>
+            </section>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
-  </main>
+            <section class="side-section">
+              <h2 class="side-heading">Contacto directo</h2>
+              <ul class="contact-list">
+                <li><span class="contact-icon" aria-hidden="true">⌖</span><span><small>Ubicación</small><span contenteditable="true" spellcheck="true">Siempre a tu lado</span></span></li>
+                <li><span class="contact-icon" aria-hidden="true">♡</span><span><small>Teléfono de guardia</small><span contenteditable="true" spellcheck="true">Disponible 24/7 para emergencias y mimos</span></span></li>
+                <li><span class="contact-icon" aria-hidden="true">✉</span><span><small>Correo oficial</small><span contenteditable="true" spellcheck="false">candidato.oficial@tucorazon.com</span></span></li>
+                <li><span class="contact-icon" aria-hidden="true">✦</span><span><small>Estado civil</small><span contenteditable="true" spellcheck="true">Solo ojos para ti</span></span></li>
+              </ul>
+            </section>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+            <section class="side-section">
+              <h2 class="side-heading">Competencias clave</h2>
+              <ul class="skills-list">
+                <li>
+                  <div class="skill-label"><span contenteditable="true" spellcheck="true">Escucha activa y paciencia</span><b>100%</b></div>
+                  <div class="skill-track"><span class="skill-fill skill-fill--red" style="--level:100%"></span></div>
+                </li>
+                <li>
+                  <div class="skill-label"><span contenteditable="true" spellcheck="true">Preparación de snacks y cafés</span><b>95%</b></div>
+                  <div class="skill-track"><span class="skill-fill skill-fill--blue" style="--level:95%"></span></div>
+                </li>
+                <li>
+                  <div class="skill-label"><span contenteditable="true" spellcheck="true">Abrazos en días difíciles</span><b>100%</b></div>
+                  <div class="skill-track"><span class="skill-fill skill-fill--red" style="--level:100%"></span></div>
+                </li>
+                <li>
+                  <div class="skill-label"><span contenteditable="true" spellcheck="true">Elegir qué ver en Netflix</span><b>85%</b></div>
+                  <div class="skill-track"><span class="skill-fill skill-fill--blue" style="--level:85%"></span></div>
+                </li>
+              </ul>
+            </section>
+
+            <section class="side-section side-section--languages">
+              <h2 class="side-heading">Idiomas</h2>
+              <ul class="language-list">
+                <li><span contenteditable="true">Español</span><span>Nativo</span></li>
+                <li><span contenteditable="true">Lenguaje del amor</span><span>Nivel C2 · Bilingüe</span></li>
+                <li><span contenteditable="true">Indirectas</span><span>En perfeccionamiento</span></li>
+              </ul>
+            </section>
+            <p class="sidebar-note">Referencias disponibles<br><strong>a un beso de distancia.</strong></p>
+          </aside>
+
+          <div class="main-column">
+            <header class="cv-header">
+              <p class="document-kicker">Currículum vitae <span>·</span> Candidatura confidencial</p>
+              <!-- PERSONALIZAR AQUÍ -->
+              <h1 contenteditable="true" spellcheck="true" aria-label="Nombre completo del candidato">Tu nombre aquí</h1>
+              <p class="job-title">CANDIDATO A PAREJA OFICIAL <span aria-hidden="true">•</span><br class="mobile-break"> CONTRATO INDEFINIDO</p>
+              <div class="header-meta"><span>Ref. <strong>AMOR-09-∞</strong></span><span>Modalidad <strong>Exclusiva</strong></span><span>Incorporación <strong>Inmediata</strong></span></div>
+            </header>
+
+            <section class="cv-section summary">
+              <h2><span class="section-number">01</span> Resumen ejecutivo</h2>
+              <!-- PERSONALIZAR AQUÍ -->
+              <p contenteditable="true" spellcheck="true">Profesional comprometido con amplia experiencia en cuidar de ti, celebrar tus logros y acompañarte en los días grises. Presento mi candidatura con la convicción de que juntos formamos el mejor equipo: ofrezco escucha sin prisas, cariño constante y un plan de futuro en el que siempre hay sitio para los dos.</p>
+            </section>
+
+            <section class="cv-section experience">
+              <h2><span class="section-number">02</span> Experiencia relevante</h2>
+              <article class="experience-item">
+                <div class="experience-topline"><h3 contenteditable="true" spellcheck="true">Especialista senior en hacerte sonreír</h3><span class="experience-date" contenteditable="true">Desde el primer día — Actualidad</span></div>
+                <p class="company" contenteditable="true">Nuestra Historia <span>·</span> Departamento de Bienestar Mutuo</p>
+                <ul class="achievement-list">
+                  <li contenteditable="true" spellcheck="true">Reducción del 99% de los malos días mediante humor, escucha y compañía.</li>
+                  <li contenteditable="true" spellcheck="true">Incremento sostenido de abrazos espontáneos y momentos para recordar.</li>
+                  <li contenteditable="true" spellcheck="true">Atención personalizada; satisfacción de la persona favorita: 100%.</li>
+                </ul>
+              </article>
+              <article class="experience-item">
+                <div class="experience-topline"><h3 contenteditable="true" spellcheck="true">Director de planes improvisados y citas</h3><span class="experience-date" contenteditable="true">Proyecto vigente</span></div>
+                <p class="company" contenteditable="true">Nuestros fines de semana <span>·</span> Dirección de Aventuras</p>
+                <ul class="achievement-list">
+                  <li contenteditable="true" spellcheck="true">Diseño de planes memorables, desde una escapada hasta no hacer nada juntos.</li>
+                  <li contenteditable="true" spellcheck="true">Gestión de antojos de última hora y selección estratégica de pelis.</li>
+                </ul>
+              </article>
+            </section>
+
+            <section class="cv-section formation">
+              <h2><span class="section-number">03</span> Formación y valores</h2>
+              <div class="credential"><span class="credential-mark" aria-hidden="true">✦</span><p><strong contenteditable="true" spellcheck="true">Máster en complicidad y comunicación honesta</strong><br><span contenteditable="true">Universidad de lo Nuestro · Matrícula de honor en trabajo en equipo</span></p></div>
+              <div class="value-chips"><span contenteditable="true">Lealtad</span><span contenteditable="true">Paciencia</span><span contenteditable="true">Buen humor</span><span contenteditable="true">Mucho amor</span></div>
+            </section>
+
+            <section class="cover-note">
+              <span class="cover-note__mark" aria-hidden="true">“</span>
+              <div>
+                <h2>Carta de presentación</h2>
+                <p contenteditable="true" spellcheck="true">No busco un puesto cualquiera: quiero seguir construyendo contigo. Prometo cuidar este vínculo con la misma dedicación con la que he preparado este currículum —y aceptar que a veces tú eliges la película—. Mi mayor aspiración profesional es que nunca nos falten motivos para elegirnos.</p>
+              </div>
+            </section>
+
+            <section class="contract" aria-labelledby="contract-title">
+              <div class="contract-copy">
+                <p class="contract-label">Propuesta de contratación</p>
+                <h2 id="contract-title">Ser tu pareja</h2>
+                <p>Contrato indefinido, exclusivo y renovable cada día con cariño. Sin periodo de prueba; con cláusula permanente de besos, apoyo mutuo y aventuras compartidas.</p>
+                <p class="contract-signature">Con amor y plena disponibilidad, <span contenteditable="true" spellcheck="true">Tu candidato favorito</span></p>
+              </div>
+              <div class="official-stamp" id="official-stamp" aria-label="Candidatura pendiente de aceptación">
+                <span class="stamp-top">RESOLUCIÓN OFICIAL</span>
+                <span class="stamp-center" id="stamp-state">PENDIENTE</span>
+                <span class="stamp-bottom" id="stamp-date">DE TU RESPUESTA</span>
+                <span class="stamp-star" aria-hidden="true">★</span>
+              </div>
+            </section>
+
+            <footer class="cv-footer">
+              <span>DOCUMENTO CONFIDENCIAL <span aria-hidden="true">·</span> VÁLIDO PARA SIEMPRE</span>
+              <span>Hecho para ti <b aria-hidden="true">♥</b></span>
+            </footer>
+          </div>
+        </div>
+        <div class="paper-rules paper-rules--bottom" aria-hidden="true"><span></span><span></span></div>
+        <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+      </article>
+    </main>
+
+    <section class="action-panel" aria-label="Respuesta a la candidatura">
+      <p id="response-message" role="status" aria-live="polite">La decisión final está en tus manos.</p>
+      <button class="accept-button" id="accept-application" type="button"><span aria-hidden="true">✒</span> Aceptar candidatura / Firmar contrato</button>
+      <span class="action-footnote">La firma implica una vida entera de complicidad.</span>
+    </section>
+  </div>
 </body>
 </html>
