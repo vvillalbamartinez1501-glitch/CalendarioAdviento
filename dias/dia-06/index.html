@@ -3,38 +3,129 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 06 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#11131b">
+  <meta name="description" content="Día 6: una colección de espíritus y una sorpresa especial.">
+  <title>Día 6 · Colección de espíritus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="6">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 06</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
-
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-06.jpg" alt="TODO: Añadir descripción de la foto del día 06" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 06">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-06.jpg</code></small>
+<body>
+  <svg class="svg-filters" aria-hidden="true" focusable="false">
+    <filter id="sprite-black-key" color-interpolation-filters="sRGB" x="-10%" y="-10%" width="120%" height="120%">
+      <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 1 1 1 0 -0.08"></feColorMatrix>
+    </filter>
+  </svg>
+  <div class="game-shell">
+    <header class="top-hud">
+      <nav class="main-nav" aria-label="Navegación principal">
+        <span class="controller-hint">[LB]</span>
+        <a class="nav-link" href="#play">PLAY</a>
+        <a class="nav-link nav-link--active" href="#sprites" aria-current="page">SPRITES</a>
+        <a class="nav-link" href="#shop">SHOP</a>
+        <a class="nav-link" href="#locker">LOCKER</a>
+        <a class="nav-link nav-link--optional" href="#passes">PASSES</a>
+        <a class="nav-link nav-link--optional" href="#quests">QUESTS</a>
+        <a class="nav-link nav-link--optional" href="#compete">COMPETE</a>
+        <a class="nav-link nav-link--optional" href="#career">CAREER</a>
+        <span class="vbucks" aria-label="400 PaVos"><span aria-hidden="true">◉</span> 400</span>
+        <span class="controller-hint">[RB]</span>
+      </nav>
+      <div class="profile-hud">
+        <span class="profile-avatar" aria-hidden="true">✦</span>
+        <span class="dust-count">SPRITE DUST <strong>• 38,725</strong></span>
+        <button class="view-info" type="button" aria-label="Ver información">[Y] <span>View Info</span></button>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
+    </header>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
-  </main>
+    <nav class="sub-nav" aria-label="Secciones de sprites">
+      <span class="controller-hint">[LT]</span>
+      <a class="sub-nav__link sub-nav__link--active" href="#collection" aria-current="page">COLLECTION</a>
+      <a class="sub-nav__link" href="#rewards">REWARDS</a>
+      <span class="controller-hint">[RT]</span>
+    </nav>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+    <main class="collection-layout" id="collection">
+      <section class="sprite-library" id="sprites" aria-labelledby="library-title">
+        <div class="section-heading">
+          <span class="section-kicker">SPRITE ARCHIVE</span>
+          <span class="collection-count">02 <i>/</i> 12</span>
+        </div>
+        <h1 id="library-title">ALL SPRITES</h1>
+        <div class="sprite-grid" role="group" aria-label="Selecciona un espíritu">
+          <button class="sprite-card sprite-card--blue" type="button" aria-label="Blue spirit, nivel 5" aria-pressed="false"><span class="sprite-art" aria-hidden="true">✧</span><span class="sprite-level">Lvl 5</span></button>
+          <button class="sprite-card sprite-card--esther is-selected" type="button" aria-label="Espíritu Esther, nivel 1, seleccionado" aria-pressed="true"><img class="sprite-thumb" src="../../assets/images/espiritu-fortnite-esther.jpg" alt=""><span class="sprite-level">Lvl 1</span></button>
+          <button class="sprite-card sprite-card--gold" type="button" aria-label="Golden spirit, nivel 5" aria-pressed="false"><span class="sprite-art" aria-hidden="true">✦</span><span class="sprite-level">Lvl 5</span></button>
+          <button class="sprite-card sprite-card--pink" type="button" aria-label="Pink spirit, nivel 1" aria-pressed="false"><span class="sprite-art" aria-hidden="true">♡</span><span class="sprite-level">Lvl 1</span></button>
+          <button class="sprite-card sprite-card--green" type="button" aria-label="Green spirit, nivel 5" aria-pressed="false"><span class="sprite-art" aria-hidden="true">❋</span><span class="sprite-level">Lvl 5</span></button>
+          <button class="sprite-card sprite-card--purple" type="button" aria-label="Violet spirit, nivel 1" aria-pressed="false"><span class="sprite-art" aria-hidden="true">✧</span><span class="sprite-level">Lvl 1</span></button>
+          <button class="sprite-card sprite-card--coral" type="button" aria-label="Coral spirit, nivel 5" aria-pressed="false"><span class="sprite-art" aria-hidden="true">✿</span><span class="sprite-level">Lvl 5</span></button>
+          <button class="sprite-card sprite-card--ice" type="button" aria-label="Ice spirit, nivel 1" aria-pressed="false"><span class="sprite-art" aria-hidden="true">❄</span><span class="sprite-level">Lvl 1</span></button>
+          <button class="sprite-card sprite-card--lime" type="button" aria-label="Lime spirit, nivel 5" aria-pressed="false"><span class="sprite-art" aria-hidden="true">✳</span><span class="sprite-level">Lvl 5</span></button>
+          <button class="sprite-card sprite-card--berry" type="button" aria-label="Berry spirit, nivel 1" aria-pressed="false"><span class="sprite-art" aria-hidden="true">♥</span><span class="sprite-level">Lvl 1</span></button>
+          <button class="sprite-card sprite-card--sky" type="button" aria-label="Sky spirit, nivel 5" aria-pressed="false"><span class="sprite-art" aria-hidden="true">☼</span><span class="sprite-level">Lvl 5</span></button>
+          <button class="sprite-card sprite-card--dusk" type="button" aria-label="Dusk spirit, nivel 1" aria-pressed="false"><span class="sprite-art" aria-hidden="true">☾</span><span class="sprite-level">Lvl 1</span></button>
+        </div>
+        <p class="discover-timer"><span class="clock-icon" aria-hidden="true">◷</span><span>New Sprites will be discoverable in:<strong>4D 2H</strong></span></p>
+      </section>
+
+      <section class="spirit-stage" aria-label="Espíritu Esther levitando sobre un pedestal luminoso">
+        <div class="stage-label"><span class="stage-dot"></span> COLLECTION <span>/</span> SPRITE 02</div>
+        <div class="stage-backdrop" aria-hidden="true"></div>
+        <div class="stage-light" aria-hidden="true"></div>
+        <div class="spirit-glow" aria-hidden="true"></div>
+        <div class="spirit-character">
+          <!-- Si la imagen cambia a .png o .webp, actualiza también esta ruta. -->
+          <img src="../../assets/images/espiritu-fortnite-esther.jpg" alt="Espíritu Esther, un personaje fantástico de tonos rosados">
+        </div>
+        <div class="pedestal" aria-hidden="true">
+          <span class="pedestal-ring pedestal-ring--outer"></span>
+          <span class="pedestal-ring pedestal-ring--inner"></span>
+          <span class="pedestal-core"></span>
+        </div>
+        <span class="stage-coordinate stage-coordinate--left" aria-hidden="true">X 04.28</span>
+        <span class="stage-coordinate stage-coordinate--right" aria-hidden="true">Y 09.16</span>
+      </section>
+
+      <aside class="sprite-details" aria-labelledby="sprite-name">
+        <div class="detail-topline">
+          <!-- PERSONALIZAR TEXTO AQUÍ: rareza y nivel -->
+          <span class="rarity-pill">SPECIAL</span>
+          <span class="level-pill">Lvl 1</span>
+        </div>
+        <!-- PERSONALIZAR TEXTO AQUÍ: título del espíritu -->
+        <h2 id="sprite-name">ESPÍRITU<br>ESTHER</h2>
+        <span class="title-rule" aria-hidden="true"></span>
+        <!-- PERSONALIZAR TEXTO AQUÍ: descripción o dedicatoria del Día 6 -->
+        <p class="sprite-description">Un pequeño espíritu con una luz muy especial. Aparece para recordarte que incluso los días más normales pueden llenarse de magia cuando los compartimos.</p>
+        <div class="bonus-card">
+          <span class="bonus-icon" aria-hidden="true">✦</span>
+          <div>
+            <span class="bonus-label">SPRITE BONUS</span>
+            <!-- PERSONALIZAR TEXTO AQUÍ: ventaja o mensaje especial -->
+            <p>Otorga +100% de felicidad al jugar juntos.</p>
+          </div>
+        </div>
+        <!-- PERSONALIZAR TEXTO AQUÍ: texto y atajo del botón principal -->
+        <button class="equip-button" id="equip-button" type="button" aria-pressed="false">
+          <span class="button-key">[A]</span><span class="equip-label">EQUIP</span><span class="equip-arrow" aria-hidden="true">↗</span>
+        </button>
+        <p class="equip-message" id="equip-message" role="status" aria-live="polite"></p>
+        <p class="detail-footnote"><span aria-hidden="true">✧</span> A LITTLE MAGIC, JUST FOR YOU</p>
+      </aside>
+    </main>
+
+    <footer class="bottom-hud">
+      <a class="back-link" href="../../index.html"><span aria-hidden="true">←</span> Volver al calendario</a>
+      <div class="footer-controls" aria-label="Controles">
+        <span><kbd>[X]</kbd> Battle Pass Unlocks</span>
+        <span><kbd>[B]</kbd> Back</span>
+        <span><kbd>[≡]</kbd> Chat</span>
+      </div>
+    </footer>
+    <div class="toast" id="equip-toast" role="status" aria-live="polite"></div>
+  </div>
 </body>
 </html>

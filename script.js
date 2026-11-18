@@ -80,7 +80,7 @@ function createDayCard(dayNumber) {
     }
 
     saveOpenedDay(dayNumber);
-    const dayPage = dayNumber === 4 ? "dia4.html" : dayNumber === 20 ? "dia20.html" : "index.html";
+    const dayPage = dayNumber === 4 ? "dia4.html" : dayNumber === 5 ? "dia5.html" : dayNumber === 20 ? "dia20.html" : "index.html";
     window.location.href = `dias/dia-${String(dayNumber).padStart(2, "0")}/${dayPage}`;
   });
   return card;
