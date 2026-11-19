@@ -3,38 +3,143 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 24 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#580c0c">
+  <meta name="description" content="Una carta mágica para Santa Claus en Nochebuena.">
+  <title>Día 24 · Una carta para Santa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Cormorant+Garamond:wght@500;600&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="24">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
+<body>
+  <div class="snowfall" id="snowfall" aria-hidden="true"></div>
+  <header class="night-header">
+    <a class="back-link" href="../../index.html">← Volver al calendario</a>
+    <div class="garland" aria-hidden="true">
+      <span class="garland-wire"></span>
+      <i class="light light-red"></i><i class="light light-gold"></i>
+      <i class="light light-green"></i><i class="light light-blue"></i>
+      <i class="light light-gold"></i><i class="light light-red"></i>
+      <i class="light light-blue"></i><i class="light light-green"></i>
+      <i class="light light-red"></i><i class="light light-gold"></i>
+      <i class="light light-green"></i><i class="light light-blue"></i>
+    </div>
+    <p class="night-greeting">La noche más mágica del año <span aria-hidden="true">✦</span></p>
+  </header>
+
+  <main class="christmas-scene">
+    <p class="day-label">24 de diciembre <span aria-hidden="true">❄</span></p>
     <h1>Día 24</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+    <p class="scene-subtitle">Una pequeña carta, un deseo enorme y todo mi amor.</p>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-24.jpg" alt="TODO: Añadir descripción de la foto del día 24" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 24">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-24.jpg</code></small>
+    <article class="letter-frame" id="letter">
+      <svg class="ornament ornament-left" viewBox="0 0 70 112" aria-hidden="true">
+        <path class="ornament-thread" d="M35 0v30"/>
+        <path class="candy-stick" d="M35 31c-17 0-22 13-22 25v5a22 22 0 0 0 44 0V47a14 14 0 0 0-28 0v15"/>
+        <path class="candy-stripe" d="m18 44 34 19M15 57l28 16M28 34l24 14M19 70l14 7"/>
+      </svg>
+      <svg class="ornament ornament-right" viewBox="0 0 70 112" aria-hidden="true">
+        <path class="ornament-thread" d="M35 0v25"/>
+        <path class="bauble-cap" d="M28 26h14v8H28z"/>
+        <circle class="bauble" cx="35" cy="58" r="25"/>
+        <ellipse class="bauble-shine" cx="27" cy="49" rx="5" ry="10"/>
+        <path class="bauble-cap-line" d="M29 30h12"/>
+      </svg>
+
+      <div class="letter-paper">
+        <div class="letter-top">
+          <div class="letter-date">
+            <span class="tiny-star" aria-hidden="true">✦</span>
+            <p>Desde un rinconcito<br>muy calentito del mundo</p>
+            <span class="date-rule"></span>
+            <strong>24 · XII · Nochebuena</strong>
+          </div>
+          <div class="postmark" aria-label="Sello postal del Polo Norte">
+            <!-- HUECO FOTO SELLO POSTAL -->
+            <svg viewBox="0 0 100 100" role="img" aria-label="Casita del Polo Norte bajo una estrella">
+              <path d="M20 49 50 25l30 24v28H20z" fill="#dc2626" stroke="#79171b" stroke-width="2"/>
+              <path d="m16 50 34-28 34 28" fill="none" stroke="#79171b" stroke-width="5" stroke-linecap="round"/>
+              <path d="M43 77V58h15v19M25 51h50" fill="none" stroke="#fdf8ec" stroke-width="3"/>
+              <path d="m72 18 2.5 5.5 6 1-4.5 4.1 1.2 6-5.2-3-5.2 3 1.2-6-4.5-4.1 6-1z" fill="#fde047"/>
+              <circle cx="31" cy="58" r="2" fill="#fde047"/><circle cx="69" cy="59" r="2" fill="#fde047"/>
+            </svg>
+            <span class="postmark-caption">POLO NORTE<br>EXPRESS</span>
+            <span class="postmark-cancel">EXPRESS POLO NORTE <b>•</b> 24 DIC</span>
+          </div>
+        </div>
+
+        <div class="good-list-wrap">
+          <span class="good-list-badge" tabindex="0">
+            <span aria-hidden="true">✦</span> Estado: En la Lista de los Buenos
+            <span class="badge-tooltip" role="tooltip">¡100% confirmada como la favorita de Santa!</span>
+          </span>
+        </div>
+
+        <div class="letter-copy">
+          <h2>Querido Santa Claus...</h2>
+          <!-- PERSONALIZAR TEXTO INTRODUCTORIO DE LA CARTA AQUÍ -->
+          <p class="introduction">Este año ha sido especial porque, entre días bonitos y otros no tanto, he tenido la suerte de compartirlo contigo. Si pudiera pedir una sola cosa, sería seguir encontrando magia en cada pequeño momento a tu lado.</p>
+          <p class="wish-intro">Y si todavía queda un poquito de espacio en tu saco, estos son mis deseos:</p>
+
+          <ul class="wish-list" aria-label="Lista de deseos">
+            <li class="wish-line"><span class="wish-text">Un año entero lleno de abrazos y risas juntos</span><span class="wish-icon" aria-hidden="true">♡</span></li>
+            <li class="wish-line"><span class="wish-text">Nuestros próximos viajes y escapadas</span><span class="wish-icon" aria-hidden="true">✦</span></li>
+            <li class="wish-line"><span class="wish-text">Tardes infinitas de manta, peli y chocolate caliente</span><span class="wish-icon" aria-hidden="true">❧</span></li>
+            <li class="wish-line"><span class="wish-text">Una sorpresa bonita para guardar en el corazón</span><span class="wish-icon" aria-hidden="true">🎁</span></li>
+            <li class="wish-line"><span class="wish-text">Que nunca nos falten motivos para elegirnos</span><span class="wish-icon" aria-hidden="true">♡</span></li>
+          </ul>
+
+          <p class="letter-signoff">Con todo mi amor y un poquito de ilusión,</p>
+          <!-- PERSONALIZAR FIRMA AQUÍ -->
+          <p class="signature">Tu persona favorita <span aria-hidden="true">♥</span></p>
+          <div class="seal-area">
+            <p class="seal-hint">Cuando estés lista, cierra la carta con un toque de magia</p>
+            <button class="wax-seal" id="send-letter" type="button" aria-label="Sellar y enviar carta a Santa">
+              <span class="wax-star" aria-hidden="true">✦</span>
+              <span class="wax-label">Sellar y enviar a Santa</span>
+              <span class="wax-sled" aria-hidden="true">🛷</span>
+            </button>
+          </div>
+        </div>
+        <div class="received-stamp" id="received-stamp" aria-hidden="true">¡CARTA RECIBIDA<br>EN EL POLO NORTE!<span>✦ · 24 DIC · ✦</span></div>
+        <div class="final-card" id="final-card" hidden>
+          <span class="final-spark" aria-hidden="true">✦</span>
+          <p class="final-kicker">Una Nochebuena para recordar</p>
+          <h3>Mi deseo favorito<br>ya se cumplió</h3>
+          <!-- ESCRIBE AQUÍ TU DEDICATORIA FINAL DE NOCHEBUENA DEL DÍA 24 -->
+          <p class="final-dedication">Gracias por ser mi hogar, mi risa favorita y la magia que hace especial cualquier día. Ojalá esta Navidad nos regale muchos recuerdos nuevos, abrazos largos y todo el amor que cabe en el mundo. Feliz Nochebuena, mi vida. <span aria-hidden="true">♥</span></p>
+          <p class="final-signoff">Siempre juntos <span aria-hidden="true">✧</span></p>
+        </div>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
-
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
     </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+    <section class="make-letter" aria-labelledby="make-letter-title">
+      <div class="make-letter-heading">
+        <p class="make-letter-kicker">Ahora te toca a ti <span aria-hidden="true">✦</span></p>
+        <h2 id="make-letter-title">Haz tu carta</h2>
+        <p>Escribe algo bonito, mira cómo queda y descárgalo como una imagen para guardar o compartir.</p>
+      </div>
+      <div class="letter-maker">
+        <form class="letter-editor" id="letter-editor">
+          <label for="letter-recipient">¿Para quién es?</label>
+          <input id="letter-recipient" name="recipient" maxlength="60" value="Mi amor" autocomplete="off">
+          <label for="letter-message">Tu mensaje</label>
+          <textarea id="letter-message" name="message" maxlength="900" rows="8" placeholder="Escribe aquí todo eso tan bonito que quieres decir..." required></textarea>
+          <label for="letter-signature">Firma tu carta</label>
+          <input id="letter-signature" name="signature" maxlength="60" value="Con todo mi amor" autocomplete="off">
+          <button class="download-letter" id="download-letter" type="button" disabled>Descargar mi carta <span aria-hidden="true">↓</span></button>
+          <p class="download-status" id="download-status" role="status" aria-live="polite">Escribe tu mensaje para preparar la imagen.</p>
+        </form>
+        <div class="letter-preview-wrap">
+          <p class="preview-label">Así se verá tu carta</p>
+          <canvas class="letter-preview" id="letter-preview" width="1080" height="1280" role="img" aria-label="Vista previa de tu carta de Navidad"></canvas>
+        </div>
+      </div>
+    </section>
+    <p class="bottom-note">Hecho con amor, para ti <span aria-hidden="true">♥</span></p>
   </main>
-
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <div class="sleigh-flight" id="sleigh-flight" aria-hidden="true">🦌　🛷　✦</div>
+  <div class="magic-layer" id="magic-layer" aria-hidden="true"></div>
+  <p class="sr-only" id="status-message" aria-live="polite"></p>
 </body>
 </html>

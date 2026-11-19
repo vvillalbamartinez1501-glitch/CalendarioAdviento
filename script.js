@@ -1,5 +1,5 @@
 // Cambia a false para probar el bloqueo por fecha.
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 const OPENED_STORAGE_KEY = "nuestro-adviento-dias-abiertos";
 
 const mainCalendar = document.querySelector("#main-calendar");
