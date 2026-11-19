@@ -3,38 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 19 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#000000">
+  <title>Día 19 · Para ti</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="19">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 19</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
-
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-19.jpg" alt="TODO: Añadir descripción de la foto del día 19" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 19">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-19.jpg</code></small>
-      </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
-
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+<body>
+  <a class="back-link" href="../../index.html">← Volver</a>
+  <main class="page">
+    <section class="scene" aria-label="Ramo animado de flores en arte ASCII">
+      <pre id="bouquet" aria-label="Ramo de flores en movimiento"></pre>
+    </section>
+    <footer class="dedication-area">
+      <!-- ESCRIBE AQUÍ TU MENSAJE DEDICATORIO DEL DÍA 19 -->
+      <div id="dedication" class="dedication" contenteditable="true" role="textbox"
+           aria-label="Mensaje dedicatorio del día 19" aria-multiline="true"
+           data-placeholder="Un ramo perenne para un amor que espero que también lo sea"></div>
+    </footer>
   </main>
-
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
 </body>
 </html>
