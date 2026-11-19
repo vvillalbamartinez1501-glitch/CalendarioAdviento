@@ -3,38 +3,78 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 12 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#0D1021">
+  <title>Día 12 · Un misterio por descubrir</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
 <body data-day="12">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 12</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+  <div class="winter-sparkles" aria-hidden="true"></div>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-12.jpg" alt="TODO: Añadir descripción de la foto del día 12" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 12">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-12.jpg</code></small>
+  <header class="topbar">
+    <a class="back-link" href="../../index.html">← Volver al calendario</a>
+    <p class="progress" aria-live="polite">Piezas encajadas: <strong id="progress-count">0 / 12</strong></p>
+  </header>
+
+  <main class="experience">
+    <header class="hero">
+      <p class="eyebrow">El recuerdo escondido</p>
+      <h1>Día 12 — Un misterio por descubrir</h1>
+      <p class="instructions">Arrastra las piezas hasta el marco. Cada encaje acercará un poco más nuestro recuerdo.</p>
+    </header>
+
+    <section class="puzzle-shell" aria-label="Puzzle artístico Día 12">
+      <div class="board-stage" id="board-stage">
+        <svg class="puzzle-guide" id="puzzle-guide" viewBox="0 0 500 500" aria-hidden="true">
+          <path d="M0 0H125V167H0Z"/><path d="M125 0H250V167H125Z"/>
+          <path d="M250 0H375V167H250Z"/><path d="M375 0H500V167H375Z"/>
+          <path d="M0 167H125V333H0Z"/><path d="M125 167H250V333H125Z"/>
+          <path d="M250 167H375V333H250Z"/><path d="M375 167H500V333H375Z"/>
+          <path d="M0 333H125V500H0Z"/><path d="M125 333H250V500H125Z"/>
+          <path d="M250 333H375V500H250Z"/><path d="M375 333H500V500H375Z"/>
+          <path class="route-guide" d="M38 82 C82 28 112 110 156 66 C202 20 222 112 278 74 C328 40 356 118 438 48 C414 112 352 146 300 218 C246 286 182 188 128 258 C82 314 96 402 52 462 C112 436 170 392 218 438 C278 492 330 366 388 416 C434 456 458 430 476 392"/>
+        </svg>
+
+        <div class="piece-layer" id="piece-layer" aria-label="Piezas colocadas"></div>
+        <div class="board-glow" aria-hidden="true"></div>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
+    </section>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+    <section class="victory-card" id="victory-card" aria-live="polite" hidden>
+      <p class="victory-kicker">El recuerdo estaba completo</p>
+      <h2>Nuestras aventuras viven aquí</h2>
+      <!-- ESCRIBE AQUÍ TU MENSAJE DEL DÍA 12 -->
+      <p class="dedication">Cada pieza encajó, como tú y yo: entre curvas, abrazos y pequeños milagros.</p>
+      <button class="download-button" id="download-photo" type="button">
+        Descargar foto completa (nosotros02)
+      </button>
+    </section>
+
+    <section class="tray-section" aria-label="Bandeja de piezas">
+      <p class="tray-title"><span aria-hidden="true">✦</span> Piezas sueltas <span aria-hidden="true">✦</span></p>
+      <div class="piece-tray" id="piece-tray"></div>
+    </section>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <!-- Cambiar aquí si nosotros02 es .png o .webp -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true">
+    <defs>
+      <clipPath id="piece-1" clipPathUnits="userSpaceOnUse"><path d="M0 0H125V167H0Z"/></clipPath>
+      <clipPath id="piece-2" clipPathUnits="userSpaceOnUse"><path d="M125 0H250V167H125Z"/></clipPath>
+      <clipPath id="piece-3" clipPathUnits="userSpaceOnUse"><path d="M250 0H375V167H250Z"/></clipPath>
+      <clipPath id="piece-4" clipPathUnits="userSpaceOnUse"><path d="M375 0H500V167H375Z"/></clipPath>
+      <clipPath id="piece-5" clipPathUnits="userSpaceOnUse"><path d="M0 167H125V333H0Z"/></clipPath>
+      <clipPath id="piece-6" clipPathUnits="userSpaceOnUse"><path d="M125 167H250V333H125Z"/></clipPath>
+      <clipPath id="piece-7" clipPathUnits="userSpaceOnUse"><path d="M250 167H375V333H250Z"/></clipPath>
+      <clipPath id="piece-8" clipPathUnits="userSpaceOnUse"><path d="M375 167H500V333H375Z"/></clipPath>
+      <clipPath id="piece-9" clipPathUnits="userSpaceOnUse"><path d="M0 333H125V500H0Z"/></clipPath>
+      <clipPath id="piece-10" clipPathUnits="userSpaceOnUse"><path d="M125 333H250V500H125Z"/></clipPath>
+      <clipPath id="piece-11" clipPathUnits="userSpaceOnUse"><path d="M250 333H375V500H250Z"/></clipPath>
+      <clipPath id="piece-12" clipPathUnits="userSpaceOnUse"><path d="M375 333H500V500H375Z"/></clipPath>
+    </defs>
+  </svg>
 </body>
 </html>

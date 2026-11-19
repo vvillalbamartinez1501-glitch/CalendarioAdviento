@@ -2,39 +2,79 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 11 · Nuestro Adviento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Despeja el tablero de Buscaminas Navideño y descubre mensajes llenos de cariño.">
+  <title>Día 11 · Buscaminas Navideño</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="11">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 11</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+<body>
+  <div class="snowfall" aria-hidden="true"></div>
+  <main class="page-shell">
+    <nav class="topbar" aria-label="Navegación">
+      <a class="back-link" href="../../index.html"><span aria-hidden="true">←</span> Volver al calendario</a>
+      <span class="day-label">Día 11 <span aria-hidden="true">•</span> 11 de Diciembre</span>
+    </nav>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-11.jpg" alt="TODO: Añadir descripción de la foto del día 11" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 11">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-11.jpg</code></small>
+    <header class="dedication">
+      <span class="dedication-sparkle" aria-hidden="true">✦</span>
+      <p class="eyebrow">Una sorpresa para ti</p>
+      <h1>Buscaminas Navideño</h1>
+      <!-- ESCRIBE AQUÍ TU DEDICATORIA SUPERIOR DEL DÍA 11 -->
+      <p class="dedication-copy">Despeja el tablero con cuidado: detrás de cada casilla se esconde un pedacito de mi cariño para ti. 💚</p>
+      <span class="dedication-flourish" aria-hidden="true">❄ &nbsp; ♥ &nbsp; ❄</span>
+    </header>
+
+    <section class="game-card" aria-label="Juego Buscaminas Navideño">
+      <div class="difficulty-row">
+        <p class="control-label" id="difficulty-label">Elige tu nivel</p>
+        <div class="difficulty-options" role="group" aria-labelledby="difficulty-label">
+          <button class="difficulty-button is-active" type="button" data-level="easy" aria-pressed="true">Fácil <span>8 × 8</span></button>
+          <button class="difficulty-button" type="button" data-level="medium" aria-pressed="false">Medio <span>12 × 12</span></button>
+          <button class="difficulty-button" type="button" data-level="hard" aria-pressed="false">Difícil <span>16 × 16</span></button>
+        </div>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+      <div class="status-bar" aria-label="Estado de la partida">
+        <div class="digital-counter" aria-label="Minas restantes"><span aria-hidden="true">💣</span> <output id="mine-count">010</output></div>
+        <button class="face-button" id="reset-button" type="button" aria-label="Empezar una partida nueva">🎅</button>
+        <div class="digital-counter timer-counter" aria-label="Tiempo transcurrido"><span aria-hidden="true">⏱️</span> <output id="timer">000</output></div>
+      </div>
+
+      <div class="game-message" id="game-message" role="status" aria-live="polite">Elige una casilla para comenzar. ¡Tu primer paso siempre es seguro! ✨</div>
+
+      <div class="board-frame">
+        <div class="board" id="board" role="grid" aria-label="Tablero de Buscaminas Navideño"></div>
+      </div>
+
+      <div class="game-footer">
+        <p class="game-hint"><span aria-hidden="true">🚩</span> Clic derecho para marcar una mina</p>
+        <button class="mode-button" id="mode-button" type="button" aria-pressed="false">
+          Modo: <span id="mode-label">🔍 Descubrir</span>
+        </button>
+      </div>
+    </section>
+    <p class="page-signoff">Con amor, para mi persona favorita <span aria-hidden="true">♥</span></p>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <dialog class="victory-modal" id="victory-modal" aria-labelledby="victory-title">
+    <div class="celebration-layer" id="celebration-layer" aria-hidden="true"></div>
+    <div class="modal-ornament" aria-hidden="true">✦ ❄ ✦</div>
+    <p class="eyebrow">Una pequeña gran victoria</p>
+    <h2 id="victory-title">¡Lo lograste! Despejaste el camino directo a mi corazón</h2>
+    <!-- PERSONALIZAR MENSAJES DE AMOR AQUÍ -->
+    <div class="love-note" aria-live="polite">
+      <span class="love-note-icon" aria-hidden="true">💌</span>
+      <p id="love-message"></p>
+    </div>
+    <div class="modal-actions">
+      <button class="message-button" id="next-message" type="button">Leer otro mensaje bonito 💌</button>
+      <button class="close-button" id="close-modal" type="button">Guardar este momento ✨</button>
+    </div>
+  </dialog>
 </body>
 </html>

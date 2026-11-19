@@ -5,8 +5,6 @@ const IMAGE_PATH = "../../assets/images/nosotros01.jpg";
 const board = document.querySelector("#puzzle-board");
 const moveCount = document.querySelector("#move-count");
 const shuffleButton = document.querySelector("#shuffle-button");
-const hintButton = document.querySelector("#hint-button");
-const solveButton = document.querySelector("#solve-button");
 const victoryPanel = document.querySelector("#victory-panel");
 const celebration = document.querySelector("#celebration");
 const snowfall = document.querySelector("#snowfall");
@@ -71,7 +69,6 @@ function renderBoard() {
   board.dataset.emptyPosition = String(emptyPosition);
   moveCount.textContent = String(moves);
   victoryPanel.hidden = !isSolved;
-  solveButton.disabled = isSolved;
 }
 
 function checkVictory() {
@@ -106,25 +103,8 @@ function shufflePuzzle() {
 
   moves = 0;
   isSolved = false;
-  setHinting(false);
   celebration.replaceChildren();
   renderBoard();
-}
-
-function solvePuzzle() {
-  if (isSolved) return;
-  tiles = Array.from({ length: CELL_COUNT }, (_, index) => index);
-  emptyPosition = EMPTY;
-  isSolved = true;
-  setHinting(false);
-  renderBoard();
-  celebrate();
-}
-
-function setHinting(isHinting) {
-  hintButton.setAttribute("aria-pressed", String(isHinting));
-  hintButton.innerHTML = `<span aria-hidden="true">◉</span> ${isHinting ? "Ocultar pista" : "Ver pista"}`;
-  board.classList.toggle("is-hinting", isHinting);
 }
 
 function celebrate() {
@@ -167,11 +147,6 @@ function createSnowfall() {
 }
 
 shuffleButton.addEventListener("click", shufflePuzzle);
-solveButton.addEventListener("click", solvePuzzle);
-hintButton.addEventListener("click", () => {
-  const isHinting = hintButton.getAttribute("aria-pressed") !== "true";
-  setHinting(isHinting);
-});
 
 document.addEventListener("keydown", (event) => {
   const isEditable = event.target instanceof HTMLElement

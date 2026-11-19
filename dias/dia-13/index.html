@@ -3,38 +3,73 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 13 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#111936">
+  <meta name="description" content="Una carta bajo la luz serena de la Luna Llena.">
+  <title>Día 13 — Bajo la misma Luna Llena</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="13">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 13</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+<body class="is-entering" data-day="13">
+  <div class="starfield" id="starfield" aria-hidden="true"></div>
+  <div class="night-haze" aria-hidden="true"></div>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-13.jpg" alt="TODO: Añadir descripción de la foto del día 13" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 13">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-13.jpg</code></small>
-      </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
+  <a class="back-link" href="../../index.html">← Volver al calendario</a>
+
+  <main class="night-scene">
+    <figure class="moon-stage" aria-label="Luna llena iluminando la noche">
+      <img class="moon-image" src="../../assets/images/lunallena.gif" alt="La Luna Llena brillando en el cielo nocturno">
+      <span class="moon-dust" aria-hidden="true"></span>
     </figure>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+    <section class="letter-frame" aria-labelledby="letter-title">
+      <article class="letter-paper">
+        <header class="letter-heading">
+          <svg class="moon-phases" viewBox="0 0 176 24" role="img" aria-label="Las ocho fases de la Luna">
+            <g transform="translate(2 2)">
+              <circle cx="10" cy="10" r="9" fill="#334155"/>
+              <circle cx="32" cy="10" r="9" fill="#d6c9b5"/>
+              <path d="M32 1a9 9 0 0 1 0 18 5 9 0 0 0 0-18" fill="#334155"/>
+              <circle cx="54" cy="10" r="9" fill="#d6c9b5"/>
+              <path d="M54 1a9 9 0 0 1 0 18V1" fill="#334155"/>
+              <circle cx="76" cy="10" r="9" fill="#d6c9b5"/>
+              <path d="M76 1a5 9 0 0 1 0 18 9 9 0 0 0 0-18" fill="#334155"/>
+              <circle cx="98" cy="10" r="9" fill="#d6c9b5"/>
+              <circle cx="120" cy="10" r="9" fill="#d6c9b5"/>
+              <path d="M120 1a5 9 0 0 0 0 18 9 9 0 0 1 0-18" fill="#334155"/>
+              <circle cx="142" cy="10" r="9" fill="#d6c9b5"/>
+              <path d="M142 1v18a9 9 0 0 1 0-18" fill="#334155"/>
+              <circle cx="164" cy="10" r="9" fill="#d6c9b5"/>
+              <path d="M164 1a5 9 0 0 0 0 18 9 9 0 0 1 0-18" fill="#334155"/>
+            </g>
+          </svg>
+          <p class="letter-date">13 de diciembre <span aria-hidden="true">·</span> Una carta para ti</p>
+          <h1 id="letter-title">Día 13 — Bajo la misma Luna Llena</h1>
+          <p class="letter-subtitle">Aunque la noche nos encuentre lejos, su luz nos acompaña a los dos.</p>
+          <span class="heading-flourish" aria-hidden="true">— ✧ —</span>
+        </header>
+
+        <div class="letter-copy">
+          <!-- ESCRIBE AQUÍ TU CARTA DEL DÍA 13 -->
+          <p>Esta noche la Luna Llena ha salido despacio, redonda y serena, como si quisiera guardar un instante solo para nosotros. Cuando la mires, piensa que yo también estaré buscando su luz entre las estrellas.</p>
+          <p>Me gusta imaginar que su resplandor cruza calles, tejados y ventanas hasta encontrarnos. Y aunque haya kilómetros o días que se hagan largos, bajo esta misma luna siempre hay un pedacito de cielo que compartimos.</p>
+          <p>Ojalá su claridad te recuerde cuánto te quiero: en las noches tranquilas, en las que no puedes dormir y en cada pequeño momento que deseo vivir a tu lado. Hoy, y todas las noches, mi lugar favorito sigue siendo contigo.</p>
+        </div>
+
+        <footer class="letter-footer">
+          <div class="signoff">
+            <p>Con todo mi cariño,</p>
+            <!-- ESCRIBE AQUÍ TU FIRMA -->
+            <p class="signature">Quien siempre mira la luna contigo</p>
+          </div>
+          <span class="signature-star" aria-hidden="true">✦</span>
+        </footer>
+      </article>
+    </section>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <button class="replay-button" id="replay-animation" type="button">✨ Ver animación lunar</button>
 </body>
 </html>

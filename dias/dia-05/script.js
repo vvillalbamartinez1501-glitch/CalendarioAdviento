@@ -1,105 +1,177 @@
-const noButton = document.querySelector("#no-button");
-const yesButton = document.querySelector("#yes-button");
-const gameScreen = document.querySelector("#game-screen");
-const victoryScreen = document.querySelector("#victory-screen");
-const gameStatus = document.querySelector("#game-status");
-const closeButton = document.querySelector("#close-button");
-const minimizeButton = document.querySelector("#minimize-button");
-const windowContent = document.querySelector("#window-content");
-const retroAlert = document.querySelector("#retro-alert");
-const alertDismiss = document.querySelector("#alert-dismiss");
+const SIZE = 6;
+const CELL_COUNT = SIZE * SIZE;
+const EMPTY = CELL_COUNT - 1;
+const IMAGE_PATH = "../../assets/images/nosotros01.jpg";
+const board = document.querySelector("#puzzle-board");
+const moveCount = document.querySelector("#move-count");
+const shuffleButton = document.querySelector("#shuffle-button");
+const victoryPanel = document.querySelector("#victory-panel");
 const celebration = document.querySelector("#celebration");
+const snowfall = document.querySelector("#snowfall");
 
-const escapeMessages = [
-  "NO",
-  "¿Seguro?",
-  "¡El Grinch te hackeó!",
-  "Error 404: No encontrado",
-  "¡Hace frío ahí fuera!",
-  "¡Dale al SÍ!"
-];
-let escapeCount = 0;
-let isMinimized = false;
+let tiles = [];
+let emptyPosition = EMPTY;
+let moves = 0;
+let isSolved = false;
 
-function moveNoButton(event) {
-  if (event) event.preventDefault();
-
-  const margin = 20;
-  const buttonRect = noButton.getBoundingClientRect();
-  const maxLeft = Math.max(margin, window.innerWidth - buttonRect.width - margin);
-  const maxTop = Math.max(margin, window.innerHeight - buttonRect.height - margin);
-  const pointerX = event && Number.isFinite(event.clientX) ? event.clientX : null;
-  const pointerY = event && Number.isFinite(event.clientY) ? event.clientY : null;
-  let left = margin;
-  let top = margin;
-
-  for (let attempt = 0; attempt < 12; attempt += 1) {
-    left = margin + Math.random() * (maxLeft - margin);
-    top = margin + Math.random() * (maxTop - margin);
-    if (pointerX === null || Math.hypot(left + buttonRect.width / 2 - pointerX, top + buttonRect.height / 2 - pointerY) > 120) {
-      break;
-    }
-  }
-
-  noButton.style.position = "fixed";
-  noButton.style.left = `${left}px`;
-  noButton.style.top = `${top}px`;
-  noButton.style.zIndex = "4";
-  noButton.textContent = escapeMessages[(escapeCount + 1) % escapeMessages.length];
-  escapeCount += 1;
-  yesButton.style.transform = `scale(${Math.min(1 + escapeCount * 0.045, 1.28)})`;
-  gameStatus.textContent = `¡Se ha escapado ${escapeCount} ${escapeCount === 1 ? "vez" : "veces"}!`;
+function isAdjacent(first, second) {
+  const rowDifference = Math.abs(Math.floor(first / SIZE) - Math.floor(second / SIZE));
+  const columnDifference = Math.abs((first % SIZE) - (second % SIZE));
+  return rowDifference + columnDifference === 1;
 }
 
-function keepNoButtonInView() {
-  if (noButton.style.position !== "fixed") return;
-  const margin = 20;
-  const rect = noButton.getBoundingClientRect();
-  const left = Math.min(Math.max(margin, rect.left), window.innerWidth - rect.width - margin);
-  const top = Math.min(Math.max(margin, rect.top), window.innerHeight - rect.height - margin);
-  noButton.style.left = `${left}px`;
-  noButton.style.top = `${top}px`;
+function neighbors(position) {
+  const row = Math.floor(position / SIZE);
+  const column = position % SIZE;
+  const result = [];
+
+  if (row > 0) result.push(position - SIZE);
+  if (row < SIZE - 1) result.push(position + SIZE);
+  if (column > 0) result.push(position - 1);
+  if (column < SIZE - 1) result.push(position + 1);
+  return result;
+}
+
+function renderBoard() {
+  const fragment = document.createDocumentFragment();
+
+  tiles.forEach((tile, position) => {
+    if (tile === EMPTY && !isSolved) {
+      const emptyCell = document.createElement("div");
+      emptyCell.className = "empty-cell";
+      emptyCell.setAttribute("role", "gridcell");
+      emptyCell.setAttribute("aria-label", "Hueco vacío");
+      fragment.append(emptyCell);
+      return;
+    }
+
+    const piece = document.createElement("button");
+    const row = Math.floor(tile / SIZE);
+    const column = tile % SIZE;
+    piece.className = "tile";
+    if (tile === EMPTY) piece.classList.add("tile--last");
+    piece.type = "button";
+    piece.setAttribute("role", "gridcell");
+    piece.setAttribute("aria-label", `Pieza ${tile + 1}, casilla correcta ${tile + 1}${isSolved ? ", colocada" : ""}`);
+    piece.disabled = isSolved || !isAdjacent(position, emptyPosition);
+    piece.style.setProperty("--tile-position", `${(column / (SIZE - 1)) * 100}% ${(row / (SIZE - 1)) * 100}%`);
+    const number = document.createElement("span");
+    number.className = "tile-number";
+    number.setAttribute("aria-hidden", "true");
+    number.textContent = String(tile + 1);
+    piece.append(number);
+    piece.addEventListener("click", () => moveTile(position));
+    fragment.append(piece);
+  });
+
+  board.replaceChildren(fragment);
+  board.classList.toggle("is-solved", isSolved);
+  board.dataset.emptyPosition = String(emptyPosition);
+  moveCount.textContent = String(moves);
+  victoryPanel.hidden = !isSolved;
+}
+
+function checkVictory() {
+  return tiles.every((tile, position) => tile === position);
+}
+
+function moveTile(position) {
+  if (isSolved || !isAdjacent(position, emptyPosition)) return;
+
+  [tiles[position], tiles[emptyPosition]] = [tiles[emptyPosition], tiles[position]];
+  emptyPosition = position;
+  moves += 1;
+  isSolved = checkVictory();
+  renderBoard();
+  if (isSolved) celebrate();
+}
+
+function shufflePuzzle() {
+  do {
+    tiles = Array.from({ length: CELL_COUNT }, (_, index) => index);
+    emptyPosition = EMPTY;
+    let previousEmptyPosition = -1;
+
+    for (let step = 0; step < 250; step += 1) {
+      const possibleMoves = neighbors(emptyPosition).filter((position) => position !== previousEmptyPosition);
+      const nextPosition = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+      [tiles[nextPosition], tiles[emptyPosition]] = [tiles[emptyPosition], tiles[nextPosition]];
+      previousEmptyPosition = emptyPosition;
+      emptyPosition = nextPosition;
+    }
+  } while (checkVictory());
+
+  moves = 0;
+  isSolved = false;
+  celebration.replaceChildren();
+  renderBoard();
 }
 
 function celebrate() {
-  gameScreen.hidden = true;
-  victoryScreen.hidden = false;
-  noButton.hidden = true;
+  const colors = ["#D4A359", "#C59B47", "#9E2A2B", "#284B3E", "#F2D9A6"];
+  const confetti = document.createDocumentFragment();
 
-  const symbols = ["♥", "★", "♥", "✦"];
-  for (let index = 0; index < 24; index += 1) {
+  for (let index = 0; index < 34; index += 1) {
     const piece = document.createElement("span");
-    piece.className = "pixel-confetti";
-    piece.textContent = symbols[index % symbols.length];
-    piece.style.setProperty("--confetti-left", `${Math.random() * 100}%`);
-    piece.style.setProperty("--confetti-delay", `${Math.random() * -8}s`);
-    piece.style.setProperty("--confetti-duration", `${5 + Math.random() * 5}s`);
-    piece.style.setProperty("--confetti-drift", `${Math.round(Math.random() * 80 - 40)}px`);
-    piece.style.setProperty("--confetti-color", index % 2 ? "#FFD700" : "#D90429");
-    celebration.append(piece);
+    const angle = (Math.PI * 2 * index) / 34;
+    const distance = 80 + Math.random() * 170;
+    piece.className = "confetti";
+    piece.style.setProperty("--confetti-width", `${3 + Math.random() * 4}px`);
+    piece.style.setProperty("--confetti-height", `${5 + Math.random() * 5}px`);
+    piece.style.setProperty("--confetti-color", colors[index % colors.length]);
+    piece.style.setProperty("--confetti-x", `${Math.cos(angle) * distance}px`);
+    piece.style.setProperty("--confetti-y", `${Math.sin(angle) * distance}px`);
+    piece.style.setProperty("--confetti-rotate", `${Math.random() * 540 - 270}deg`);
+    piece.style.setProperty("--confetti-delay", `${Math.random() * 100}ms`);
+    confetti.append(piece);
   }
+  celebration.replaceChildren(confetti);
 }
 
-noButton.addEventListener("mouseenter", moveNoButton);
-noButton.addEventListener("touchstart", moveNoButton, { passive: false });
-noButton.addEventListener("click", moveNoButton);
-noButton.addEventListener("focus", moveNoButton);
-yesButton.addEventListener("click", celebrate);
+function createSnowfall() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-closeButton.addEventListener("click", () => {
-  retroAlert.hidden = false;
-  alertDismiss.focus();
-});
-alertDismiss.addEventListener("click", () => {
-  retroAlert.hidden = true;
-  closeButton.focus();
+  const flakes = document.createDocumentFragment();
+  for (let index = 0; index < 34; index += 1) {
+    const flake = document.createElement("span");
+    flake.className = "snowflake";
+    flake.style.setProperty("--snow-left", `${Math.random() * 100}%`);
+    flake.style.setProperty("--snow-size", `${2 + Math.random() * 3}px`);
+    flake.style.setProperty("--snow-opacity", `${.22 + Math.random() * .45}`);
+    flake.style.setProperty("--snow-duration", `${9 + Math.random() * 14}s`);
+    flake.style.setProperty("--snow-delay", `${-Math.random() * 20}s`);
+    flake.style.setProperty("--snow-drift", `${Math.round(Math.random() * 80 - 40)}px`);
+    flakes.append(flake);
+  }
+  snowfall.append(flakes);
+}
+
+shuffleButton.addEventListener("click", shufflePuzzle);
+
+document.addEventListener("keydown", (event) => {
+  const isEditable = event.target instanceof HTMLElement
+    && (event.target.isContentEditable || event.target.closest("input, textarea, select"));
+  if (isEditable || !event.key.startsWith("Arrow")) return;
+
+  const direction = {
+    ArrowUp: -SIZE,
+    ArrowDown: SIZE,
+    ArrowLeft: -1,
+    ArrowRight: 1
+  }[event.key];
+  if (direction === undefined) return;
+
+  const nextPosition = emptyPosition + direction;
+  if (nextPosition < 0 || nextPosition >= CELL_COUNT || !isAdjacent(nextPosition, emptyPosition)) return;
+  event.preventDefault();
+  moveTile(nextPosition);
 });
 
-minimizeButton.addEventListener("click", () => {
-  isMinimized = !isMinimized;
-  windowContent.hidden = isMinimized;
-  minimizeButton.setAttribute("aria-label", isMinimized ? "Restaurar ventana" : "Minimizar ventana");
-  minimizeButton.textContent = isMinimized ? "□" : "_";
+const imageCheck = new Image();
+imageCheck.addEventListener("error", () => {
+  document.querySelector("#game-instructions").textContent = "No se pudo cargar nosotros01.jpg. Comprueba que la foto esté en assets/images.";
 });
+imageCheck.src = new URL(IMAGE_PATH, document.baseURI).href;
 
-window.addEventListener("resize", keepNoButtonInView);
+createSnowfall();
+shufflePuzzle();

@@ -256,7 +256,6 @@ h1 span { color: var(--aged-gold); }
   pointer-events: none;
 }
 
-.is-hinting .tile::before { filter: blur(9px) brightness(.95); }
 .tile:hover:not(:disabled) { filter: brightness(1.1); }
 .tile:active:not(:disabled) { transform: scale(.96); }
 .tile:disabled { cursor: default; }
@@ -329,10 +328,6 @@ h1 span { color: var(--aged-gold); }
 .button:active { transform: translateY(0); }
 .button--primary { color: #fffaf3; background: var(--red); box-shadow: 0 4px 10px rgba(158, 42, 43, .16); }
 .button--primary:hover { background: #842122; }
-.button--secondary { border-color: rgba(40, 75, 62, .28); color: var(--pine); background: rgba(40, 75, 62, .07); }
-.button--secondary:hover, .button--secondary[aria-pressed="true"] { border-color: var(--pine); background: rgba(40, 75, 62, .14); }
-.button--quiet { border-color: rgba(197, 155, 71, .48); color: #72552d; background: transparent; }
-.button--quiet:hover { background: rgba(212, 163, 89, .12); }
 .button:disabled { cursor: default; opacity: .55; transform: none; }
 
 .keyboard-hint {

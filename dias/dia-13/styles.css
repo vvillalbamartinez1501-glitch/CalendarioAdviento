@@ -1,0 +1,402 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: dark;
+  --night: #060913;
+  --sky: #111936;
+  --silver: #f8fafc;
+  --moonlight: #fef9c3;
+  --celestial: #93c5fd;
+  --gold: #eab308;
+  --ink: #1c1917;
+  --paper: #f5efe6;
+  --paper-shadow: #ddd0bc;
+  --display: "Playfair Display", Georgia, serif;
+  --letter: "Cormorant Garamond", Georgia, serif;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: var(--night);
+}
+
+body {
+  position: relative;
+  min-width: 320px;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--silver);
+  background: radial-gradient(ellipse at 50% 5%, var(--sky), var(--night) 72%);
+  font-family: var(--letter);
+}
+
+.starfield {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  top: var(--top);
+  left: var(--left);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--star-color, #f8fafc);
+  box-shadow: 0 0 9px currentColor;
+  animation: twinkle var(--duration) ease-in-out var(--delay) infinite alternate;
+  color: var(--star-color, #f8fafc);
+}
+
+.night-haze {
+  position: fixed;
+  z-index: 0;
+  right: -15%;
+  bottom: -16%;
+  left: -15%;
+  height: 45%;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(147, 197, 253, .13), transparent 68%),
+    radial-gradient(ellipse at 18% 100%, rgba(248, 250, 252, .06), transparent 52%);
+  pointer-events: none;
+}
+
+.back-link {
+  position: absolute;
+  z-index: 3;
+  top: 22px;
+  left: 22px;
+  padding: 10px 14px;
+  border: 1px solid rgba(248, 250, 252, .36);
+  border-radius: 999px;
+  color: var(--silver);
+  background: rgba(6, 9, 19, .48);
+  font-family: var(--display);
+  font-size: .76rem;
+  text-decoration: none;
+  transition: background .2s ease, border-color .2s ease;
+}
+
+.back-link:hover {
+  border-color: var(--moonlight);
+  background: rgba(147, 197, 253, .16);
+}
+
+.back-link:focus-visible,
+.replay-button:focus-visible {
+  outline: 2px solid var(--moonlight);
+  outline-offset: 4px;
+}
+
+.night-scene {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 86px;
+}
+
+.moon-stage {
+  position: relative;
+  z-index: 1;
+  width: 210px;
+  height: 210px;
+  flex: 0 0 auto;
+  margin: 0 0 28px;
+  border-radius: 50%;
+  box-shadow: 0 0 45px rgba(254, 249, 195, .45), 0 0 95px rgba(147, 197, 253, .25);
+}
+
+.moon-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  object-fit: cover;
+  animation: lunarSpin 85s linear infinite;
+}
+
+.moon-dust {
+  position: absolute;
+  z-index: -1;
+  top: 70%;
+  left: 50%;
+  width: 210px;
+  height: 260px;
+  background: linear-gradient(180deg, rgba(254, 249, 195, .18), rgba(147, 197, 253, .07) 28%, transparent 82%);
+  filter: blur(16px);
+  opacity: .8;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transform-origin: 50% 0;
+}
+
+.letter-frame {
+  position: relative;
+  z-index: 1;
+  width: min(640px, 92%);
+  padding: 9px;
+  background: repeating-linear-gradient(90deg, #25304a 0 9px, #d6deeb 9px 18px);
+  filter: drop-shadow(0 22px 40px rgba(0, 0, 0, .48));
+  transform: rotate(-.7deg);
+}
+
+.letter-paper {
+  position: relative;
+  min-height: 500px;
+  padding: 42px clamp(28px, 7vw, 68px) 36px;
+  border: 1px dashed rgba(28, 25, 23, .72);
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 7% 7%, rgba(221, 208, 188, .43), transparent 26%),
+    radial-gradient(ellipse at 94% 93%, rgba(221, 208, 188, .5), transparent 30%),
+    var(--paper);
+  box-shadow: inset 0 0 38px rgba(221, 208, 188, .72), inset 0 0 3px rgba(28, 25, 23, .3);
+}
+
+.letter-heading {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.moon-phases {
+  display: block;
+  width: 176px;
+  height: 24px;
+  margin: 0 auto 15px;
+}
+
+.letter-date {
+  margin: 0 0 9px;
+  color: #64748b;
+  font-family: var(--display);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.letter-date span {
+  padding: 0 5px;
+  color: var(--gold);
+}
+
+h1 {
+  margin: 0;
+  color: #232b3d;
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 5vw, 2.45rem);
+  font-weight: 600;
+  line-height: 1.28;
+}
+
+.letter-subtitle {
+  margin: 9px 0 0;
+  color: #5b5148;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.heading-flourish {
+  display: block;
+  margin-top: 7px;
+  color: #8398b4;
+  font-size: 1.15rem;
+}
+
+.letter-copy {
+  position: relative;
+  z-index: 1;
+  margin-top: 23px;
+  font-size: 19px;
+  line-height: 1.75;
+}
+
+.letter-copy p {
+  margin: 0 0 14px;
+}
+
+.letter-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.letter-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 88px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 22px;
+  padding-right: 4px;
+}
+
+.signoff p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.signature {
+  margin-top: 4px !important;
+  color: #475569;
+  font-family: var(--display);
+  font-size: .9rem !important;
+  font-style: italic;
+  transform: rotate(-2deg);
+}
+
+.signature-star {
+  padding-bottom: 5px;
+  color: #9a7a22;
+  font-size: 1.5rem;
+}
+
+.replay-button {
+  position: fixed;
+  z-index: 4;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid rgba(248, 250, 252, .27);
+  border-radius: 999px;
+  color: var(--silver);
+  background: rgba(17, 25, 54, .82);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .25);
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: .72rem;
+  transition: background .2s ease, border-color .2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.replay-button:hover {
+  border-color: rgba(254, 249, 195, .7);
+  background: rgba(35, 48, 77, .94);
+}
+
+.is-entering .moon-stage {
+  animation: moonRise 1.8s cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.is-entering .moon-dust {
+  animation: dustReveal 1.8s ease-out both;
+}
+
+.is-entering .letter-frame {
+  animation: letterReveal 1.3s ease-out 1.5s both;
+}
+
+@keyframes lunarSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes moonRise {
+  from { opacity: .25; transform: translateY(-42vh) scale(.72); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes dustReveal {
+  from { opacity: 0; transform: translate(-50%, -25px) scaleY(.35); }
+  to { opacity: .8; transform: translate(-50%, 0) scaleY(1); }
+}
+
+@keyframes letterReveal {
+  from { opacity: 0; transform: translateY(24px) rotate(-.7deg); }
+  to { opacity: 1; transform: translateY(0) rotate(-.7deg); }
+}
+
+@keyframes twinkle {
+  from { opacity: .18; transform: scale(.65); }
+  to { opacity: .9; transform: scale(1.25); }
+}
+
+@media (max-width: 600px) {
+  .back-link {
+    top: 14px;
+    left: 14px;
+    padding: 8px 11px;
+    font-size: .67rem;
+  }
+
+  .night-scene {
+    padding: 56px 12px 82px;
+  }
+
+  .moon-stage {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 22px;
+  }
+
+  .moon-dust {
+    width: 170px;
+    height: 210px;
+  }
+
+  .letter-frame {
+    width: 100%;
+    padding: 7px;
+  }
+
+  .letter-paper {
+    min-height: 0;
+    padding: 30px 22px 27px;
+  }
+
+  .letter-heading {
+    padding: 0 5px;
+  }
+
+  h1 {
+    font-size: clamp(1.55rem, 7vw, 2rem);
+  }
+
+  .letter-subtitle {
+    font-size: .96rem;
+  }
+
+  .letter-copy {
+    margin-top: 19px;
+    font-size: 18px;
+    line-height: 1.72;
+  }
+
+  .letter-copy p {
+    margin-bottom: 12px;
+  }
+
+  .letter-footer {
+    min-height: 76px;
+    margin-top: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+  .letter-frame {
+    opacity: 1;
+  }
+}
