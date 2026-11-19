@@ -3,9 +3,7 @@ const DEBUG_MODE = true;
 const OPENED_STORAGE_KEY = "nuestro-adviento-dias-abiertos";
 
 const mainCalendar = document.querySelector("#main-calendar");
-const bonusCalendar = document.querySelector("#bonus-calendar");
-const bonusToggle = document.querySelector("#bonus-toggle");
-const bonusContent = document.querySelector("#bonus-content");
+const christmasDay = document.querySelector("#christmas-day");
 const lockDialog = document.querySelector("#lock-dialog");
 const dialogMessage = document.querySelector("#dialog-message");
 
@@ -20,6 +18,7 @@ function getOpenedDays() {
 }
 
 function isDayUnlocked(dayNumber, now = new Date()) {
+  if (dayNumber === 25) return now.getMonth() === 11 && now.getDate() === 25;
   if (DEBUG_MODE) return true;
 
   const month = now.getMonth() + 1;
@@ -53,10 +52,11 @@ function createDayCard(dayNumber) {
   const unlocked = isDayUnlocked(dayNumber);
   const isOpened = getOpenedDays().has(dayNumber);
   const card = document.createElement("button");
-  card.className = `day-card${unlocked ? "" : " day-card--locked"}${isOpened ? " day-card--opened" : ""}`;
+  const isChristmas = dayNumber === 25;
+  card.className = `day-card${unlocked ? "" : " day-card--locked"}${isOpened ? " day-card--opened" : ""}${isChristmas ? " day-card--christmas" : ""}`;
   card.type = "button";
   card.setAttribute("aria-label", unlocked
-    ? `Abrir día ${dayNumber}${isOpened ? ", ya abierto" : ""}`
+    ? `${isChristmas ? "Abrir la sorpresa especial del día " : "Abrir día "}${dayNumber}${isOpened ? ", ya abierto" : ""}`
     : `Día ${dayNumber}, cerrado hasta su fecha`);
 
   const number = document.createElement("span");
@@ -65,7 +65,7 @@ function createDayCard(dayNumber) {
 
   const label = document.createElement("span");
   label.className = "day-card__label";
-  label.textContent = isOpened ? "Ya visitado" : unlocked ? "Una sorpresa" : "A su tiempo";
+  label.textContent = isChristmas ? "¡Feliz Navidad!" : isOpened ? "Ya visitado" : unlocked ? "Una sorpresa" : "A su tiempo";
 
   const status = document.createElement("span");
   status.className = "day-card__status";
@@ -95,12 +95,8 @@ for (let day = 1; day <= 24; day += 1) {
   mainCalendar.append(createDayCard(day));
 }
 
-for (let day = 25; day <= 37; day += 1) {
-  bonusCalendar.append(createDayCard(day));
+const now = new Date();
+if (now.getMonth() === 11 && now.getDate() === 25) {
+  christmasDay.hidden = false;
+  christmasDay.append(createDayCard(25));
 }
-
-bonusToggle.addEventListener("click", () => {
-  const expanded = bonusToggle.getAttribute("aria-expanded") === "true";
-  bonusToggle.setAttribute("aria-expanded", String(!expanded));
-  bonusContent.hidden = expanded;
-});

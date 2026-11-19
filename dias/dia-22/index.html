@@ -3,38 +3,114 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 22 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#0f172a">
+  <title>Día 22 · Camino a la Churrería</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
-<body data-day="22">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 22</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+<body>
+  <main class="arcade">
+    <a class="back-link" href="../../index.html">← Volver al calendario</a>
+    <header class="page-heading">
+      <p class="eyebrow">DÍA 22 · UNA AVENTURA INVERNAL</p>
+      <h1>Camino a la <span>Churrería</span></h1>
+      <p class="intro">Una carrera entre nieve, regalos y árboles para llegar al chocolate calentito.</p>
+    </header>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-22.jpg" alt="TODO: Añadir descripción de la foto del día 22" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 22">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-22.jpg</code></small>
+    <section class="game-shell" aria-label="Juego arcade Camino a la Churrería">
+      <div class="hud" aria-live="polite">
+        <div class="hud-stat"><span>Distancia</span><strong id="distance">0000 m</strong></div>
+        <div class="hud-stat"><span>Regalos</span><strong id="gifts">🎁 0</strong></div>
+        <div class="hud-stat score-stat"><span>Puntuación</span><strong id="score">0</strong></div>
+        <div class="progress-stat">
+          <div class="progress-label"><span>CHURRERÍA</span><span id="progress-value">0%</span></div>
+          <div class="progress-track" id="progress-track" role="progressbar" aria-label="Progreso hacia la churrería" aria-valuemin="0" aria-valuemax="1000" aria-valuenow="0">
+            <span id="progress-fill"></span>
+          </div>
+        </div>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+      <div class="canvas-frame">
+        <canvas id="game-canvas" width="960" height="420" aria-label="Corre y salta los árboles para llegar a la churrería."></canvas>
+        <section class="overlay selection-overlay" id="selection-overlay" aria-labelledby="selection-title">
+          <div class="overlay-card selection-card">
+            <p class="eyebrow">PREPARA TUS BOTAS</p>
+            <h2 id="selection-title">Misión: Chocolate<br>con Churros <span aria-hidden="true">☕</span></h2>
+            <p class="selection-copy">Elige quién se lanza a la aventura.</p>
+            <div class="character-options" role="group" aria-label="Elige tu personaje">
+              <button class="character-card is-selected" type="button" data-character="esther" aria-pressed="true">
+                <span class="character-art"><img id="esther-preview" alt=""></span>
+                <strong>Esther</strong>
+                <small>¡La nieve no la detiene!</small>
+              </button>
+              <button class="character-card" type="button" data-character="viktor" aria-pressed="false">
+                <span class="character-art"><img id="viktor-preview" alt=""></span>
+                <strong>Viktor</strong>
+                <small>¡Rápido como un rayo!</small>
+              </button>
+            </div>
+            <button class="primary-button" id="start-button" type="button">¡Correr a la Churrería! <kbd>Espacio</kbd></button>
+            <p class="controls-hint">Salta con espacio, ↑ o W · También puedes tocar la pantalla</p>
+          </div>
+        </section>
+      </div>
+
+      <footer class="game-footer">
+        <span>ESQUIVA LOS ÁRBOLES <i aria-hidden="true">✦</i> ¡ATRAPA REGALOS!</span>
+        <span id="game-message" aria-live="polite">Pulsa espacio o toca para saltar.</span>
+      </footer>
+    </section>
+    <p class="page-signoff">El premio: una taza calentita y compartirla contigo <span aria-hidden="true">♥</span></p>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <section class="overlay result-overlay" id="fail-overlay" aria-labelledby="fail-title" aria-hidden="true">
+    <div class="overlay-card result-card">
+      <p class="eyebrow">FIN DE LA CARRERA</p>
+      <img class="result-character pixel-art" id="fail-image" alt="">
+      <h2 id="fail-title">¡Vaya tropiezo!</h2>
+      <p class="result-copy">Un árbol se cruzó en el camino, pero siempre hay otra oportunidad.</p>
+      <div class="result-stats">
+        <span>Distancia <strong id="fail-distance">0 m</strong></span>
+        <span>Regalos <strong id="fail-gifts">🎁 0</strong></span>
+        <span>Total <strong id="fail-score">0</strong></span>
+      </div>
+      <button class="primary-button" id="retry-button" type="button">Intentar de nuevo <kbd>Espacio</kbd></button>
+    </div>
+  </section>
+
+  <section class="overlay result-overlay" id="win-overlay" aria-labelledby="win-title" aria-hidden="true">
+    <div class="overlay-card result-card win-card">
+      <p class="eyebrow">¡META ALCANZADA!</p>
+      <img class="together-art pixel-art" id="together-image" alt="Esther y Viktor celebran juntos">
+      <h2 id="win-title">¡Chocolate con churros!</h2>
+      <p class="result-copy">Lo conseguiste. Ahora toca entrar en calor y disfrutar juntos.</p>
+      <div class="victory-illustration" aria-label="Dos tazas de chocolate caliente con churros">
+        <svg viewBox="0 0 220 92" role="img" aria-hidden="true">
+          <g class="steam"><path d="M66 31c-12-11 9-13-2-26M104 31c-12-11 9-13-2-26M151 31c-12-11 9-13-2-26" /></g>
+          <g fill="#F59E0B"><rect x="14" y="12" width="7" height="27"/><rect x="25" y="7" width="7" height="32"/><rect x="36" y="13" width="7" height="26"/><rect x="47" y="9" width="7" height="30"/><rect x="178" y="11" width="7" height="28"/><rect x="189" y="7" width="7" height="32"/></g>
+          <g stroke="#7C2D12" stroke-width="2" fill="#FDE68A"><path d="M9 15h49M173 14h33" stroke-dasharray="3 4"/></g>
+          <g fill="#F8FAFC" stroke="#64748B" stroke-width="3">
+            <path d="M54 38h70v37a9 9 0 0 1-9 9H63a9 9 0 0 1-9-9z"/><path d="M124 46h13a11 11 0 0 1 0 22h-13" fill="none"/>
+            <path d="M112 38h70v37a9 9 0 0 1-9 9h-52a9 9 0 0 1-9-9z"/><path d="M182 46h13a11 11 0 0 1 0 22h-13" fill="none"/>
+          </g>
+          <path d="M58 48h62v27a5 5 0 0 1-5 5H63a5 5 0 0 1-5-5zM116 48h62v27a5 5 0 0 1-5 5h-52a5 5 0 0 1-5-5z" fill="#451A03"/>
+          <g fill="#FDE68A"><rect x="72" y="56" width="6" height="5"/><rect x="147" y="58" width="6" height="5"/></g>
+        </svg>
+      </div>
+      <div class="result-stats">
+        <span>Total <strong id="win-score">0</strong></span>
+        <span>Regalos <strong id="win-gifts">🎁 0</strong></span>
+        <span>Récord <strong id="win-record">0</strong></span>
+      </div>
+      <p class="record-message" id="record-message" aria-live="polite"></p>
+      <div class="dedication">
+        <p><!-- ESCRIBE AQUÍ TU MENSAJE DEL DÍA 22 -->Que el mejor plan sea siempre compartir una taza de chocolate caliente con churros, una tarde de invierno y un ratito juntos. ♥</p>
+      </div>
+      <button class="primary-button" id="play-again-button" type="button">¡Otra carrera!</button>
+    </div>
+  </section>
 </body>
 </html>

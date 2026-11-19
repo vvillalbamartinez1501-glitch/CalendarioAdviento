@@ -3,38 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 23 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#10232a">
+  <title>Día 23 · Juntos de nuevo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="script.js"></script>
 </head>
-<body data-day="23">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 23</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
-
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-23.jpg" alt="TODO: Añadir descripción de la foto del día 23" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 23">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-23.jpg</code></small>
+<body>
+  <main class="arcade">
+    <header class="topbar">
+      <a class="back-link" href="../../index.html">← Volver al calendario</a>
+      <div class="level-readout" aria-live="polite">
+        <span class="eyebrow">DÍA 23</span>
+        <strong id="level-title">Preparando partida…</strong>
       </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
+      <button class="reset-button" id="reset-button" type="button">Reiniciar nivel <kbd>R</kbd></button>
+    </header>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+    <section class="game-shell" aria-label="Juego de plataformas cooperativo">
+      <div class="game-heading">
+        <div>
+          <p class="eyebrow">DOS MANOS · UN SOLO OBJETIVO</p>
+          <h1>Juntos de nuevo</h1>
+        </div>
+        <p class="level-count" id="level-count">NIVEL -- / 05</p>
+      </div>
+      <div class="canvas-frame">
+        <canvas id="game-canvas" width="640" height="384" aria-label="Esther y Viktor recorren el nivel. Evita los pinchos y reúnete con el otro personaje."></canvas>
+        <div class="loading-screen" id="loading-screen" role="status">CARGANDO PIXELES…</div>
+      </div>
+      <div class="game-footer">
+        <div class="hint" id="level-hint" aria-live="polite">Un consejo aparecerá aquí.</div>
+        <div class="controls" aria-label="Controles">
+          <span class="control-chip esther-chip"><i aria-hidden="true"></i> ESTHER <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span>
+          <span class="control-chip viktor-chip"><i aria-hidden="true"></i> VIKTOR <kbd>I</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></span>
+        </div>
+      </div>
+    </section>
+    <p class="keyboard-note">Salta con W / I · Muévete con A-D / J-L · Reinicia con R</p>
   </main>
 
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
+  <section class="overlay" id="fail-overlay" aria-labelledby="fail-title" aria-hidden="true">
+    <div class="overlay-card fail-card">
+      <p class="eyebrow">FIN DE LA PARTIDA</p>
+      <h2 id="fail-title">¡OH NO! ESTHER HA CAÍDO</h2>
+      <img class="fail-art pixel-art" id="fail-image" alt="Esther y Viktor tras la caída">
+      <p class="overlay-copy">No pasa nada. Un nuevo intento y volverán a encontrarse.</p>
+      <button class="primary-button" id="retry-button" type="button">Reintentar nivel <kbd>R / Espacio</kbd></button>
+    </div>
+  </section>
+
+  <section class="overlay" id="complete-overlay" aria-labelledby="complete-title" aria-hidden="true">
+    <div class="overlay-card complete-card">
+      <p class="eyebrow" id="complete-eyebrow">¡LO LOGRARON!</p>
+      <h2 id="complete-title">¡JUNTOS DE NUEVO!<br><span>— NIVEL COMPLETADO —</span></h2>
+      <img class="together-art pixel-art" id="together-image" alt="Esther y Viktor juntos">
+      <p class="overlay-copy" id="complete-copy">Un paso más cerca.</p>
+      <button class="primary-button" id="next-button" type="button">Siguiente nivel <kbd>Enter</kbd></button>
+      <div class="dedication" id="dedication" hidden>
+        <p><!-- ESCRIBE AQUÍ TU MENSAJE DEDICATORIO DEL DÍA 23 -->Cada camino fue mejor porque lo recorrimos juntos. Gracias por ser mi mejor equipo. ♥</p>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
