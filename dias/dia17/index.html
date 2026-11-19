@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0F291E">
+  <meta name="description" content="Encuentra las palabras que guardan nuestra historia en esta sopa de letras navideña.">
+  <title>Día 17 — Sopa de letras de nuestro amor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="snowfall" aria-hidden="true">
+    <span>✦</span><span>❄</span><span>·</span><span>✧</span><span>❄</span><span>·</span>
+    <span>✦</span><span>❄</span><span>✧</span><span>·</span><span>❄</span><span>✦</span>
+    <span>·</span><span>✧</span><span>❄</span><span>·</span><span>✦</span><span>❄</span>
+  </div>
+
+  <header class="page-header">
+    <a class="back-link" href="../../index.html">← Volver al calendario</a>
+    <p class="eyebrow">Una sorpresa hecha con amor</p>
+    <h1>Día 17 <span aria-hidden="true">♥</span></h1>
+    <p class="page-subtitle">Unas cuantas palabras, un montón de recuerdos nuestros.</p>
+  </header>
+
+  <main class="game-card">
+    <div class="card-heading">
+      <p class="card-kicker">Pasatiempo para dos</p>
+      <h2>Palabras que nos unen</h2>
+      <p>Encuentra cada palabra escondida. Puedes arrastrar en línea recta, en cualquier dirección.</p>
+    </div>
+
+    <div class="game-layout">
+      <section class="board-section" aria-labelledby="board-heading">
+        <div class="section-heading">
+          <div>
+            <h3 id="board-heading">Nuestra sopa de letras</h3>
+            <p class="board-hint">Toca o arrastra desde la primera hasta la última letra.</p>
+          </div>
+          <p class="counter" id="counter" role="status" aria-live="polite">0 de 8</p>
+        </div>
+        <div class="board-wrap">
+          <div class="letter-grid" id="letter-grid" aria-label="Sopa de letras. Usa las flechas para moverte y espacio para seleccionar."></div>
+        </div>
+        <div class="board-footer">
+          <p id="game-status" class="game-status" role="status" aria-live="polite">¡Tú puedes! Todas las palabras están relacionadas con nosotros.</p>
+          <button class="hint-button" id="hint-button" type="button">Dame una pista <span aria-hidden="true">✧</span></button>
+        </div>
+      </section>
+
+      <aside class="word-panel" aria-labelledby="words-heading">
+        <div class="word-panel-heading">
+          <span class="ornament" aria-hidden="true">✳</span>
+          <div>
+            <h3 id="words-heading">Palabras por encontrar</h3>
+            <p>Un pequeño tesoro en cada una</p>
+          </div>
+        </div>
+        <ul class="word-list" id="word-list"></ul>
+        <p class="word-panel-note">Las palabras pueden aparecer al revés y en diagonal.</p>
+      </aside>
+    </div>
+
+    <footer class="card-footer"><span aria-hidden="true">❦</span> Hecho pensando en ti <span aria-hidden="true">❦</span></footer>
+  </main>
+
+  <dialog class="victory-dialog" id="victory-dialog" aria-labelledby="victory-title">
+    <div class="victory-content">
+      <span class="victory-heart" aria-hidden="true">♥</span>
+      <p class="card-kicker">Nuestro pequeño gran amor</p>
+      <h2 id="victory-title" tabindex="-1">¡Las encontraste todas!</h2>
+      <p class="victory-message">Cada palabra es un pedacito de nuestra historia. Gracias por llenar mis días de amor, risas y momentos que quiero guardar para siempre. Te quiero muchísimo. ¡Feliz Día 17!</p>
+      <button class="restart-button" id="restart-button" type="button">Jugar otra vez</button>
+    </div>
+  </dialog>
+</body>
+</html>

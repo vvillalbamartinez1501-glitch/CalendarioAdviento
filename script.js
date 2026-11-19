@@ -83,7 +83,9 @@ function createDayCard(dayNumber) {
     const dayPage = dayNumber === 20 ? "dia20.html" : "index.html";
     const dayPath = dayNumber === 16
       ? "dia16/index.html"
-      : `dias/dia-${String(dayNumber).padStart(2, "0")}/${dayPage}`;
+      : dayNumber === 17
+        ? "dias/dia17/index.html"
+        : `dias/dia-${String(dayNumber).padStart(2, "0")}/${dayPage}`;
     window.location.href = dayPath;
   });
   return card;
