@@ -37,6 +37,7 @@ const paintedCount = document.querySelector("#painted-count");
 const totalCount = document.querySelector("#total-count");
 const zoomReadout = document.querySelector("#zoom-readout");
 const panToggle = document.querySelector("#pan-toggle");
+const hintButton = document.querySelector("#hint-button");
 const photo = document.querySelector("#original-photo");
 const viewToggle = document.querySelector("#view-toggle");
 const downloadLink = document.querySelector("#download-photo");
@@ -45,6 +46,7 @@ const revealNote = document.querySelector("#reveal-note");
 const colorButtons = new Map();
 const regionsByNumber = new Map();
 const labelsByPath = new Map();
+const lastHintByNumber = new Map();
 let svgRoot;
 let selectedColor = palette[0];
 let painted = 0;
@@ -54,6 +56,7 @@ let zoom = 1;
 let panX = 0;
 let panY = 0;
 let pointerStart;
+let hintTimeout;
 
 function buildPalette() {
   for (const color of palette) {
@@ -102,6 +105,61 @@ function selectColor(color) {
 
   selectedColorLabel.textContent = `Color ${color.number} · ${color.name}`;
   paletteTip.textContent = `Las zonas ${color.number} se iluminan suavemente · ${color.hex}`;
+  updateHintButton();
+}
+
+function updateHintButton() {
+  const regions = regionsByNumber.get(selectedColor.number) || [];
+  const hasUnpaintedRegion = regions.some((region) => !region.classList.contains("is-painted"));
+  hintButton.disabled = !hasUnpaintedRegion;
+  hintButton.setAttribute(
+    "aria-label",
+    hasUnpaintedRegion
+      ? `Pista: enfocar una zona sin pintar del color ${selectedColor.number}`
+      : `No quedan zonas sin pintar del color ${selectedColor.number}`
+  );
+  hintButton.title = hasUnpaintedRegion
+    ? `Buscar una zona ${selectedColor.number} sin pintar`
+    : "Este color ya está completo";
+}
+
+function showHint() {
+  const regions = regionsByNumber.get(selectedColor.number) || [];
+  const unpaintedRegions = regions.filter((region) => !region.classList.contains("is-painted"));
+  if (unpaintedRegions.length === 0) {
+    updateHintButton();
+    return;
+  }
+
+  const lastHint = lastHintByNumber.get(selectedColor.number);
+  const previousIndex = unpaintedRegions.indexOf(lastHint);
+  const region = unpaintedRegions[(previousIndex + 1) % unpaintedRegions.length];
+  lastHintByNumber.set(selectedColor.number, region);
+
+  const bounds = viewport.getBoundingClientRect();
+  const regionBounds = region.getBBox();
+  const center = region.ownerSVGElement.createSVGPoint();
+  center.x = regionBounds.x + regionBounds.width / 2;
+  center.y = regionBounds.y + regionBounds.height / 2;
+  const point = center.matrixTransform(region.getScreenCTM());
+  const zoomRatio = Math.max(zoom, 2.2) / zoom;
+
+  zoom = Math.max(zoom, 2.2);
+  panX = -(point.x - bounds.left - bounds.width / 2 - panX) * zoomRatio;
+  panY = -(point.y - bounds.top - bounds.height / 2 - panY) * zoomRatio;
+  updateTransform();
+
+  if (hintTimeout) {
+    window.clearTimeout(hintTimeout);
+  }
+  for (const item of regions) {
+    item.classList.remove("is-hinted");
+  }
+  region.classList.add("is-hinted");
+  hintTimeout = window.setTimeout(() => region.classList.remove("is-hinted"), 1600);
+
+  progressLabel.textContent = `Pista: zona ${selectedColor.number} enfocada.`;
+  viewport.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function updateProgress() {
@@ -194,6 +252,7 @@ function paintRegion(region) {
     }
   }
 
+  updateHintButton();
   updateProgress();
 }
 
@@ -342,6 +401,8 @@ document.querySelector("#zoom-reset").addEventListener("click", () => {
   panY = 0;
   updateTransform();
 });
+
+hintButton.addEventListener("click", showHint);
 
 panToggle.addEventListener("click", () => {
   panEnabled = !panEnabled;

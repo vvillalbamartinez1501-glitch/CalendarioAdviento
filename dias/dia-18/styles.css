@@ -271,6 +271,20 @@ h2 {
   stroke-width: 1.15px;
 }
 
+.paint-region.is-hinted {
+  stroke: #b68b53;
+  stroke-width: 2px;
+  filter: drop-shadow(0 0 2px rgb(182 139 83 / 85%));
+  animation: hint-pulse 650ms ease-in-out 2 alternate;
+}
+
+@keyframes hint-pulse {
+  to {
+    stroke-width: 3px;
+    filter: drop-shadow(0 0 5px rgb(182 139 83 / 95%));
+  }
+}
+
 .paint-region.is-painted {
   stroke: #37342f;
   stroke-width: 0.45px;
@@ -441,11 +455,35 @@ h2 {
   padding: 17px 0 12px;
 }
 
+.palette-actions {
+  display: grid;
+  justify-items: end;
+  gap: 7px;
+}
+
 .selected-color-label {
-  max-width: 52%;
+  max-width: 190px;
   color: var(--muted);
   font-size: 0.62rem;
   text-align: right;
+}
+
+.hint-button {
+  min-height: 30px;
+  padding: 0 10px;
+  border-color: #b68b53;
+  color: #73583c;
+  font-size: 0.65rem;
+}
+
+.hint-button:not(:disabled):hover {
+  border-color: #8f6c52;
+  background: #f6eedf;
+}
+
+.hint-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .color-palette {
@@ -720,5 +758,7 @@ h2 {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
