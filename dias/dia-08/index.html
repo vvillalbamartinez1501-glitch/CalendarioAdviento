@@ -3,77 +3,150 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#3e2723">
-  <meta name="description" content="Crea un rincón de recuerdos en este tablero de corcho navideño.">
-  <title>Día 8 · Nuestro tablero de recuerdos</title>
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Día 8: un feed de vídeos y un mensaje especial.">
+  <title>Día 8 · Un mensaje especial</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
-  <main class="board-frame" id="capture-area" aria-label="Tablero de corcho interactivo">
-    <div class="frame-lights" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span><span></span>
-      <span></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <section class="cork-board" id="cork-board" aria-label="Superficie del tablero">
-      <div class="board-heading" aria-hidden="true">
-        <span class="board-heading__eyebrow">DICIEMBRE · UN LUGAR PARA NOSOTROS</span>
-        <span class="board-heading__title">Pequeños recuerdos, grandes momentos</span>
-      </div>
-      <div class="board-hint" id="board-hint" aria-live="polite">Crea, escribe y coloca tus recuerdos por todo el corcho</div>
+  <main class="phone" aria-label="TikTok, Día 8">
+    <section class="feed" id="feed" aria-label="Feed de vídeos">
+      <!-- Si assets está en la raíz del proyecto, usa ../../assets/video/. Para usar una imagen, actualiza el src del <img> de respaldo y el poster del vídeo. -->
+      <article class="slide" data-slide="0" aria-label="Vídeo 1 de 4">
+        <video class="slide__video" src="../../assets/video/tiktok01.mp4" poster="../../assets/images/nosotros01.jpg" autoplay loop muted playsinline preload="metadata"></video>
+        <img class="slide__image" src="../../assets/images/nosotros01.jpg" alt="Un recuerdo juntos" hidden>
+      </article>
+      <article class="slide" data-slide="1" aria-label="Vídeo 2 de 4">
+        <video class="slide__video" src="../../assets/video/tiktok02.mp4" poster="../../assets/images/nosotros02.jpg" autoplay loop muted playsinline preload="metadata"></video>
+        <img class="slide__image" src="../../assets/images/nosotros02.jpg" alt="Una foto especial" hidden>
+      </article>
+      <article class="slide" data-slide="2" aria-label="Vídeo 3 de 4">
+        <video class="slide__video" src="../../assets/video/tiktok03.mp4" poster="../../assets/images/nosotros03.jpg" autoplay loop muted playsinline preload="metadata"></video>
+        <img class="slide__image" src="../../assets/images/nosotros03.jpg" alt="Otro momento para recordar" hidden>
+      </article>
+      <article class="slide" data-slide="3" aria-label="Vídeo 4 de 4">
+        <video class="slide__video" src="../../assets/video/tiktok04.mp4" poster="../../assets/images/fondo-navideño-tiktok.jpg" autoplay loop muted playsinline preload="metadata"></video>
+        <img class="slide__image" src="../../assets/images/fondo-navideño-tiktok.jpg" alt="Un fondo navideño para compartir" hidden>
+      </article>
     </section>
+
+    <header class="top-bar">
+      <a class="calendar-link" href="../../index.html">← Calendario</a>
+      <nav class="feed-tabs" aria-label="Feed">
+        <button type="button">Siguiendo</button>
+        <button class="is-active" type="button" aria-current="page">Para ti</button>
+      </nav>
+      <span class="top-search" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+      </span>
+    </header>
+
+    <button class="new-message" id="new-message" type="button">
+      <span class="new-message__dot" aria-hidden="true"></span> Nuevo mensaje
+    </button>
+
+    <aside class="video-actions" aria-label="Acciones del vídeo">
+      <button class="action action--avatar" type="button" aria-label="Seguir a @nosotros">
+        <img src="../../assets/images/nosotros01.jpg" alt="">
+        <span class="follow-plus" aria-hidden="true">+</span>
+      </button>
+      <button class="action like-button" type="button" aria-label="Me gusta" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.8l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.4 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"></path></svg>
+        <span>24.8K</span>
+      </button>
+      <button class="action" type="button" aria-label="Ver comentarios">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.5a8.4 8.4 0 0 1-.9 3.8 8.6 8.6 0 0 1-7.7 4.7 8.4 8.4 0 0 1-3.8-.9L3 20l.9-5.1a8.4 8.4 0 0 1-.9-3.8 8.6 8.6 0 0 1 4.7-7.7 8.4 8.4 0 0 1 3.8-.9h.5a8.6 8.6 0 0 1 8 8v.5Z"></path></svg>
+        <span>328</span>
+      </button>
+      <button class="action save-button" type="button" aria-label="Guardar vídeo" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8h12v17l-6-4-6 4v-17Z"></path></svg>
+        <span>Guardar</span>
+      </button>
+      <button class="action share-button" type="button" aria-label="Compartir vídeo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5 20 11l-6 6"></path><path d="M20 11H9a5 5 0 0 0-5 5v3"></path></svg>
+        <span>Compartir</span>
+      </button>
+      <div class="record-disc" aria-label="Sonido original de @nosotros"><img src="../../assets/images/nosotros02.jpg" alt=""></div>
+    </aside>
+
+    <section class="video-caption" aria-label="Información del vídeo">
+      <h1>@nosotros</h1>
+      <!-- EDITAR DESCRIPCIÓN DEL TIKTOK -->
+      <p>Un recuerdo bonito para volver a ver una y otra vez ✨</p>
+      <div class="sound-line"><span aria-hidden="true">♫</span> sonido original · nosotros</div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button class="bottom-nav__item is-current" type="button" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z"></path></svg>
+        <span>Inicio</span>
+      </button>
+      <button class="bottom-nav__item" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20v-1a6 6 0 0 1 12 0v1H3Zm14-9a3 3 0 1 0-2-5.2M18 14a4 4 0 0 1 3 4v2h-4"></path></svg>
+        <span>Amigos</span>
+      </button>
+      <button class="create-button" type="button" aria-label="Crear vídeo"><span>+</span></button>
+      <button class="bottom-nav__item inbox-button" id="inbox-button" type="button" aria-label="Bandeja, 1 mensaje nuevo">
+        <span class="inbox-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2 1-5a7.5 7.5 0 1 1 16-4.5Z"></path><path d="M8 11h8"></path></svg>
+          <span class="notification-badge" id="notification-badge">1</span>
+        </span>
+        <span>Bandeja</span>
+      </button>
+      <button class="bottom-nav__item" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+        <span>Perfil</span>
+      </button>
+    </nav>
+
+    <section class="chat-screen" id="chat-screen" aria-label="Mensajes directos" aria-hidden="true">
+      <header class="chat-header">
+        <button class="chat-back" id="chat-back" type="button" aria-label="Volver al feed">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+        </button>
+        <!-- HUECO AVATAR CONTACTO -->
+        <img class="contact-avatar" src="../../assets/images/nosotros02.jpg" alt="">
+        <div class="contact-info">
+          <!-- NOMBRE DEL CONTACTO -->
+          <strong>Mi persona favorita</strong>
+          <span>Activo ahora</span>
+        </div>
+        <button class="chat-more" type="button" aria-label="Más opciones">•••</button>
+      </header>
+
+      <div class="conversation" id="conversation" aria-live="polite">
+        <div class="message-group">
+          <span class="message-time">Hoy 10:08</span>
+          <div class="shared-image-card">
+            <!-- HUECO IMAGEN PARA COMPARTIR Y DESCARGAR -->
+            <img class="shared-image" id="shared-image" src="../../assets/video/fondo-tiktok.jpg" data-fallback="../../assets/images/fondo-navideño-tiktok.jpg" alt="Fondo navideño compartido">
+            <a class="download-button" id="download-button" href="../../assets/images/fondo-navideño-tiktok.jpg" download="fondo-tiktok.jpg">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 17v3h16v-3"></path></svg>
+              Descargar fondo
+            </a>
+          </div>
+          <div class="message-bubble">
+            <!-- Puedes añadir más texto a este mensaje si quieres. -->
+            Cambiémonos el fondo
+          </div>
+        </div>
+      </div>
+
+      <form class="chat-composer" id="chat-form">
+        <label class="sr-only" for="message-input">Enviar un mensaje</label>
+        <input id="message-input" name="message" type="text" placeholder="Enviar un mensaje..." autocomplete="off">
+        <button type="submit" aria-label="Enviar mensaje">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"></path></svg>
+        </button>
+      </form>
+      <p class="download-status sr-only" id="download-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <div class="heart-burst" id="heart-burst" aria-hidden="true">♥</div>
   </main>
-
-  <a class="back-link" href="../../index.html">← Volver al calendario</a>
-
-  <section class="toolbar" aria-label="Herramientas del tablero">
-    <div class="tool-group tool-group--create">
-      <label class="sr-only" for="note-color">Color de Post-it</label>
-      <select id="note-color" aria-label="Color de Post-it">
-        <option value="#FEF08A">Amarillo</option>
-        <option value="#FBCFE8">Rosa</option>
-        <option value="#BBF7D0">Menta</option>
-        <option value="#BAE6FD">Azul</option>
-        <option value="#FED7AA">Melocotón</option>
-      </select>
-      <button class="tool-button" id="add-note" type="button">＋ Nuevo Post-it</button>
-    </div>
-
-    <span class="toolbar-divider" aria-hidden="true"></span>
-
-    <div class="tool-group tool-group--pin">
-      <label class="sr-only" for="pin-color">Color de chincheta</label>
-      <select id="pin-color" aria-label="Color de chincheta">
-        <option value="#DC2626">Roja</option>
-        <option value="#16A34A">Verde</option>
-        <option value="#EAB308">Dorada</option>
-        <option value="#2563EB">Azul</option>
-        <option value="#F8FAFC">Blanca</option>
-      </select>
-      <button class="tool-button tool-button--secondary" id="add-pin" type="button">＋ Chincheta</button>
-    </div>
-
-    <span class="toolbar-divider" aria-hidden="true"></span>
-
-    <div class="tool-group tool-group--draw">
-      <button class="tool-button tool-button--mode" id="mode-toggle" type="button" aria-pressed="false">✎ Mover / Escribir</button>
-      <label class="sr-only" for="pen-color">Color de rotulador</label>
-      <select id="pen-color" aria-label="Color de rotulador">
-        <option value="#1C1917">Negro</option>
-        <option value="#DC2626">Rojo</option>
-        <option value="#2563EB">Azul</option>
-        <option value="#15803D">Verde</option>
-      </select>
-      <label class="range-control"><span class="sr-only">Grosor del trazo</span><input id="pen-size" type="range" min="2" max="14" value="5" aria-label="Grosor del trazo"></label>
-      <button class="tool-button tool-button--icon" id="clear-drawing" type="button" aria-label="Borrar el dibujo de la nota seleccionada" title="Borrar dibujo">⌫</button>
-    </div>
-
-    <button class="tool-button tool-button--save" id="save-board" type="button">Guardar foto del corcho <span aria-hidden="true">↗</span></button>
-    <span class="toolbar-status" id="toolbar-status" role="status" aria-live="polite"></span>
-  </section>
 </body>
 </html>

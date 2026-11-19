@@ -3,38 +3,93 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <title>Día 18 · Nuestro Adviento</title>
+  <meta name="theme-color" content="#f4f4ee">
+  <meta name="description" content="Pinta este recuerdo por números y descubre la fotografía original.">
+  <title>Día 18 · Un recuerdo para pintar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
 <body data-day="18">
-  <main class="memory-page">
-    <p class="memory-kicker">Un día para nosotros <span aria-hidden="true">✦</span></p>
-    <h1>Día 18</h1>
-    <p class="memory-subtitle">Un pequeño recuerdo para guardar cerquita del corazón</p>
+  <main class="paint-page">
+    <a class="calendar-link" href="../../index.html">← Volver al calendario</a>
 
-    <figure class="memory-photo">
-      <img id="memory-image" src="../../assets/images/dia-18.jpg" alt="TODO: Añadir descripción de la foto del día 18" hidden>
-      <div class="photo-placeholder" id="photo-placeholder" role="img" aria-label="Espacio reservado para la foto del día 18">
-        <span aria-hidden="true">📷</span>
-        <p>TODO: Cambiar foto aquí</p>
-        <small>Añade <code>assets/images/dia-18.jpg</code></small>
-      </div>
-      <figcaption>TODO: Escribe un pie de foto bonito</figcaption>
-    </figure>
+    <header class="page-header">
+      <p class="eyebrow">Nuestro álbum de recuerdos <span aria-hidden="true">✦</span></p>
+      <h1>Día 18 <span>·</span> Pintar por números</h1>
+      <p class="intro">Un recuerdo espera entre los colores. Pinta cada zona y deja que vuelva a aparecer.</p>
+    </header>
 
-    <article class="memory-note">
-      <span class="note-flower" aria-hidden="true">❀</span>
-      <h2>Un mensaje para ti</h2>
-      <p>TODO: Escribir texto aquí. Añade tu recuerdo, una anécdota o unas palabras que quieras dedicar.</p>
-    </article>
-    <p class="memory-signoff">Hecho con amor <span aria-hidden="true">♥</span></p>
+    <section class="game-layout" aria-label="Actividad de pintar por números">
+      <section class="canvas-card" aria-label="Lienzo interactivo">
+        <div class="canvas-heading">
+          <div>
+            <p class="card-eyebrow">El recuerdo</p>
+            <h2>Una imagen por descubrir</h2>
+          </div>
+          <span class="progress-label" id="progress-label" role="status">Cargando el lienzo…</span>
+        </div>
+
+        <div class="canvas-viewport" id="canvas-viewport" aria-label="Lienzo. Elige un número y pinta las zonas correspondientes.">
+          <p class="loading-message" id="loading-message">Preparando el lienzo…</p>
+          <div class="artwork-stack" id="artwork-stack" hidden>
+            <div class="svg-layer" id="svg-container"></div>
+            <img class="photo-layer" id="original-photo" src="../../assets/images/nosotros03.jpg" alt="La fotografía original del recuerdo, revelada al completar el dibujo" aria-hidden="true">
+          </div>
+          <div class="load-error" id="load-error" hidden role="alert">
+            <p>No se pudo cargar el dibujo.</p>
+            <small>Abre esta página desde un servidor web local para que el navegador permita cargar el SVG.</small>
+            <button type="button" id="retry-load">Volver a intentar</button>
+          </div>
+        </div>
+
+        <div class="canvas-toolbar" aria-label="Controles del lienzo">
+          <div class="zoom-controls" aria-label="Zoom">
+            <button class="tool-button zoom-button" id="zoom-out" type="button" aria-label="Alejar">−</button>
+            <span class="zoom-readout" id="zoom-readout" aria-live="polite">100%</span>
+            <button class="tool-button zoom-button" id="zoom-in" type="button" aria-label="Acercar">+</button>
+            <button class="tool-button reset-button" id="zoom-reset" type="button">Restablecer</button>
+          </div>
+          <button class="tool-button pan-button" id="pan-toggle" type="button" aria-pressed="false">↔ <span>Mover lienzo</span></button>
+        </div>
+        <p class="canvas-tip" id="canvas-tip">Elige un color y toca las zonas con el mismo número. Activa «Mover lienzo» para desplazarte.</p>
+      </section>
+
+      <aside class="palette-card" aria-label="Paleta y progreso">
+        <div class="progress-block">
+          <div class="progress-copy">
+            <p class="card-eyebrow">Tu progreso</p>
+            <p class="progress-count"><span id="painted-count">0</span><span class="progress-separator"> / </span><span id="total-count">127</span> <span>zonas</span></p>
+          </div>
+          <span class="progress-spark" aria-hidden="true">✳</span>
+          <progress id="progress-bar" value="0" max="127" aria-label="Progreso del dibujo">0%</progress>
+        </div>
+
+        <div class="palette-heading">
+          <div>
+            <p class="card-eyebrow">La paleta</p>
+            <h2>Elige un número</h2>
+          </div>
+          <span class="selected-color-label" id="selected-color-label">Color 1</span>
+        </div>
+        <div class="color-palette" id="color-palette" aria-label="Colores disponibles"></div>
+        <p class="palette-tip" id="palette-tip" aria-live="polite">Las zonas de ese color se iluminarán suavemente.</p>
+
+        <div class="reveal-controls">
+          <button class="reveal-toggle" id="view-toggle" type="button" aria-pressed="true" disabled>
+            <span aria-hidden="true">◉</span> Ver el dibujo pintado
+          </button>
+          <a class="download-button" id="download-photo" download="nosotros03.jpg" aria-disabled="true" tabindex="-1">
+            <span aria-hidden="true">↓</span> Descargar la fotografía
+          </a>
+          <p class="reveal-note" id="reveal-note">La fotografía original se revelará al pintar todas las zonas.</p>
+        </div>
+      </aside>
+    </section>
+
+    <p class="closing-note">Pintado con cariño, para guardar siempre <span aria-hidden="true">♥</span></p>
   </main>
-
-  <a class="back-link" href="../../index.html">← Volver al Calendario</a>
 </body>
 </html>
