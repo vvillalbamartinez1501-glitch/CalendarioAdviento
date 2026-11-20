@@ -181,7 +181,7 @@ button { color: inherit; }
 .asteroid-stream { fill: none; stroke: rgba(148,163,184,.19); stroke-width: 1; stroke-dasharray: 1 11; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .asteroid-points { fill: rgba(203,213,225,.55); }
 
-.sun {
+.sun-decoration {
   position: absolute;
   z-index: 1;
   top: 50%;
@@ -198,7 +198,53 @@ button { color: inherit; }
   pointer-events: none;
 }
 
-.sun span { width: 64%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 22% 50%, #fffde7, #fbbf24 40%, #f97316 73%, #b45309); box-shadow: 0 0 30px #f59e0b, 0 0 90px rgba(249,115,22,.58); }
+.sun-decoration span { width: 64%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 22% 50%, #fffde7, #fbbf24 40%, #f97316 73%, #b45309); box-shadow: 0 0 30px #f59e0b, 0 0 90px rgba(249,115,22,.58); }
+.solar-map--day25 .sun-decoration { display: none; }
+.solar-map--day25 .solar-orbit { opacity: .46; }
+.day25-sun[hidden] { display: none; }
+.day25-sun {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: -4%;
+  display: flex;
+  width: clamp(480px, 60vw, 760px);
+  aspect-ratio: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  color: #fff9db;
+  background: transparent;
+  text-align: center;
+  text-shadow: 0 2px 8px #000000, 0 0 22px rgba(0,0,0,.7);
+  transform: translateY(-50%);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.day25-sun:focus-visible { outline: 2px solid #fff3b0; outline-offset: -12px; border-radius: 50%; }
+.day25-sun__disc {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 54% 50%, #fffde7 0 8%, #fff1a8 13%, #fbbf24 25%, #f97316 45%, rgba(234,88,12,.78) 58%, rgba(249,115,22,.38) 67%, rgba(249,115,22,.08) 73%, transparent 76%);
+  filter: drop-shadow(0 0 38px rgba(249,115,22,.5));
+  pointer-events: none;
+}
+
+.day25-sun--new .day25-sun__disc { animation: pulseStar 3.2s ease-in-out infinite; }
+.day25-sun--opened .day25-sun__disc { filter: drop-shadow(0 0 42px rgba(250,204,21,.78)) brightness(1.08); }
+.day25-sun .day25-sun__marker { position: absolute; top: 15%; left: 61%; margin: 0; }
+.day25-sun__marker .day-number { width: 34px; height: 34px; flex-basis: 34px; border-color: rgba(255,244,183,.9); color: #fff6cf; background: rgba(83,34,6,.45); font-size: .9rem; }
+.day25-sun--opened .day25-sun__marker .day-number { border-color: var(--gold); color: #fff1a8; box-shadow: 0 0 15px rgba(250,204,21,.72); }
+.day25-sun__label { position: absolute; top: 78%; left: 50%; color: #fff5c3; font-family: var(--title); font-size: clamp(1.5rem, 3vw, 2.4rem); font-weight: 700; transform: translateX(-50%); }
+.day25-sun .day-state { position: absolute; top: calc(78% + 2.8rem); left: 50%; min-width: max-content; color: #fff1a8; font-size: .7rem; transform: translateX(-50%); }
+.day25-sun--opened .day-state { color: #fff7cc; }
+.day25-sun:hover { filter: brightness(1.08); }
 .map-nodes { position: absolute; inset: 0; }
 .celestial-node {
   position: absolute;
@@ -226,7 +272,6 @@ button { color: inherit; }
 .day-open-star { color: var(--gold); font-size: .83rem; text-shadow: 0 0 10px rgba(250,204,21,.72); }
 .planet-art { position: relative; display: flex; width: 110px; height: 90px; align-items: center; justify-content: center; animation: planetaryFloat 5s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
 .celestial-node--planet[data-day="1"] .day-name,
-.celestial-node--planet[data-day="1"] .day-subtitle,
 .celestial-node--planet[data-day="1"] .day-state { transform: translateX(-48px); }
 .planet {
   position: relative;
@@ -261,7 +306,6 @@ button { color: inherit; }
 .planet--pluto::before { top: 19%; left: 43%; width: 37%; height: 45%; border-radius: 55% 40% 54% 46%; background: rgba(194,65,12,.76); transform: rotate(-23deg); }
 
 .day-name { max-width: 170px; margin-top: 4px; color: #f3f5ff; font-size: .76rem; font-weight: 700; line-height: 1.3; }
-.day-subtitle { max-width: 180px; margin-top: 3px; color: #94a3bd; font-size: .58rem; line-height: 1.35; }
 .day-state { min-height: 14px; margin-top: 4px; color: #67e8f9; font-size: .55rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; text-shadow: 0 0 9px currentColor; }
 .celestial-node--constellation { min-width: 120px; transform: translate(-50%, -40%); }
 .constellation-art { display: block; width: 120px; height: 94px; overflow: visible; animation: constellationPulse 4s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
