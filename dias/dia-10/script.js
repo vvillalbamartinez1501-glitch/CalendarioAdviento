@@ -9,14 +9,14 @@ const lightboxImage = document.querySelector("#lightboxImage");
 const lightboxClose = lightbox.querySelector(".lightbox-close");
 
 const stickers = [
-  { file: "sticker01.png", fallback: "🐻‍❄️", alt: "Sticker personalizado 1" },
-  { file: "sticker02.png", fallback: "😍", alt: "Sticker personalizado 2" },
-  { file: "sticker03.png", fallback: "✨", alt: "Sticker personalizado 3" },
-  { file: "sticker04.png", fallback: "💌", alt: "Sticker personalizado 4" },
-  { file: "sticker05.png", fallback: "🥰", alt: "Sticker personalizado 5" },
-  { file: "sticker06.png", fallback: "😂", alt: "Sticker personalizado 6" },
-  { file: "sticker07.png", fallback: "🌟", alt: "Sticker personalizado 7" },
-  { file: "sticker08.png", fallback: "💚", alt: "Sticker personalizado 8" }
+  { file: "../../assets/images/sticker%20(1).png", fallback: "🐻‍❄️", alt: "Sticker personalizado 1" },
+  { file: "../../assets/images/sticker%20(2).png", fallback: "😍", alt: "Sticker personalizado 2" },
+  { file: "../../assets/images/sticker%20(3).png", fallback: "✨", alt: "Sticker personalizado 3" },
+  { file: "../../assets/images/sticker%20(4).png", fallback: "💌", alt: "Sticker personalizado 4" },
+  { file: "../../assets/images/sticker%20(5).png", fallback: "🥰", alt: "Sticker personalizado 5" },
+  { file: "../../assets/images/sticker%20(6).png", fallback: "😂", alt: "Sticker personalizado 6" },
+  { file: "../../assets/images/sticker%20(7).png", fallback: "🌟", alt: "Sticker personalizado 7" },
+  { file: "../../assets/images/sticker%20(8).png", fallback: "💚", alt: "Sticker personalizado 8" }
 ];
 
 function timeNow() {
@@ -29,7 +29,12 @@ function buildTray() {
     button.type = "button";
     button.className = "tray-sticker";
     button.setAttribute("aria-label", `Enviar sticker ${index + 1}`);
-    button.innerHTML = `<img src="${sticker.file}" alt="${sticker.alt}" data-fallback="${sticker.fallback}">`;
+    const image = document.createElement("img");
+    image.src = sticker.file;
+    image.alt = sticker.alt;
+    image.dataset.fallback = sticker.fallback;
+    image.addEventListener("error", () => applyImageFallback(image));
+    button.append(image);
     button.addEventListener("click", () => sendSticker(sticker));
     trayGrid.append(button);
   });
@@ -165,9 +170,6 @@ document.querySelectorAll(".sticker img").forEach((image) => {
 });
 
 buildTray();
-document.querySelectorAll(".tray-sticker img").forEach((image) => {
-  if (image.complete && image.naturalWidth === 0) applyImageFallback(image);
-});
 
 const revealItems = [...document.querySelectorAll("[data-reveal]")];
 revealItems.forEach((item, index) => {

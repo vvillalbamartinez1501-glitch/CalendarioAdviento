@@ -1,13 +1,13 @@
 :root {
   color-scheme: light;
-  --canvas: #F4F4F0;
-  --paper: #FFFFFF;
-  --ink: #000000;
-  --pink: #FF90E8;
-  --yellow: #F1F333;
-  --green: #90E8B4;
-  --coral: #FF7A59;
-  --blue: #90A8ED;
+  --canvas: #F5F0E6;
+  --paper: #FFFDF7;
+  --ink: #25392F;
+  --pink: #E6B9B0;
+  --yellow: #E6C978;
+  --green: #A8B89A;
+  --coral: #B84A45;
+  --blue: #B5CFCA;
   --font-display: "Space Grotesk", sans-serif;
   --font-body: "Plus Jakarta Sans", sans-serif;
 }

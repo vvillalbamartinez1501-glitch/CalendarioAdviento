@@ -17,7 +17,12 @@ function getOpenedDays() {
   }
 }
 
-function isDayUnlocked(dayNumber, now = new Date()) {
+function getCalendarDate() {
+  const now = new Date();
+  return DEBUG_MODE ? new Date(now.getFullYear(), 11, 25) : now;
+}
+
+function isDayUnlocked(dayNumber, now = getCalendarDate()) {
   if (dayNumber === 25) return now.getMonth() === 11 && now.getDate() === 25;
   if (DEBUG_MODE) return true;
 
@@ -80,12 +85,8 @@ function createDayCard(dayNumber) {
     }
 
     saveOpenedDay(dayNumber);
-    const dayPage = dayNumber === 20 ? "dia20.html" : "index.html";
-    const dayPath = dayNumber === 16
-      ? "dia16/index.html"
-      : dayNumber === 17
-        ? "dias/dia17/index.html"
-        : `dias/dia-${String(dayNumber).padStart(2, "0")}/${dayPage}`;
+    const paddedDay = String(dayNumber).padStart(2, "0");
+    const dayPath = `dias/dia-${paddedDay}/index.html`;
     window.location.href = dayPath;
   });
   return card;
@@ -95,7 +96,7 @@ for (let day = 1; day <= 24; day += 1) {
   mainCalendar.append(createDayCard(day));
 }
 
-const now = new Date();
+const now = getCalendarDate();
 if (now.getMonth() === 11 && now.getDate() === 25) {
   christmasDay.hidden = false;
   christmasDay.append(createDayCard(25));
