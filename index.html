@@ -47,7 +47,37 @@
         </div>
         <p class="section-description">Nuestros vecinos celestes, alineados en una ruta entre estrellas.</p>
       </div>
-      <div class="solar-route" id="solar-route" aria-label="Días 1 al 10: Sistema Solar"></div>
+      <p class="panorama-hint">Desliza para explorar el universo <span aria-hidden="true">↔</span></p>
+      <div class="panorama-scroll" tabindex="0" aria-label="Mapa panorámico del Sistema Solar. Desplázate horizontalmente para explorarlo.">
+        <div class="solar-map" id="solar-map">
+          <svg class="orbit-art" viewBox="0 0 1200 760" preserveAspectRatio="none" aria-hidden="true">
+            <ellipse class="solar-orbit" cx="9%" cy="50%" rx="12%" ry="18%" transform="rotate(-8 108 380)"></ellipse>
+            <ellipse class="solar-orbit" cx="9%" cy="50%" rx="19%" ry="26%" transform="rotate(-8 108 380)"></ellipse>
+            <ellipse class="solar-orbit" cx="9%" cy="50%" rx="27%" ry="34%" transform="rotate(-8 108 380)"></ellipse>
+            <ellipse class="solar-orbit" cx="9%" cy="50%" rx="35%" ry="42%" transform="rotate(-8 108 380)"></ellipse>
+            <ellipse class="solar-orbit" cx="9%" cy="50%" rx="44%" ry="51%" transform="rotate(-8 108 380)"></ellipse>
+            <ellipse class="solar-orbit" cx="9%" cy="50%" rx="59%" ry="59%" transform="rotate(-8 108 380)"></ellipse>
+            <ellipse class="solar-orbit" cx="9%" cy="50%" rx="75%" ry="67%" transform="rotate(-8 108 380)"></ellipse>
+            <ellipse class="solar-orbit" cx="9%" cy="50%" rx="89%" ry="73%" transform="rotate(-8 108 380)"></ellipse>
+            <path class="moon-orbit" d="M 360 251 C 384 213, 456 274, 408 334"></path>
+            <path class="asteroid-stream" d="M 516 486 C 552 425, 588 326, 672 266"></path>
+            <g class="asteroid-points">
+              <circle cx="45%" cy="58%" r="1.7"></circle>
+              <circle cx="46.4%" cy="54%" r="1.2"></circle>
+              <circle cx="47.2%" cy="51%" r="1.5"></circle>
+              <circle cx="48.5%" cy="48%" r="1"></circle>
+              <circle cx="49.2%" cy="45%" r="1.6"></circle>
+              <circle cx="50.7%" cy="43%" r="1.2"></circle>
+              <circle cx="52%" cy="40%" r="1.5"></circle>
+              <circle cx="53.4%" cy="38%" r="1"></circle>
+              <circle cx="51.5%" cy="47%" r="1"></circle>
+              <circle cx="47.5%" cy="59%" r="1.1"></circle>
+            </g>
+          </svg>
+          <div class="sun" aria-hidden="true"><span></span></div>
+          <div class="map-nodes" id="solar-nodes"></div>
+        </div>
+      </div>
     </section>
 
     <section class="journey-section constellation-section" id="constellations" aria-labelledby="constellations-heading">
@@ -58,7 +88,15 @@
         </div>
         <p class="section-description">Catorce figuras estelares para orientarnos por el espacio profundo.</p>
       </div>
-      <div class="constellation-grid" id="constellation-grid" aria-label="Días 11 al 24: Constelaciones"></div>
+      <p class="panorama-hint">Desliza para explorar el universo <span aria-hidden="true">↔</span></p>
+      <div class="panorama-scroll" tabindex="0" aria-label="Mapa celeste panorámico. Desplázate horizontalmente para explorarlo.">
+        <div class="celestial-map" id="celestial-map" aria-label="Constelaciones desde el hemisferio norte hasta el sur">
+          <div class="map-horizon map-horizon--north" aria-hidden="true">HEMISFERIO NORTE · CIRCUMPOLAR</div>
+          <div class="map-horizon map-horizon--middle" aria-hidden="true">CIELO ECUATORIAL</div>
+          <div class="map-horizon map-horizon--south" aria-hidden="true">HEMISFERIO SUR</div>
+          <div class="map-nodes" id="constellation-nodes"></div>
+        </div>
+      </div>
     </section>
 
     <footer class="page-footer">

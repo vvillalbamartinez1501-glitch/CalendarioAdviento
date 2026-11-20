@@ -5,30 +5,30 @@ const OPENED_STORAGE_KEY = "nuestro-adviento-dias-abiertos";
 // Edita el url de un día si su carpeta tiene otro nombre (por ejemplo: "dia1/index.html").
 // La Lira es la constelación final del día 24; aquí puedes cambiar su nombre o añadir un nodo especial Día 25 — Nuestra Galaxia.
 const CALENDAR_DAYS = [
-  { day: 1, name: "La Luna", subtitle: "Nuestro satélite", category: "Sistema Solar", type: "moon", url: "dias/dia-01/index.html" },
-  { day: 2, name: "Mercurio", subtitle: "El planeta veloz", category: "Sistema Solar", type: "mercury", url: "dias/dia-02/index.html" },
-  { day: 3, name: "Venus", subtitle: "La estrella del alba", category: "Sistema Solar", type: "venus", url: "dias/dia-03/index.html" },
-  { day: 4, name: "La Tierra", subtitle: "Nuestro hogar azul", category: "Sistema Solar", type: "earth", url: "dias/dia-04/index.html" },
-  { day: 5, name: "Marte", subtitle: "El planeta rojo", category: "Sistema Solar", type: "mars", url: "dias/dia-05/index.html" },
-  { day: 6, name: "Júpiter", subtitle: "El gigante gaseoso", category: "Sistema Solar", type: "jupiter", url: "dias/dia-06/index.html" },
-  { day: 7, name: "Saturno", subtitle: "El señor de los anillos", category: "Sistema Solar", type: "saturn", url: "dias/dia-07/index.html" },
-  { day: 8, name: "Urano", subtitle: "El gigante helado", category: "Sistema Solar", type: "uranus", url: "dias/dia-08/index.html" },
-  { day: 9, name: "Neptuno", subtitle: "El planeta azul", category: "Sistema Solar", type: "neptune", url: "dias/dia-09/index.html" },
-  { day: 10, name: "Plutón", subtitle: "Un mundo enano", category: "Sistema Solar", type: "pluto", url: "dias/dia-10/index.html" },
-  { day: 11, name: "Osa Mayor", subtitle: "Ursa Major · El carro grande", category: "Constelaciones", type: "ursa-major", url: "dias/dia-11/index.html" },
-  { day: 12, name: "Osa Menor", subtitle: "Ursa Minor · Estrella Polar", category: "Constelaciones", type: "ursa-minor", url: "dias/dia-12/index.html" },
-  { day: 13, name: "Casiopea", subtitle: "Cassiopeia · La reina", category: "Constelaciones", type: "cassiopeia", url: "dias/dia-13/index.html" },
-  { day: 14, name: "Orión", subtitle: "El Cazador · Tres Marías", category: "Constelaciones", type: "orion", url: "dias/dia-14/index.html" },
-  { day: 15, name: "Can Mayor", subtitle: "Canis Major · Sirio", category: "Constelaciones", type: "canis-major", url: "dias/dia-15/index.html" },
-  { day: 16, name: "Tauro", subtitle: "Taurus · Las Híades", category: "Constelaciones", type: "taurus", url: "dias/dia-16/index.html" },
-  { day: 17, name: "Géminis", subtitle: "Gemini · Los gemelos", category: "Constelaciones", type: "gemini", url: "dias/dia-17/index.html" },
-  { day: 18, name: "Escorpio", subtitle: "Scorpius · El aguijón", category: "Constelaciones", type: "scorpius", url: "dias/dia-18/index.html" },
-  { day: 19, name: "Cisne", subtitle: "Cygnus · La Cruz del Norte", category: "Constelaciones", type: "cygnus", url: "dias/dia-19/index.html" },
-  { day: 20, name: "Pegaso", subtitle: "Pegasus · El gran cuadrado", category: "Constelaciones", type: "pegasus", url: "dias/dia-20/index.html" },
-  { day: 21, name: "Andrómeda", subtitle: "Andromeda · La cadena estelar", category: "Constelaciones", type: "andromeda", url: "dias/dia-21/index.html" },
-  { day: 22, name: "Draco", subtitle: "El Dragón", category: "Constelaciones", type: "draco", url: "dias/dia-22/index.html" },
-  { day: 23, name: "Cruz del Sur", subtitle: "Crux · La cruz austral", category: "Constelaciones", type: "crux", url: "dias/dia-23/index.html" },
-  { day: 24, name: "Lira", subtitle: "Lyra · Vega", category: "Constelaciones", type: "lyra", url: "dias/dia-24/index.html" }
+  { day: 1, name: "La Luna", subtitle: "Nuestro satélite", category: "Sistema Solar", type: "moon", x: 30, y: 33, url: "dias/dia-01/index.html" },
+  { day: 2, name: "Mercurio", subtitle: "El planeta veloz", category: "Sistema Solar", type: "mercury", x: 15, y: 41, url: "dias/dia-02/index.html" },
+  { day: 3, name: "Venus", subtitle: "La estrella del alba", category: "Sistema Solar", type: "venus", x: 22, y: 61, url: "dias/dia-03/index.html" },
+  { day: 4, name: "La Tierra", subtitle: "Nuestro hogar azul", category: "Sistema Solar", type: "earth", x: 34, y: 44, url: "dias/dia-04/index.html" },
+  { day: 5, name: "Marte", subtitle: "El planeta rojo", category: "Sistema Solar", type: "mars", x: 44, y: 63, url: "dias/dia-05/index.html" },
+  { day: 6, name: "Júpiter", subtitle: "El gigante gaseoso", category: "Sistema Solar", type: "jupiter", x: 56, y: 35, url: "dias/dia-06/index.html" },
+  { day: 7, name: "Saturno", subtitle: "El señor de los anillos", category: "Sistema Solar", type: "saturn", x: 68, y: 58, url: "dias/dia-07/index.html" },
+  { day: 8, name: "Urano", subtitle: "El gigante helado", category: "Sistema Solar", type: "uranus", x: 78, y: 33, url: "dias/dia-08/index.html" },
+  { day: 9, name: "Neptuno", subtitle: "El planeta azul", category: "Sistema Solar", type: "neptune", x: 87, y: 56, url: "dias/dia-09/index.html" },
+  { day: 10, name: "Plutón", subtitle: "Un mundo enano", category: "Sistema Solar", type: "pluto", x: 94, y: 37, url: "dias/dia-10/index.html" },
+  { day: 11, name: "Osa Mayor", subtitle: "Ursa Major · El carro grande", category: "Constelaciones", type: "ursa-major", x: 22, y: 16, url: "dias/dia-11/index.html" },
+  { day: 12, name: "Osa Menor", subtitle: "Ursa Minor · Estrella Polar", category: "Constelaciones", type: "ursa-minor", x: 50, y: 10, url: "dias/dia-12/index.html" },
+  { day: 13, name: "Casiopea", subtitle: "Cassiopeia · La reina", category: "Constelaciones", type: "cassiopeia", x: 75, y: 14, url: "dias/dia-13/index.html" },
+  { day: 14, name: "Orión", subtitle: "El Cazador · Tres Marías", category: "Constelaciones", type: "orion", x: 65, y: 63, url: "dias/dia-14/index.html" },
+  { day: 15, name: "Can Mayor", subtitle: "Canis Major · Sirio", category: "Constelaciones", type: "canis-major", x: 51, y: 75, url: "dias/dia-15/index.html" },
+  { day: 16, name: "Tauro", subtitle: "Taurus · Las Híades", category: "Constelaciones", type: "taurus", x: 55, y: 45, url: "dias/dia-16/index.html" },
+  { day: 17, name: "Géminis", subtitle: "Gemini · Los gemelos", category: "Constelaciones", type: "gemini", x: 38, y: 49, url: "dias/dia-17/index.html" },
+  { day: 18, name: "Escorpio", subtitle: "Scorpius · El aguijón", category: "Constelaciones", type: "scorpius", x: 20, y: 77, url: "dias/dia-18/index.html" },
+  { day: 19, name: "Cisne", subtitle: "Cygnus · La Cruz del Norte", category: "Constelaciones", type: "cygnus", x: 15, y: 40, url: "dias/dia-19/index.html" },
+  { day: 20, name: "Pegaso", subtitle: "Pegasus · El gran cuadrado", category: "Constelaciones", type: "pegasus", x: 90, y: 47, url: "dias/dia-20/index.html" },
+  { day: 21, name: "Andrómeda", subtitle: "Andromeda · La cadena estelar", category: "Constelaciones", type: "andromeda", x: 81, y: 31, url: "dias/dia-21/index.html" },
+  { day: 22, name: "Draco", subtitle: "El Dragón", category: "Constelaciones", type: "draco", x: 37, y: 21, url: "dias/dia-22/index.html" },
+  { day: 23, name: "Cruz del Sur", subtitle: "Crux · La cruz austral", category: "Constelaciones", type: "crux", x: 81, y: 82, url: "dias/dia-23/index.html" },
+  { day: 24, name: "Lira", subtitle: "Lyra · Vega", category: "Constelaciones", type: "lyra", x: 27, y: 34, url: "dias/dia-24/index.html" }
 ];
 
 const CONSTELLATIONS = {
@@ -49,8 +49,8 @@ const CONSTELLATIONS = {
 };
 
 const STAR_COUNT = 76;
-const solarRoute = document.querySelector("#solar-route");
-const constellationGrid = document.querySelector("#constellation-grid");
+const solarNodes = document.querySelector("#solar-nodes");
+const constellationNodes = document.querySelector("#constellation-nodes");
 const progressCount = document.querySelector("#progress-count");
 const progressBar = document.querySelector("#progress-bar");
 const progressFill = document.querySelector("#progress-fill");
@@ -113,8 +113,7 @@ function createConstellationArt(type) {
   const svg = document.createElementNS(svgNamespace, "svg");
   svg.classList.add("constellation-art");
   svg.setAttribute("viewBox", "0 0 100 100");
-  svg.setAttribute("role", "img");
-  svg.setAttribute("aria-label", "Diagrama estelar");
+  svg.setAttribute("aria-hidden", "true");
 
   constellation.lines.forEach(([start, end]) => {
     const [x1, y1] = constellation.points[start];
@@ -147,25 +146,45 @@ function updateProgress() {
   progressFill.style.width = `${(count / 24) * 100}%`;
 }
 
-function createDayCard(day) {
+function createDayNode(day) {
   const opened = openedDays.has(day.day);
   const unlocked = opened || isDayUnlocked(day.day);
   const isConstellation = day.category === "Constelaciones";
   const card = document.createElement("button");
   card.type = "button";
   card.className = [
-    "day-card",
-    isConstellation ? "constellation-card" : "solar-card",
-    unlocked ? "day-card--available" : "day-card--locked",
-    opened ? "day-card--opened" : ""
+    "celestial-node",
+    isConstellation ? "celestial-node--constellation" : "celestial-node--planet",
+    unlocked ? "celestial-node--available" : "celestial-node--locked",
+    opened ? "celestial-node--opened" : ""
   ].filter(Boolean).join(" ");
+  card.style.left = `${day.x}%`;
+  card.style.top = `${day.y}%`;
+  card.dataset.day = String(day.day);
+  card.style.setProperty("--float-delay", `${(day.day % 7) * -0.37}s`);
   card.setAttribute("aria-label", unlocked
     ? `Día ${String(day.day).padStart(2, "0")}: ${day.name}, ${opened ? "abierto" : "disponible"}`
     : `Día ${String(day.day).padStart(2, "0")}: ${day.name}, bloqueado hasta el ${day.day} de diciembre`);
 
+  const marker = document.createElement("span");
+  marker.className = "day-marker";
   const number = document.createElement("span");
   number.className = "day-number";
   number.textContent = String(day.day).padStart(2, "0");
+  marker.append(number);
+  if (!unlocked) {
+    const lock = document.createElement("span");
+    lock.className = "day-lock";
+    lock.setAttribute("aria-hidden", "true");
+    lock.textContent = "🔒";
+    marker.append(lock);
+  } else if (opened) {
+    const star = document.createElement("span");
+    star.className = "day-open-star";
+    star.setAttribute("aria-hidden", "true");
+    star.textContent = "★";
+    marker.append(star);
+  }
 
   const artwork = isConstellation ? createConstellationArt(day.type) : createPlanetArt(day.type);
   const name = document.createElement("span");
@@ -175,9 +194,9 @@ function createDayCard(day) {
   subtitle.className = "day-subtitle";
   subtitle.textContent = day.subtitle;
   const state = document.createElement("span");
-  state.className = `day-state${opened ? " day-state--opened" : unlocked ? "" : " day-state--locked"}`;
-  state.textContent = opened ? "Abierto" : unlocked ? "¡Disponible!" : `🔒 Disponible el ${day.day} dic`;
-  card.append(number, artwork, name, subtitle, state);
+  state.className = "day-state";
+  state.textContent = opened ? "Abierto" : unlocked ? "Nuevo" : `Disponible el ${day.day} dic`;
+  card.append(marker, artwork, name, subtitle, state);
 
   card.addEventListener("click", () => {
     if (openedDays.has(day.day)) {
@@ -206,12 +225,12 @@ function createDayCard(day) {
 }
 
 function renderCalendar() {
-  solarRoute.replaceChildren();
-  constellationGrid.replaceChildren();
+  solarNodes.replaceChildren();
+  constellationNodes.replaceChildren();
   const solarDays = CALENDAR_DAYS.filter(day => day.category === "Sistema Solar");
   const constellationDays = CALENDAR_DAYS.filter(day => day.category === "Constelaciones");
-  solarDays.forEach(day => solarRoute.append(createDayCard(day)));
-  constellationDays.forEach(day => constellationGrid.append(createDayCard(day)));
+  solarDays.forEach(day => solarNodes.append(createDayNode(day)));
+  constellationDays.forEach(day => constellationNodes.append(createDayNode(day)));
   updateProgress();
 }
 

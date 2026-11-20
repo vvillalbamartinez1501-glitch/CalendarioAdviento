@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 :root {
   color-scheme: dark;
   --space: #05070f;
@@ -6,15 +8,12 @@
   --muted: #9aa8c6;
   --gold: #facc15;
   --cyan: #67e8f9;
-  --glass: rgba(15, 23, 42, .65);
-  --line: rgba(148, 163, 184, .17);
   --title: "Cinzel", Georgia, serif;
   --sans: "Plus Jakarta Sans", sans-serif;
   --number: "Space Grotesk", sans-serif;
 }
 
 * { box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -59,9 +58,10 @@ button { color: inherit; }
 
 .hero {
   position: relative;
-  display: grid;
+  display: flex;
   min-height: 710px;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   isolation: isolate;
   padding: 82px 24px 70px;
@@ -84,11 +84,7 @@ button { color: inherit; }
   transform: translate(-50%, -50%);
 }
 
-.hero::after {
-  width: min(73vw, 660px);
-  border-color: rgba(167, 139, 250, .1);
-}
-
+.hero::after { width: min(73vw, 660px); border-color: rgba(167, 139, 250, .1); }
 .hero__content { z-index: 1; width: min(760px, 100%); }
 .eyebrow, .section-kicker, .footer-caption, .progress-label {
   color: #a5b4fc;
@@ -125,22 +121,11 @@ button { color: inherit; }
 .hero h1 span { color: var(--cyan); font-family: var(--sans); font-weight: 400; }
 .hero__intro { max-width: 540px; margin: 0 auto; color: #aab6d1; font-size: clamp(.9rem, 2vw, 1.04rem); line-height: 1.8; }
 
-.progress-panel {
-  width: min(420px, 100%);
-  margin: 34px auto 0;
-  padding: 17px 20px 12px;
-  border: 1px solid rgba(148, 163, 184, .18);
-  border-radius: 14px;
-  background: rgba(9, 14, 31, .68);
-  box-shadow: 0 14px 50px rgba(0, 0, 0, .22), inset 0 1px rgba(255,255,255,.035);
-  text-align: left;
-  backdrop-filter: blur(14px);
-}
-
+.progress-panel { width: min(420px, 100%); margin: 34px auto 0; padding: 7px 0; text-align: left; }
 .progress-copy { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
 .progress-label { color: #8998b8; font-size: .61rem; letter-spacing: .12em; }
 .progress-count { color: #f5df8d; font-size: .75rem; font-weight: 700; white-space: nowrap; }
-.progress-track { height: 5px; margin-top: 12px; overflow: hidden; border-radius: 99px; background: rgba(148, 163, 184, .16); }
+.progress-track { height: 3px; margin-top: 12px; overflow: hidden; border-radius: 99px; background: rgba(148, 163, 184, .2); }
 .progress-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #67e8f9, #facc15); box-shadow: 0 0 12px rgba(103, 232, 249, .55); transition: width .4s ease; }
 .reset-button { display: block; margin: 10px 0 0 auto; padding: 3px 0; border: 0; color: #73819f; background: transparent; font-size: .67rem; cursor: pointer; transition: color .2s ease; }
 .reset-button:hover { color: #fda4af; }
@@ -153,56 +138,96 @@ button { color: inherit; }
 .hero-star--one { top: 24%; right: 17%; font-size: 1.4rem; }
 .hero-star--two { bottom: 24%; left: 13%; color: #67e8f9; font-size: 1.8rem; }
 
-.journey { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+.journey { width: 100%; }
 .journey-section { padding: 43px 0 58px; }
-.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 27px; }
+.section-heading { display: flex; width: min(1160px, calc(100% - 48px)); align-items: end; justify-content: space-between; gap: 30px; margin: 0 auto 15px; }
 .section-kicker { margin: 0 0 9px; color: #8494b5; font-size: .63rem; }
 .section-kicker span { color: var(--cyan); }
 .section-heading h2 { margin: 0; font-family: var(--title); font-size: clamp(1.75rem, 4vw, 2.65rem); font-weight: 600; letter-spacing: -.035em; }
 .section-description { max-width: 360px; margin: 0 0 4px; color: var(--muted); font-size: .8rem; line-height: 1.8; }
+.panorama-hint { display: none; width: max-content; margin: 0 20px 8px auto; color: #91a0bf; font-size: .66rem; letter-spacing: .04em; }
+.panorama-hint span { color: var(--cyan); font-size: 1rem; vertical-align: -1px; }
+.panorama-scroll { width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-color: rgba(103,232,249,.4) rgba(148,163,184,.08); scrollbar-width: thin; }
+.panorama-scroll:focus-visible { outline: 1px solid rgba(103,232,249,.65); outline-offset: -2px; }
 
-.solar-route { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 15px; }
-.solar-route::before {
-  position: absolute;
-  top: 90px;
-  right: 3%;
-  left: 3%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(103, 232, 249, .3), rgba(192, 132, 252, .25), transparent);
-  content: "";
+.solar-map, .celestial-map {
+  position: relative;
+  width: 100%;
+  min-width: 960px;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.day-card {
-  position: relative;
+.solar-map {
+  min-height: 760px;
+  background:
+    radial-gradient(ellipse at 4% 50%, rgba(251,146,60,.13), transparent 24%),
+    radial-gradient(ellipse at 60% 51%, rgba(30,41,90,.16), transparent 48%);
+}
+
+.solar-map::after, .celestial-map::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image: radial-gradient(1px 1px at 23% 30%, rgba(255,255,255,.5) 99%, transparent), radial-gradient(1px 1px at 78% 72%, rgba(191,219,254,.48) 99%, transparent);
+  background-size: 145px 130px, 193px 187px;
+  content: "";
+  pointer-events: none;
+}
+
+.orbit-art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.solar-orbit { fill: none; stroke: rgba(255,255,255,.12); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.moon-orbit { fill: none; stroke: rgba(203,213,225,.46); stroke-width: 1; stroke-dasharray: 2 6; vector-effect: non-scaling-stroke; }
+.asteroid-stream { fill: none; stroke: rgba(148,163,184,.19); stroke-width: 1; stroke-dasharray: 1 11; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.asteroid-points { fill: rgba(203,213,225,.55); }
+
+.sun {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: -4%;
   display: flex;
-  min-width: 0;
-  min-height: 204px;
+  width: clamp(150px, 16vw, 190px);
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: 50%;
+  background: radial-gradient(circle at 18% 50%, #fff8c7 0%, #fde68a 21%, rgba(251,146,60,.65) 48%, rgba(234,88,12,.14) 68%, transparent 72%);
+  filter: drop-shadow(0 0 34px rgba(251,146,60,.3));
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.sun span { width: 64%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 22% 50%, #fffde7, #fbbf24 40%, #f97316 73%, #b45309); box-shadow: 0 0 30px #f59e0b, 0 0 90px rgba(249,115,22,.58); }
+.map-nodes { position: absolute; inset: 0; }
+.celestial-node {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  min-width: 84px;
   flex-direction: column;
   align-items: center;
-  padding: 17px 10px 14px;
-  overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, .16);
-  border-radius: 14px;
+  padding: 0;
+  border: 0;
   color: var(--ink);
-  background:
-    radial-gradient(ellipse at 50% 52%, rgba(30, 41, 70, .36), transparent 65%),
-    rgba(10, 15, 31, .66);
+  background: transparent;
   text-align: center;
+  text-shadow: 0 2px 8px #000000;
+  transform: translate(-50%, -50%);
   cursor: pointer;
-  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease, opacity .25s ease, filter .25s ease;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity .25s ease, filter .25s ease;
 }
 
-.day-card::before { position: absolute; inset: 5px; border: 1px solid rgba(148, 163, 184, .055); border-radius: 10px; content: ""; pointer-events: none; }
-.day-card:hover:not(.day-card--locked), .day-card:focus-visible:not(.day-card--locked) { z-index: 2; border-color: rgba(103, 232, 249, .57); box-shadow: 0 9px 35px rgba(34, 211, 238, .12); transform: translateY(-5px); }
-.day-card:focus-visible, .reset-button:focus-visible, .dialog-close:focus-visible, .dialog-button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
-.day-number { position: absolute; z-index: 2; top: 12px; left: 12px; display: grid; width: 33px; height: 29px; place-items: center; border: 1px solid rgba(103, 232, 249, .48); border-radius: 9px; color: #ecfeff; background: rgba(6, 12, 27, .88); box-shadow: 0 0 15px rgba(103, 232, 249, .16); font-family: var(--number); font-size: .83rem; font-weight: 700; }
-.day-name { margin-top: 9px; font-size: .8rem; font-weight: 700; }
-.day-subtitle { margin-top: 4px; color: #8290ae; font-size: .62rem; }
-.day-state { position: relative; z-index: 1; min-height: 17px; margin-top: 10px; color: #67e8f9; font-size: .59rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.day-state--opened { color: #facc15; }
-.day-state--locked { color: #a3adc2; font-size: .57rem; font-weight: 500; letter-spacing: .015em; text-transform: none; }
-
-.planet-art { position: relative; display: grid; width: 100px; height: 92px; flex: 0 0 92px; place-items: center; }
+.celestial-node:focus-visible { outline: 1px dashed rgba(103,232,249,.8); outline-offset: 7px; border-radius: 50%; }
+.day-marker { position: relative; z-index: 4; display: flex; min-height: 24px; align-items: center; justify-content: center; gap: 4px; margin-bottom: 4px; }
+.day-number { display: inline-flex; width: 24px; height: 24px; flex: 0 0 24px; align-items: center; justify-content: center; border: 1px solid rgba(190,242,255,.54); border-radius: 50%; color: #effcff; background: rgba(5,7,15,.58); box-shadow: 0 0 10px rgba(103,232,249,.1); font-family: var(--number); font-size: .68rem; font-weight: 700; line-height: 1; }
+.day-lock { font-size: .72rem; line-height: 1; }
+.day-open-star { color: var(--gold); font-size: .83rem; text-shadow: 0 0 10px rgba(250,204,21,.72); }
+.planet-art { position: relative; display: flex; width: 110px; height: 90px; align-items: center; justify-content: center; animation: planetaryFloat 5s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
+.celestial-node--planet[data-day="1"] .day-name,
+.celestial-node--planet[data-day="1"] .day-subtitle,
+.celestial-node--planet[data-day="1"] .day-state { transform: translateX(-48px); }
 .planet {
   position: relative;
   display: block;
@@ -224,96 +249,92 @@ button { color: inherit; }
 .planet--earth::before { inset: 8% 13%; border-radius: 50%; background: linear-gradient(170deg, transparent 37%, rgba(255,255,255,.72) 39% 43%, transparent 45% 72%, rgba(255,255,255,.48) 74% 77%, transparent 79%); }
 .planet--mars { --planet-surface: radial-gradient(circle at 32% 25%, #f87171, #dc2626 56%, #7f1d1d); --planet-glow: rgba(220,38,38,.37); }
 .planet--mars::before { inset: 0 0 auto; height: 19%; border-radius: 50%; background: linear-gradient(#fff7ed, #e7e5e4); }
-.planet--jupiter { --planet-size: 67px; --planet-surface: repeating-linear-gradient(0deg, #b45309 0 6px, #fcd6a4 7px 12px, #d39a67 13px 18px, #fde0b7 19px 25px); --planet-glow: rgba(253,186,116,.3); }
+.planet--jupiter { --planet-size: 82px; --planet-surface: repeating-linear-gradient(0deg, #b45309 0 6px, #fcd6a4 7px 12px, #d39a67 13px 18px, #fde0b7 19px 25px); --planet-glow: rgba(253,186,116,.3); }
 .planet--jupiter::after { top: 52%; right: 10%; width: 17px; height: 9px; border-radius: 50%; background: #b91c1c; box-shadow: inset -2px -1px 3px rgba(80,0,0,.4); }
-.planet--saturn { --planet-size: 53px; --planet-surface: repeating-linear-gradient(0deg, #ca8a04 0 7px, #fef3c7 8px 14px, #eab308 15px 20px); --planet-glow: rgba(250,204,21,.27); }
+.planet--saturn { --planet-size: 62px; --planet-surface: repeating-linear-gradient(0deg, #ca8a04 0 7px, #fef3c7 8px 14px, #eab308 15px 20px); --planet-glow: rgba(250,204,21,.27); }
 .planet--saturn::after { z-index: 1; top: 30%; left: -33%; width: 164%; height: 43%; border: 7px solid rgba(202,138,4,.83); border-right-color: rgba(254,240,138,.9); border-left-color: rgba(253,224,71,.55); border-radius: 50%; transform: rotate(-24deg); }
-.planet--uranus { --planet-size: 58px; --planet-surface: radial-gradient(circle at 34% 24%, #cffafe, #67e8f9 52%, #0891b2); --planet-glow: rgba(103,232,249,.4); }
+.planet--uranus { --planet-size: 64px; --planet-surface: radial-gradient(circle at 34% 24%, #cffafe, #67e8f9 52%, #0891b2); --planet-glow: rgba(103,232,249,.4); }
 .planet--uranus::after { z-index: 1; top: 38%; left: -26%; width: 150%; height: 25%; border: 2px solid rgba(165,243,252,.65); border-radius: 50%; transform: rotate(13deg); }
-.planet--neptune { --planet-surface: radial-gradient(circle at 32% 26%, #60a5fa, #1d4ed8 55%, #172554); --planet-glow: rgba(29,78,216,.45); }
+.planet--neptune { --planet-size: 61px; --planet-surface: radial-gradient(circle at 32% 26%, #60a5fa, #1d4ed8 55%, #172554); --planet-glow: rgba(29,78,216,.45); }
 .planet--neptune::before { top: 53%; left: 18%; width: 28px; height: 5px; border-radius: 50%; background: rgba(191,219,254,.53); transform: rotate(-23deg); }
-.planet--pluto { --planet-size: 52px; --planet-surface: radial-gradient(circle at 32% 25%, #f1f5f9, #cbd5e1 58%, #9a3412); --planet-glow: rgba(203,213,225,.3); }
+.planet--pluto { --planet-size: 49px; --planet-surface: radial-gradient(circle at 32% 25%, #f1f5f9, #cbd5e1 58%, #9a3412); --planet-glow: rgba(203,213,225,.3); }
 .planet--pluto::before { top: 19%; left: 43%; width: 37%; height: 45%; border-radius: 55% 40% 54% 46%; background: rgba(194,65,12,.76); transform: rotate(-23deg); }
 
-.constellation-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.constellation-card {
-  min-height: 186px;
-  padding: 12px 14px 13px;
-  border-color: rgba(148, 163, 184, .13);
-  border-radius: 12px;
-  background: linear-gradient(145deg, rgba(15, 23, 42, .73), rgba(9, 14, 29, .75));
+.day-name { max-width: 170px; margin-top: 4px; color: #f3f5ff; font-size: .76rem; font-weight: 700; line-height: 1.3; }
+.day-subtitle { max-width: 180px; margin-top: 3px; color: #94a3bd; font-size: .58rem; line-height: 1.35; }
+.day-state { min-height: 14px; margin-top: 4px; color: #67e8f9; font-size: .55rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; text-shadow: 0 0 9px currentColor; }
+.celestial-node--constellation { min-width: 120px; transform: translate(-50%, -40%); }
+.constellation-art { display: block; width: 120px; height: 94px; overflow: visible; animation: constellationPulse 4s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
+.constellation-line { stroke: rgba(166,198,236,.58); stroke-width: 1.15; vector-effect: non-scaling-stroke; transition: stroke .25s ease, filter .25s ease; }
+.constellation-star { fill: #c4f1ff; filter: drop-shadow(0 0 3px rgba(103,232,249,.76)); transition: fill .25s ease, filter .25s ease; }
+.constellation-star--bright { fill: #fff3b0; filter: drop-shadow(0 0 6px rgba(250,204,21,.96)); }
+.celestial-node--locked { opacity: .38; filter: grayscale(80%); }
+.celestial-node--locked .day-number { border-color: rgba(203,213,225,.42); color: #d7dce8; box-shadow: none; }
+.celestial-node--available:not(.celestial-node--opened) .planet { animation: pulseStar 3.2s ease-in-out infinite; }
+.celestial-node--available:not(.celestial-node--opened) .constellation-line { animation: pulseStar 3.2s ease-in-out infinite; }
+.celestial-node--opened { z-index: 3; }
+.celestial-node--opened .day-number { border-color: rgba(250,204,21,.84); color: #fff1a8; box-shadow: 0 0 14px rgba(250,204,21,.28); }
+.celestial-node--opened .planet { box-shadow: inset -10px -8px 15px rgba(0,0,0,.38), inset 6px 5px 11px rgba(255,255,255,.3), 0 0 28px rgba(250,204,21,.42); }
+.celestial-node--opened .constellation-line { stroke: rgba(250,204,21,.94); filter: drop-shadow(0 0 4px rgba(250,204,21,.7)); }
+.celestial-node--opened .constellation-star { fill: #fff1a8; filter: drop-shadow(0 0 6px rgba(250,204,21,.9)); }
+.celestial-node--opened .day-state { color: var(--gold); }
+.celestial-node--planet.celestial-node--opened::after { position: absolute; z-index: -1; top: 38px; width: 76px; height: 76px; border: 1px solid rgba(250,204,21,.5); border-radius: 50%; box-shadow: 0 0 20px rgba(250,204,21,.18); content: ""; }
+.celestial-node:hover:not(.celestial-node--locked), .celestial-node:focus-visible:not(.celestial-node--locked) { z-index: 5; }
+.celestial-node:hover:not(.celestial-node--locked) .day-name, .celestial-node:focus-visible:not(.celestial-node--locked) .day-name { color: #fff4bb; }
+.celestial-node:hover:not(.celestial-node--locked) .constellation-line, .celestial-node:focus-visible:not(.celestial-node--locked) .constellation-line { stroke: #e0fbff; filter: drop-shadow(0 0 4px rgba(103,232,249,.8)); }
+
+.constellation-section {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 53% 37%, rgba(79,70,229,.12), transparent 48%),
+    linear-gradient(180deg, transparent, rgba(13,21,43,.62) 13%, rgba(5,7,15,.08));
 }
-.constellation-card::before { inset: 4px; border-radius: 9px; }
-.constellation-card .day-number { top: 10px; left: 10px; }
-.constellation-art { display: block; width: 100%; height: 105px; overflow: visible; }
-.constellation-line { stroke: rgba(129, 159, 211, .48); stroke-width: 1.25; vector-effect: non-scaling-stroke; transition: stroke .25s ease, filter .25s ease; }
-.constellation-star { fill: #bdefff; filter: drop-shadow(0 0 3px rgba(103,232,249,.74)); transition: fill .25s ease, filter .25s ease; }
-.constellation-star--bright { fill: #fff3b0; filter: drop-shadow(0 0 5px rgba(250,204,21,.9)); }
-.constellation-card:hover:not(.day-card--locked) .constellation-line, .constellation-card--opened .constellation-line { stroke: rgba(103, 232, 249, .92); filter: drop-shadow(0 0 3px rgba(103,232,249,.55)); }
-.constellation-card:hover:not(.day-card--locked) .constellation-star, .constellation-card--opened .constellation-star { fill: #fef3c7; filter: drop-shadow(0 0 6px rgba(250,204,21,.9)); }
-.constellation-card .day-name { margin-top: 1px; }
-.constellation-card .day-subtitle { margin-top: 3px; }
-.constellation-card .day-state { margin-top: 7px; }
 
-.day-card--locked { opacity: .45; filter: grayscale(75%); cursor: not-allowed; }
-.day-card--locked:hover { transform: none; }
-.day-card--locked .day-number { color: #d7dce8; border-color: rgba(203,213,225,.3); box-shadow: none; }
-.day-card--available:not(.day-card--opened) { border-color: rgba(103, 232, 249, .24); animation: pulseGlow 3.2s ease-in-out infinite; }
-.day-card--available:not(.day-card--opened) .day-state::before { content: "✦ "; }
-.day-card--opened { border-color: rgba(250, 204, 21, .7); box-shadow: inset 0 0 22px rgba(250, 204, 21, .045), 0 0 18px rgba(250, 204, 21, .09); }
-.day-card--opened .day-number { border-color: rgba(250,204,21,.72); color: #fff1a8; box-shadow: 0 0 15px rgba(250,204,21,.2); }
-.day-card--opened::after { position: absolute; top: 14px; right: 12px; color: var(--gold); content: "✓"; font-size: .8rem; font-weight: 700; }
-.day-card--opened .day-state::before { content: "★ "; }
-
-.page-footer { padding: 13px 0 45px; color: #aab6d1; text-align: center; }
+.celestial-map { min-height: 920px; background: radial-gradient(ellipse at 50% 50%, rgba(30,41,90,.13), transparent 60%); }
+.map-horizon { position: absolute; left: 22px; color: rgba(148,163,184,.35); font-size: .54rem; font-weight: 700; letter-spacing: .2em; pointer-events: none; }
+.map-horizon--north { top: 3%; }
+.map-horizon--middle { top: 48%; left: auto; right: 22px; }
+.map-horizon--south { bottom: 3%; }
+.page-footer { padding: 13px 20px 45px; color: #aab6d1; text-align: center; }
 .footer-star { color: var(--gold); font-size: 1.1rem; }
 .page-footer p { margin: 12px 0 18px; font-family: var(--title); font-size: clamp(.95rem, 2vw, 1.2rem); }
 .footer-caption { color: #687694; font-size: .57rem; letter-spacing: .22em; }
 
-.lock-dialog { width: min(430px, calc(100% - 32px)); padding: 0; border: 1px solid rgba(129, 140, 248, .38); border-radius: 18px; color: var(--ink); background: radial-gradient(ellipse at 50% 0, rgba(79,70,229,.16), transparent 60%), #0b1020; box-shadow: 0 25px 100px rgba(0,0,0,.6), 0 0 42px rgba(79,70,229,.12); text-align: center; }
-.lock-dialog::backdrop { background: rgba(2, 4, 12, .76); backdrop-filter: blur(7px); }
+.lock-dialog { width: min(430px, calc(100% - 32px)); padding: 0; border: 1px solid rgba(129,140,248,.38); border-radius: 18px; color: var(--ink); background: radial-gradient(ellipse at 50% 0, rgba(79,70,229,.16), transparent 60%), #0b1020; box-shadow: 0 25px 100px rgba(0,0,0,.6), 0 0 42px rgba(79,70,229,.12); text-align: center; }
+.lock-dialog::backdrop { background: rgba(2,4,12,.76); backdrop-filter: blur(7px); }
 .lock-dialog form { position: relative; padding: 38px 30px 30px; }
 .dialog-close { position: absolute; top: 10px; right: 14px; border: 0; color: #94a3b8; background: transparent; font-size: 1.6rem; cursor: pointer; }
 .dialog-icon { display: block; margin-bottom: 10px; font-size: 1.6rem; }
 .lock-dialog .section-kicker { color: #a5b4fc; }
 .lock-dialog h2 { margin: 8px 0 12px; font-family: var(--title); font-size: 1.5rem; }
 .lock-dialog form > p:not(.section-kicker) { color: #aab6d1; font-size: .86rem; line-height: 1.8; }
-.dialog-button { margin-top: 10px; padding: 11px 20px; border: 1px solid rgba(103,232,249,.4); border-radius: 99px; color: #e0fbff; background: rgba(8,145,178,.18); font-weight: 700; cursor: pointer; }
-.dialog-button:hover { background: rgba(8,145,178,.32); }
+.dialog-button { margin-top: 10px; padding: 11px 20px; border: 0; border-radius: 99px; color: #e0fbff; background: rgba(8,145,178,.3); font-weight: 700; cursor: pointer; }
+.dialog-button:hover { background: rgba(8,145,178,.48); }
+.reset-button:focus-visible, .dialog-close:focus-visible, .dialog-button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
 
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: inset 0 0 12px rgba(103,232,249,.025), 0 0 8px rgba(103,232,249,.06); }
-  50% { box-shadow: inset 0 0 19px rgba(103,232,249,.08), 0 0 22px rgba(103,232,249,.18); }
+@keyframes pulseStar {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(103,232,249,.15)); }
+  50% { filter: drop-shadow(0 0 10px rgba(250,204,21,.58)); }
 }
+@keyframes constellationPulse { 0%, 100% { opacity: .82; } 50% { opacity: 1; } }
+@keyframes planetaryFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 @keyframes twinkle { from { opacity: .26; transform: scale(.7); } to { opacity: .95; transform: scale(1.2); } }
 @keyframes starDrift { to { background-position: 210px 150px, -270px 220px, 330px -280px; } }
 @keyframes float { 50% { transform: translateY(4px); } }
 
-@media (max-width: 900px) {
-  .solar-route { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .solar-route::before { display: none; }
-  .constellation-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
-@media (max-width: 620px) {
+@media (max-width: 760px) {
+  .journey-section { padding: 35px 0 45px; }
+  .section-heading { align-items: start; flex-direction: column; gap: 8px; margin-bottom: 13px; }
+  .panorama-hint { display: block; }
+  .panorama-scroll { scroll-snap-type: x proximity; }
+  .solar-map, .celestial-map { width: 960px; min-width: 960px; }
+  .solar-map { scroll-snap-align: start; }
+  .celestial-map { scroll-snap-align: start; }
   .hero { min-height: 665px; padding: 68px 20px 55px; }
   .hero h1 { margin-top: 24px; }
-  .journey { width: min(100% - 30px, 1160px); }
-  .journey-section { padding: 35px 0 45px; }
-  .section-heading { align-items: start; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-  .solar-route { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .day-card { min-height: 195px; }
-  .constellation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .constellation-card { min-height: 177px; }
   .hero-star--one { right: 8%; }
   .hero-star--two { left: 7%; }
-}
-
-@media (max-width: 360px) {
-  .progress-panel { padding-right: 14px; padding-left: 14px; }
-  .progress-label { font-size: .54rem; }
-  .progress-count { font-size: .68rem; }
-  .constellation-grid { gap: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
