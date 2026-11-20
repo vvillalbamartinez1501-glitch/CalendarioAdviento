@@ -1,5 +1,5 @@
 // Cambia a false antes de entregar el calendario para respetar las fechas reales.
-const DEBUG_MODE = false;
+const DEBUG_MODE = true;
 const OPENED_STORAGE_KEY = "nuestro-adviento-dias-abiertos";
 
 // Edita el url de un día si su carpeta tiene otro nombre (por ejemplo: "dia1/index.html").
