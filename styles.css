@@ -349,73 +349,25 @@ button { color: inherit; }
   position: fixed;
   z-index: 9999;
   inset: 0;
-  overflow: hidden;
   visibility: hidden;
   opacity: 0;
-  background: radial-gradient(circle at var(--jump-x, 50vw) var(--jump-y, 50vh), rgba(5,7,15,.08), rgba(5,7,15,.84) 76%);
+  background: #000;
   pointer-events: none;
-}
-
-.travel-overlay__portal {
-  position: absolute;
-  top: var(--jump-y, 50vh);
-  left: var(--jump-x, 50vw);
-  width: 300vmax;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(103,232,249,.22), rgba(79,70,229,.18) 15%, rgba(5,7,15,.96) 58%);
-  box-shadow: 0 0 90px rgba(103,232,249,.24);
-  transform: translate(-50%, -50%) scale(.001);
-}
-
-.travel-overlay__ring {
-  position: absolute;
-  top: var(--jump-y, 50vh);
-  left: var(--jump-x, 50vw);
-  width: clamp(72px, 12vmin, 150px);
-  aspect-ratio: 1;
-  border: 1px solid rgba(165,243,252,.9);
-  border-radius: 50%;
-  box-shadow: 0 0 24px rgba(103,232,249,.82), inset 0 0 22px rgba(103,232,249,.42);
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(.1);
-}
-
-.travel-overlay__message {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  color: #effcff;
-  font-family: var(--title);
-  font-size: clamp(1.1rem, 3vw, 1.8rem);
-  letter-spacing: .08em;
-  text-align: center;
-  text-shadow: 0 0 24px rgba(103,232,249,.85);
-  opacity: 0;
-  transform: translate(-50%, calc(-50% + 12px));
-  white-space: nowrap;
 }
 
 html.is-transitioning body > .starfield,
 html.is-transitioning body > .hero,
 html.is-transitioning body > .journey {
-  opacity: .13;
-  filter: blur(4px);
-  transition: opacity .78s ease, filter .78s ease;
+  opacity: 0;
+  filter: blur(2px);
+  transition: opacity 3.2s ease, filter 3.2s ease;
 }
 
 html.is-transitioning .travel-overlay {
   visibility: visible;
-  opacity: 1;
   pointer-events: auto;
-  animation: travelFade .9s ease-in forwards;
+  animation: travelFade 3.6s linear forwards;
 }
-
-html.is-transitioning .travel-overlay__portal { animation: portalZoom .9s cubic-bezier(.18,.72,.24,1) forwards; }
-html.is-transitioning .travel-overlay__ring { animation: portalRing .9s cubic-bezier(.12,.7,.2,1) forwards; }
-html.is-transitioning .travel-overlay__message { animation: travelMessage .9s ease-out forwards; }
-.celestial-node--launching { z-index: 30 !important; animation: nodeLaunch .9s cubic-bezier(.2,.7,.25,1) forwards; }
-.day25-sun--launching { animation: sunLaunch .9s cubic-bezier(.2,.7,.25,1) forwards; }
 
 .lock-dialog { width: min(430px, calc(100% - 32px)); padding: 0; border: 1px solid rgba(129,140,248,.38); border-radius: 18px; color: var(--ink); background: radial-gradient(ellipse at 50% 0, rgba(79,70,229,.16), transparent 60%), #0b1020; box-shadow: 0 25px 100px rgba(0,0,0,.6), 0 0 42px rgba(79,70,229,.12); text-align: center; }
 .lock-dialog::backdrop { background: rgba(2,4,12,.76); backdrop-filter: blur(7px); }
@@ -435,12 +387,11 @@ html.is-transitioning .travel-overlay__message { animation: travelMessage .9s ea
 }
 @keyframes constellationPulse { 0%, 100% { opacity: .82; } 50% { opacity: 1; } }
 @keyframes planetaryFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
-@keyframes travelFade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes portalZoom { to { transform: translate(-50%, -50%) scale(1); } }
-@keyframes portalRing { 0% { opacity: .95; transform: translate(-50%, -50%) scale(.1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(14); } }
-@keyframes travelMessage { 18% { opacity: 1; transform: translate(-50%, -50%); } 74% { opacity: 1; transform: translate(-50%, -50%); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.08); } }
-@keyframes nodeLaunch { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; filter: brightness(1); } 45% { transform: translate(-50%, -50%) scale(1.55); opacity: 1; filter: brightness(1.8); } 100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; filter: blur(7px) brightness(2); } }
-@keyframes sunLaunch { 0% { transform: translateY(-50%) scale(1); opacity: 1; } 45% { transform: translateY(-50%) scale(1.08); opacity: 1; filter: brightness(1.4); } 100% { transform: translateY(-50%) scale(1.2); opacity: 0; filter: blur(8px) brightness(2); } }
+@keyframes travelFade {
+  0%, 5% { opacity: 0; background-color: #05070f; }
+  30%, 56% { opacity: 1; background-color: #05070f; }
+  82%, 100% { opacity: 1; background-color: #fff; }
+}
 @keyframes twinkle { from { opacity: .26; transform: scale(.7); } to { opacity: .95; transform: scale(1.2); } }
 @keyframes starDrift { to { background-position: 210px 150px, -270px 220px, 330px -280px; } }
 @keyframes float { 50% { transform: translateY(4px); } }
@@ -461,4 +412,5 @@ html.is-transitioning .travel-overlay__message { animation: travelMessage .9s ea
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  html.is-transitioning .travel-overlay { animation-duration: 3.6s !important; }
 }

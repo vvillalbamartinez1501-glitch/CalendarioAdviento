@@ -33,7 +33,7 @@ const CALENDAR_DAYS = [
 
 const DAY_25_GIFT = {
   day: 25,
-  name: "El Sol",
+  name: "",
   url: "dias/dia-25/index.html"
 };
 
@@ -55,13 +55,13 @@ const CONSTELLATIONS = {
 };
 
 const STAR_COUNT = 76;
+const TRANSITION_DURATION_MS = 3600;
+const ARRIVAL_TRANSITION_KEY = "nuestro-adviento-transicion-llegada";
 const solarNodes = document.querySelector("#solar-nodes");
 const solarMap = document.querySelector("#solar-map");
 const day25Sun = document.querySelector("#day-25-sun");
 const day25Star = document.querySelector("#day-25-star");
 const day25State = document.querySelector("#day-25-state");
-const travelOverlay = document.querySelector("#travel-overlay");
-const travelMessage = document.querySelector("#travel-message");
 const constellationNodes = document.querySelector("#constellation-nodes");
 const progressCount = document.querySelector("#progress-count");
 const progressBar = document.querySelector("#progress-bar");
@@ -182,28 +182,26 @@ function renderDay25Gift() {
   day25State.textContent = opened ? "Abierto" : "Regalo de Navidad · NUEVO";
 }
 
-function startTravelTransition(day, sourceNode) {
+function startTravelTransition(day) {
   if (isNavigating) return;
   isNavigating = true;
 
-  const bounds = sourceNode.getBoundingClientRect();
-  travelOverlay.style.setProperty("--jump-x", `${bounds.left + bounds.width / 2}px`);
-  travelOverlay.style.setProperty("--jump-y", `${bounds.top + bounds.height / 2}px`);
-  travelMessage.textContent = `Viajando hacia ${day.name}…`;
-  sourceNode.classList.add(sourceNode === day25Sun ? "day25-sun--launching" : "celestial-node--launching");
   document.documentElement.classList.add("is-transitioning");
-
-  const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 180 : 900;
   window.setTimeout(() => {
+    try {
+      sessionStorage.setItem(ARRIVAL_TRANSITION_KEY, "true");
+    } catch (error) {
+      console.error("No se pudo preparar la transición de llegada.", error);
+    }
     window.location.href = day.url;
-  }, delay);
+  }, TRANSITION_DURATION_MS);
 }
 
-function openDay(day, sourceNode) {
+function openDay(day) {
   if (isNavigating) return;
 
   if (openedDays.has(day.day)) {
-    startTravelTransition(day, sourceNode);
+    startTravelTransition(day);
     return;
   }
 
@@ -222,7 +220,7 @@ function openDay(day, sourceNode) {
     return;
   }
   updateProgress();
-  startTravelTransition(day, sourceNode);
+  startTravelTransition(day);
 }
 
 function createDayNode(day) {
@@ -274,7 +272,7 @@ function createDayNode(day) {
   state.textContent = opened ? "Abierto" : unlocked ? "Nuevo" : `Disponible el ${day.day} dic`;
   card.append(marker, artwork, name, state);
 
-  card.addEventListener("click", () => openDay(day, card));
+  card.addEventListener("click", () => openDay(day));
   return card;
 }
 
@@ -320,7 +318,7 @@ document.querySelector("#reset-progress").addEventListener("click", () => {
   renderCalendar();
 });
 
-day25Sun.addEventListener("click", () => openDay(DAY_25_GIFT, day25Sun));
+day25Sun.addEventListener("click", () => openDay(DAY_25_GIFT));
 
 renderStars();
 renderCalendar();
