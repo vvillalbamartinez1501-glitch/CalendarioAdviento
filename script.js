@@ -60,6 +60,8 @@ const solarMap = document.querySelector("#solar-map");
 const day25Sun = document.querySelector("#day-25-sun");
 const day25Star = document.querySelector("#day-25-star");
 const day25State = document.querySelector("#day-25-state");
+const travelOverlay = document.querySelector("#travel-overlay");
+const travelMessage = document.querySelector("#travel-message");
 const constellationNodes = document.querySelector("#constellation-nodes");
 const progressCount = document.querySelector("#progress-count");
 const progressBar = document.querySelector("#progress-bar");
@@ -80,6 +82,7 @@ function getOpenedDays() {
 }
 
 let openedDays = getOpenedDays();
+let isNavigating = false;
 
 function isDayUnlocked(dayNumber, now = new Date()) {
   if (dayNumber === DAY_25_GIFT.day) {
@@ -179,9 +182,28 @@ function renderDay25Gift() {
   day25State.textContent = opened ? "Abierto" : "Regalo de Navidad · NUEVO";
 }
 
-function openDay(day) {
-  if (openedDays.has(day.day)) {
+function startTravelTransition(day, sourceNode) {
+  if (isNavigating) return;
+  isNavigating = true;
+
+  const bounds = sourceNode.getBoundingClientRect();
+  travelOverlay.style.setProperty("--jump-x", `${bounds.left + bounds.width / 2}px`);
+  travelOverlay.style.setProperty("--jump-y", `${bounds.top + bounds.height / 2}px`);
+  travelMessage.textContent = `Viajando hacia ${day.name}…`;
+  sourceNode.classList.add(sourceNode === day25Sun ? "day25-sun--launching" : "celestial-node--launching");
+  document.documentElement.classList.add("is-transitioning");
+
+  const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 180 : 900;
+  window.setTimeout(() => {
     window.location.href = day.url;
+  }, delay);
+}
+
+function openDay(day, sourceNode) {
+  if (isNavigating) return;
+
+  if (openedDays.has(day.day)) {
+    startTravelTransition(day, sourceNode);
     return;
   }
 
@@ -200,7 +222,7 @@ function openDay(day) {
     return;
   }
   updateProgress();
-  window.location.href = day.url;
+  startTravelTransition(day, sourceNode);
 }
 
 function createDayNode(day) {
@@ -252,7 +274,7 @@ function createDayNode(day) {
   state.textContent = opened ? "Abierto" : unlocked ? "Nuevo" : `Disponible el ${day.day} dic`;
   card.append(marker, artwork, name, state);
 
-  card.addEventListener("click", () => openDay(day));
+  card.addEventListener("click", () => openDay(day, card));
   return card;
 }
 
@@ -298,7 +320,7 @@ document.querySelector("#reset-progress").addEventListener("click", () => {
   renderCalendar();
 });
 
-day25Sun.addEventListener("click", () => openDay(DAY_25_GIFT));
+day25Sun.addEventListener("click", () => openDay(DAY_25_GIFT, day25Sun));
 
 renderStars();
 renderCalendar();
