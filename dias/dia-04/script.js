@@ -1,177 +1,194 @@
-const SIZE = 6;
-const CELL_COUNT = SIZE * SIZE;
-const EMPTY = CELL_COUNT - 1;
-const IMAGE_PATH = "../../assets/images/nosotros01.jpg";
-const board = document.querySelector("#puzzle-board");
-const moveCount = document.querySelector("#move-count");
-const shuffleButton = document.querySelector("#shuffle-button");
-const victoryPanel = document.querySelector("#victory-panel");
-const celebration = document.querySelector("#celebration");
-const snowfall = document.querySelector("#snowfall");
+const LINK_VER_JOJOS = "https://www.netflix.com/browse?jbv=82116553"; // PEGA AQUÍ EL ENLACE DIRECTO PARA VER JOJOS
 
-let tiles = [];
-let emptyPosition = EMPTY;
-let moves = 0;
-let isSolved = false;
+const MAX_POPUPS = 22;
+const INITIAL_POPUPS = 5;
+const POPUP_INTERVAL = 1800;
+const messages = [
+  "¿Qué haces aquí?",
+  "¡Ve a ver el final de JoJo's!",
+  "¡Es el último viernes de JoJo's!",
+  "¡Deja este calendario y ponte JoJo's ya!",
+  "Yare Yare Daze... ¿qué haces mirando esto en vez de JoJo's?",
+  "¡ORA ORA ORA! ¡Abre el capítulo ahora mismo!",
+  "¡Alerta crítica! El final de JoJo's te está esperando"
+];
 
-function isAdjacent(first, second) {
-  const rowDifference = Math.abs(Math.floor(first / SIZE) - Math.floor(second / SIZE));
-  const columnDifference = Math.abs((first % SIZE) - (second % SIZE));
-  return rowDifference + columnDifference === 1;
-}
+const popupContainer = document.querySelector("#popup-container");
+const audio = document.querySelector("#bg-audio");
+const audioFallbacks = ["../../assets/audio/spinning.mp3", "/assets/audio/spinning.mp3"];
+let nextZIndex = 10;
+let audioUnlocked = false;
+let audioFallbackIndex = 0;
 
-function neighbors(position) {
-  const row = Math.floor(position / SIZE);
-  const column = position % SIZE;
-  const result = [];
-
-  if (row > 0) result.push(position - SIZE);
-  if (row < SIZE - 1) result.push(position + SIZE);
-  if (column > 0) result.push(position - 1);
-  if (column < SIZE - 1) result.push(position + 1);
-  return result;
-}
-
-function renderBoard() {
-  const fragment = document.createDocumentFragment();
-
-  tiles.forEach((tile, position) => {
-    if (tile === EMPTY && !isSolved) {
-      const emptyCell = document.createElement("div");
-      emptyCell.className = "empty-cell";
-      emptyCell.setAttribute("role", "gridcell");
-      emptyCell.setAttribute("aria-label", "Hueco vacío");
-      fragment.append(emptyCell);
-      return;
+function playAudio() {
+  audio.volume = 1;
+  audio.play().catch((error) => {
+    if (error.name !== "NotAllowedError" && error.name !== "NotSupportedError") {
+      console.error("No se pudo reproducir el audio de fondo.", error);
     }
+  });
+}
 
-    const piece = document.createElement("button");
-    const row = Math.floor(tile / SIZE);
-    const column = tile % SIZE;
-    piece.className = "tile";
-    if (tile === EMPTY) piece.classList.add("tile--last");
-    piece.type = "button";
-    piece.setAttribute("role", "gridcell");
-    piece.setAttribute("aria-label", `Pieza ${tile + 1}, casilla correcta ${tile + 1}${isSolved ? ", colocada" : ""}`);
-    piece.disabled = isSolved || !isAdjacent(position, emptyPosition);
-    piece.style.setProperty("--tile-position", `${(column / (SIZE - 1)) * 100}% ${(row / (SIZE - 1)) * 100}%`);
-    const number = document.createElement("span");
-    number.className = "tile-number";
-    number.setAttribute("aria-hidden", "true");
-    number.textContent = String(tile + 1);
-    piece.append(number);
-    piece.addEventListener("click", () => moveTile(position));
-    fragment.append(piece);
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  playAudio();
+}
+
+audio.addEventListener("error", () => {
+  if (audioFallbackIndex < audioFallbacks.length) {
+    audio.src = audioFallbacks[audioFallbackIndex];
+    audioFallbackIndex += 1;
+    audio.addEventListener("canplay", playAudio, { once: true });
+    audio.load();
+    return;
+  }
+  console.error("No se encontró el audio. Comprueba la ruta de spinning.mp3.");
+});
+
+document.addEventListener("pointerdown", unlockAudio, { once: true, capture: true });
+document.addEventListener("click", unlockAudio, { once: true, capture: true });
+playAudio();
+
+function getPopupPosition(popup) {
+  const popupWidth = popup.offsetWidth;
+  const popupHeight = popup.offsetHeight;
+  const maxLeft = Math.max(0, window.innerWidth - popupWidth);
+  const maxTop = Math.max(0, window.innerHeight - popupHeight);
+  let left = 0;
+  let top = 0;
+
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    left = Math.random() * maxLeft;
+    top = Math.random() * maxTop;
+    const coversCloseButton = Array.from(popupContainer.querySelectorAll(".popup-close"))
+      .some((button) => {
+        const bounds = button.getBoundingClientRect();
+        const centerX = bounds.left + bounds.width / 2;
+        const centerY = bounds.top + bounds.height / 2;
+        return centerX >= left && centerX <= left + popupWidth
+          && centerY >= top && centerY <= top + popupHeight;
+      });
+    if (!(left < 220 && top < 70) && !coversCloseButton) break;
+  }
+
+  if (left < 220 && top < 70) {
+    if (maxLeft >= 220) left = 220;
+    else top = Math.min(maxTop, 70);
+  }
+
+  return { left, top };
+}
+
+function placePopup(popup) {
+  const { left, top } = getPopupPosition(popup);
+  popup.style.left = `${left}px`;
+  popup.style.top = `${top}px`;
+}
+
+function makeDraggable(popup, header) {
+  let pointerId = null;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  header.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0 || event.target.closest(".popup-close")) return;
+    pointerId = event.pointerId;
+    const bounds = popup.getBoundingClientRect();
+    offsetX = event.clientX - bounds.left;
+    offsetY = event.clientY - bounds.top;
+    header.setPointerCapture(pointerId);
   });
 
-  board.replaceChildren(fragment);
-  board.classList.toggle("is-solved", isSolved);
-  board.dataset.emptyPosition = String(emptyPosition);
-  moveCount.textContent = String(moves);
-  victoryPanel.hidden = !isSolved;
-}
+  header.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId) return;
+    const maxLeft = Math.max(0, window.innerWidth - popup.offsetWidth);
+    const maxTop = Math.max(0, window.innerHeight - popup.offsetHeight);
+    const left = Math.min(maxLeft, Math.max(0, event.clientX - offsetX));
+    const top = Math.min(maxTop, Math.max(0, event.clientY - offsetY));
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
+  });
 
-function checkVictory() {
-  return tiles.every((tile, position) => tile === position);
-}
-
-function moveTile(position) {
-  if (isSolved || !isAdjacent(position, emptyPosition)) return;
-
-  [tiles[position], tiles[emptyPosition]] = [tiles[emptyPosition], tiles[position]];
-  emptyPosition = position;
-  moves += 1;
-  isSolved = checkVictory();
-  renderBoard();
-  if (isSolved) celebrate();
-}
-
-function shufflePuzzle() {
-  do {
-    tiles = Array.from({ length: CELL_COUNT }, (_, index) => index);
-    emptyPosition = EMPTY;
-    let previousEmptyPosition = -1;
-
-    for (let step = 0; step < 250; step += 1) {
-      const possibleMoves = neighbors(emptyPosition).filter((position) => position !== previousEmptyPosition);
-      const nextPosition = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-      [tiles[nextPosition], tiles[emptyPosition]] = [tiles[emptyPosition], tiles[nextPosition]];
-      previousEmptyPosition = emptyPosition;
-      emptyPosition = nextPosition;
-    }
-  } while (checkVictory());
-
-  moves = 0;
-  isSolved = false;
-  celebration.replaceChildren();
-  renderBoard();
-}
-
-function celebrate() {
-  const colors = ["#D4A359", "#C59B47", "#9E2A2B", "#284B3E", "#F2D9A6"];
-  const confetti = document.createDocumentFragment();
-
-  for (let index = 0; index < 34; index += 1) {
-    const piece = document.createElement("span");
-    const angle = (Math.PI * 2 * index) / 34;
-    const distance = 80 + Math.random() * 170;
-    piece.className = "confetti";
-    piece.style.setProperty("--confetti-width", `${3 + Math.random() * 4}px`);
-    piece.style.setProperty("--confetti-height", `${5 + Math.random() * 5}px`);
-    piece.style.setProperty("--confetti-color", colors[index % colors.length]);
-    piece.style.setProperty("--confetti-x", `${Math.cos(angle) * distance}px`);
-    piece.style.setProperty("--confetti-y", `${Math.sin(angle) * distance}px`);
-    piece.style.setProperty("--confetti-rotate", `${Math.random() * 540 - 270}deg`);
-    piece.style.setProperty("--confetti-delay", `${Math.random() * 100}ms`);
-    confetti.append(piece);
+  function stopDragging(event) {
+    if (event.pointerId === pointerId) pointerId = null;
   }
-  celebration.replaceChildren(confetti);
+
+  header.addEventListener("pointerup", stopDragging);
+  header.addEventListener("pointercancel", stopDragging);
+  header.addEventListener("lostpointercapture", stopDragging);
 }
 
-function createSnowfall() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+function createPopup() {
+  if (popupContainer.children.length >= MAX_POPUPS) return;
 
-  const flakes = document.createDocumentFragment();
-  for (let index = 0; index < 34; index += 1) {
-    const flake = document.createElement("span");
-    flake.className = "snowflake";
-    flake.style.setProperty("--snow-left", `${Math.random() * 100}%`);
-    flake.style.setProperty("--snow-size", `${2 + Math.random() * 3}px`);
-    flake.style.setProperty("--snow-opacity", `${.22 + Math.random() * .45}`);
-    flake.style.setProperty("--snow-duration", `${9 + Math.random() * 14}s`);
-    flake.style.setProperty("--snow-delay", `${-Math.random() * 20}s`);
-    flake.style.setProperty("--snow-drift", `${Math.round(Math.random() * 80 - 40)}px`);
-    flakes.append(flake);
+  const popup = document.createElement("section");
+  popup.className = "popup";
+  popup.style.zIndex = String(nextZIndex++);
+
+  const header = document.createElement("div");
+  header.className = "popup-header";
+
+  const title = document.createElement("span");
+  title.className = "popup-title";
+  title.textContent = "⚠ MENSAJE URGENTE";
+
+  const closeButton = document.createElement("button");
+  closeButton.className = "popup-close";
+  closeButton.type = "button";
+  closeButton.setAttribute("aria-label", "Cerrar alerta (aparecerán dos más)");
+  closeButton.textContent = "×";
+  header.append(title, closeButton);
+
+  const body = document.createElement("div");
+  body.className = "popup-body";
+
+  const message = document.createElement("p");
+  message.className = "popup-message";
+  message.textContent = messages[Math.floor(Math.random() * messages.length)];
+
+  const menacing = document.createElement("span");
+  menacing.className = "menacing";
+  menacing.setAttribute("aria-hidden", "true");
+  menacing.textContent = "ゴゴゴゴ";
+
+  const link = document.createElement("a");
+  link.className = "jojo-link";
+  link.href = LINK_VER_JOJOS;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "Ir a ver JoJo's ↗";
+
+  body.append(message, menacing, link);
+  popup.append(header, body);
+  popupContainer.append(popup);
+  placePopup(popup);
+  makeDraggable(popup, header);
+  popup.addEventListener("pointerdown", () => {
+    popup.style.zIndex = String(nextZIndex++);
+  });
+
+  closeButton.addEventListener("click", () => {
+    unlockAudio();
+    popup.remove();
+    createPopup();
+    createPopup();
+  });
+}
+
+for (let index = 0; index < INITIAL_POPUPS; index += 1) {
+  createPopup();
+}
+
+window.setInterval(createPopup, POPUP_INTERVAL);
+
+window.addEventListener("resize", () => {
+  for (const popup of popupContainer.children) {
+    const maxLeft = Math.max(0, window.innerWidth - popup.offsetWidth);
+    const maxTop = Math.max(0, window.innerHeight - popup.offsetHeight);
+    const left = Math.min(maxLeft, Math.max(0, popup.offsetLeft));
+    const top = Math.min(maxTop, Math.max(0, popup.offsetTop));
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
   }
-  snowfall.append(flakes);
-}
-
-shuffleButton.addEventListener("click", shufflePuzzle);
-
-document.addEventListener("keydown", (event) => {
-  const isEditable = event.target instanceof HTMLElement
-    && (event.target.isContentEditable || event.target.closest("input, textarea, select"));
-  if (isEditable || !event.key.startsWith("Arrow")) return;
-
-  const direction = {
-    ArrowUp: -SIZE,
-    ArrowDown: SIZE,
-    ArrowLeft: -1,
-    ArrowRight: 1
-  }[event.key];
-  if (direction === undefined) return;
-
-  const nextPosition = emptyPosition + direction;
-  if (nextPosition < 0 || nextPosition >= CELL_COUNT || !isAdjacent(nextPosition, emptyPosition)) return;
-  event.preventDefault();
-  moveTile(nextPosition);
 });
-
-const imageCheck = new Image();
-imageCheck.addEventListener("error", () => {
-  document.querySelector("#game-instructions").textContent = "No se pudo cargar nosotros01.jpg. Comprueba que la foto esté en assets/images.";
-});
-imageCheck.src = new URL(IMAGE_PATH, document.baseURI).href;
-
-createSnowfall();
-shufflePuzzle();

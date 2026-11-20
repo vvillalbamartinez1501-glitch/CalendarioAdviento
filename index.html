@@ -3,48 +3,79 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8f2638">
-  <meta name="description" content="Un calendario de Adviento lleno de pequeños recuerdos, sorpresas y mucho amor.">
-  <title>Nuestro Adviento</title>
+  <meta name="theme-color" content="#05070f">
+  <meta name="description" content="Un viaje por el sistema solar y las constelaciones, una sorpresa por cada día de Adviento.">
+  <title>Nuestro Universo · Calendario de Adviento</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
 <body>
+  <div class="starfield" aria-hidden="true"></div>
   <header class="hero">
-    <div class="hero__glow" aria-hidden="true"></div>
-    <h1>Nuestro <em>Adviento</em></h1>
-    <p class="hero__signature">Con todo mi amor, para mi amor <span aria-hidden="true">♥</span></p>
-    <div class="hero__rule" aria-hidden="true"><span>❄</span></div>
+    <div class="hero__content">
+      <p class="eyebrow"><span aria-hidden="true">✦</span> Una travesía de diciembre <span aria-hidden="true">✦</span></p>
+      <!-- PERSONALIZAR TÍTULO DE PORTADA AQUÍ -->
+      <h1>Nuestro Universo <span>·</span><br>Calendario de Adviento</h1>
+      <p class="hero__intro">Veinticuatro pequeños mundos. Un universo entero por descubrir, día a día.</p>
+      <div class="progress-panel" aria-label="Progreso de exploración">
+        <div class="progress-copy">
+          <span class="progress-label">Progreso de exploración</span>
+          <span class="progress-count" id="progress-count" aria-live="polite">Descubiertos: 0 / 24</span>
+        </div>
+        <div class="progress-track" role="progressbar" aria-label="Días descubiertos" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0" id="progress-bar">
+          <span class="progress-fill" id="progress-fill"></span>
+        </div>
+        <button class="reset-button" id="reset-progress" type="button">Reiniciar progreso</button>
+      </div>
+      <a class="scroll-cue" href="#solar-system"><span aria-hidden="true">↓</span> Comienza el viaje</a>
+    </div>
+    <div class="hero-orbit hero-orbit--one" aria-hidden="true"></div>
+    <div class="hero-orbit hero-orbit--two" aria-hidden="true"></div>
+    <span class="hero-star hero-star--one" aria-hidden="true">✦</span>
+    <span class="hero-star hero-star--two" aria-hidden="true">✧</span>
   </header>
 
-  <main class="page">
-    <section class="calendar-section" aria-labelledby="main-heading">
+  <main class="journey">
+    <section class="journey-section solar-section" id="solar-system" aria-labelledby="solar-heading">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">1 — 25 de diciembre</p>
-          <h2 id="main-heading">Cada día, un pedacito de nosotros</h2>
+          <p class="section-kicker"><span>01</span> · Desde casa hacia el infinito</p>
+          <h2 id="solar-heading">El Sistema Solar</h2>
         </div>
-        <p class="section-note">Las ventanas se abren a su debido tiempo <span aria-hidden="true">♡</span></p>
+        <p class="section-description">Nuestros vecinos celestes, alineados en una ruta entre estrellas.</p>
       </div>
-      <div class="calendar-grid" id="main-calendar" aria-label="Calendario de Adviento"></div>
+      <div class="solar-route" id="solar-route" aria-label="Días 1 al 10: Sistema Solar"></div>
     </section>
 
-    <section class="christmas-day" id="christmas-day" aria-label="Sorpresa especial de Navidad" hidden></section>
+    <section class="journey-section constellation-section" id="constellations" aria-labelledby="constellations-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker"><span>02</span> · Cartas del cielo nocturno</p>
+          <h2 id="constellations-heading">Las Constelaciones</h2>
+        </div>
+        <p class="section-description">Catorce figuras estelares para orientarnos por el espacio profundo.</p>
+      </div>
+      <div class="constellation-grid" id="constellation-grid" aria-label="Días 11 al 24: Constelaciones"></div>
+    </section>
 
-    <p class="closing-note">Hecho con cariño, especialmente para ti <span aria-hidden="true">♥</span></p>
+    <footer class="page-footer">
+      <span class="footer-star" aria-hidden="true">✦</span>
+      <p>La distancia entre dos estrellas también puede ser un camino.</p>
+      <span class="footer-caption">FIN DE LA TRAVESÍA · 24 DÍAS DE LUZ</span>
+    </footer>
   </main>
 
   <dialog class="lock-dialog" id="lock-dialog" aria-labelledby="dialog-title">
     <form method="dialog">
       <button class="dialog-close" aria-label="Cerrar">×</button>
       <span class="dialog-icon" aria-hidden="true">🔒</span>
-      <p class="section-kicker">Un poquito de paciencia...</p>
-      <h2 id="dialog-title">¡Esa sorpresa aún duerme!</h2>
-      <p id="dialog-message">Vuelve cuando llegue su día. La espera también forma parte de la magia.</p>
-      <button class="dialog-button">Esperaré con ilusión</button>
+      <p class="section-kicker">El universo tiene sus tiempos</p>
+      <h2 id="dialog-title">Este astro aún duerme</h2>
+      <p id="dialog-message">Vuelve cuando llegue su día; te espera una sorpresa.</p>
+      <button class="dialog-button">Seguir explorando</button>
     </form>
   </dialog>
 </body>
