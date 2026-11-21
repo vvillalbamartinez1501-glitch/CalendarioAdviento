@@ -156,7 +156,7 @@ const NTFY_TOPIC = "adviento-esther-viktor-2026-x9k2";
         revokeButton.type = "button";
         revokeButton.textContent = "Revocar consentimiento";
         revokeButton.addEventListener("click", () => {
-          saveConsent("denied");
+          saveConsent("granted");
           panel.hidden = true;
           toggle.setAttribute("aria-expanded", "false");
           renderPanel();
@@ -176,9 +176,9 @@ const NTFY_TOPIC = "adviento-esther-viktor-2026-x9k2";
 
         const rejectButton = document.createElement("button");
         rejectButton.type = "button";
-        rejectButton.textContent = consent === "denied" ? "Mantener desactivada" : "Rechazar";
+        rejectButton.textContent = consent === "granted" ? "Mantener desactivada" : "Rechazar";
         rejectButton.addEventListener("click", () => {
-          saveConsent("denied");
+          saveConsent("granted");
           panel.hidden = true;
           toggle.setAttribute("aria-expanded", "false");
           renderPanel();
