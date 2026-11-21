@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../arrival-transition.js"></script>
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="description" content="Encuentra por última vez a Esther y Viktor en el segundo paisaje navideño.">
+  <title>Día 16 — El último paisaje</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body data-level="landscape-2">
+  <div class="snowfall" aria-hidden="true">
+    <span>✳</span><span>✧</span><span>❄</span><span>✳</span><span>❄</span>
+    <span>✧</span><span>✳</span><span>❄</span><span>✧</span>
+  </div>
+
+  <header class="topbar">
+    <a class="back-link" href="nivel-esther-viktor-1.html">← Volver al primer paisaje</a>
+    <h1 class="page-title">
+      <svg class="bow-icon" viewBox="0 0 64 48" aria-hidden="true">
+        <path class="bow-part bow-part--fill" d="M29 21 9 5C5 2 2 4 3 9l4 24c1 5 5 7 9 4l13-10M35 21 55 5c4-3 7-1 6 4l-4 24c-1 5-5 7-9 4L35 27" stroke-linejoin="round"/>
+        <path class="bow-part bow-part--fill" d="M24 24c0-5 4-9 8-9s8 4 8 9-4 9-8 9-8-4-8-9Z"/>
+      </svg>
+      <span>El último paisaje — Esther y Viktor</span>
+    </h1>
+    <p class="counter" id="counter" role="status" aria-live="polite">Encontrados: 0 / 2</p>
+  </header>
+
+  <main class="game">
+    <p class="intro">¡Última ronda! Encuentra a Esther y Viktor en este nuevo paisaje.</p>
+
+    <section class="scene-frame" aria-label="Escenario de búsqueda">
+      <div class="game-stage" id="game-stage">
+        <img class="scene-base" src="../../assets/images/landscape_2.jpg" alt="Segundo paisaje navideño en blanco y negro con Esther y Viktor escondidos">
+        <svg class="reveal-layer" id="reveal-layer" viewBox="0 0 1672 941" preserveAspectRatio="none" role="group" aria-label="Personajes ocultos">
+          <defs id="character-clips"></defs>
+          <g id="revealed-characters"></g>
+          <g id="character-hotspots"></g>
+        </svg>
+        <div class="sparkles" id="sparkles" aria-hidden="true"></div>
+        <p class="coordinate-readout" id="coordinate-readout" aria-live="polite" hidden></p>
+        <p class="scene-status" id="scene-status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="character-panel" aria-labelledby="characters-heading">
+      <div class="panel-heading">
+        <h2 id="characters-heading">A encontrar</h2>
+        <span>Dos personajes escondidos</span>
+      </div>
+      <ul class="characters" id="characters-bar" aria-label="Personajes por encontrar"></ul>
+    </section>
+    <p class="game-note">Pulsa sobre cada personaje para descubrir sus colores.</p>
+
+    <section class="victory-card" id="victory-card" aria-labelledby="victory-title" hidden>
+      <svg class="bow-icon bow-icon--victory" viewBox="0 0 64 48" aria-hidden="true">
+        <path class="bow-part bow-part--fill" d="M29 21 9 5C5 2 2 4 3 9l4 24c1 5 5 7 9 4l13-10M35 21 55 5c4-3 7-1 6 4l-4 24c-1 5-5 7-9 4L35 27" stroke-linejoin="round"/>
+        <path class="bow-part bow-part--fill" d="M24 24c0-5 4-9 8-9s8 4 8 9-4 9-8 9-8-4-8-9Z"/>
+      </svg>
+      <p class="victory-kicker">Desafío completado</p>
+      <h2 id="victory-title">¡Los encontraste de nuevo!</h2>
+      <p class="dedication">¡Has completado el desafío de verdad! Esther y Viktor te dan las gracias por encontrarlos.</p>
+      <a class="restart-button next-level-link" href="../../index.html">Volver al calendario</a>
+      <button class="restart-button" id="restart-button" type="button">Volver a jugar</button>
+    </section>
+  </main>
+
+  <div class="celebration" id="celebration" aria-hidden="true"></div>
+</body>
+</html>

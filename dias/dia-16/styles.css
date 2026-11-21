@@ -221,6 +221,7 @@ button { color: inherit; }
   transition: color .18s ease, background .18s ease;
 }
 .restart-button:hover { color: var(--paper); background: var(--rose); }
+.next-level-link { display: inline-flex; align-items: center; justify-content: center; margin: 0 8px 8px; text-decoration: none; }
 .celebration { position: fixed; z-index: 5; inset: 0; overflow: hidden; pointer-events: none; }
 .celebration-item { position: absolute; top: -36px; color: var(--rose); animation: celebration-fall linear forwards; }
 .celebration-item--gold { color: var(--gold); }
