@@ -134,6 +134,8 @@ a { color: inherit; }
 .sprite-card--blue { background: linear-gradient(145deg, #66d8ff, #3858a9 67%, #252d54); }
 .sprite-card--esther { background: linear-gradient(145deg, #ffe29a, #df9951 62%, #704827); }
 .sprite-card--viktor { background: linear-gradient(145deg, #b7e5ff, #626bd2 62%, #392c70); }
+.sprite-card--ghost-cat { background: linear-gradient(145deg, #d9eeff, #7ea8dc 62%, #3a4a7d); }
+.sprite-card--ghost-cat::after, .sprite-card--esther::after, .sprite-card--viktor::after { position: absolute; z-index: 1; inset: 45% 0 0; background: linear-gradient(transparent, rgba(23, 20, 35, .58)); content: ""; pointer-events: none; }
 .sprite-card--pink { background: linear-gradient(145deg, #ffacc7, #cc5796 65%, #713877); }
 .sprite-card--green { background: linear-gradient(145deg, #b5f7c2, #36a78a 65%, #23615f); }
 .sprite-card--purple { background: linear-gradient(145deg, #dbb2ff, #8253c8 65%, #42306f); }

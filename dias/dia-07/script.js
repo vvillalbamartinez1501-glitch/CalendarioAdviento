@@ -1,5 +1,13 @@
 // EDITAR TEXTO DE ESTHER AQUÍ: nombre, rareza, nivel, imagen, dedicatoria y bonus.
 const SPIRITS = {
+  "ghost-cat": {
+    nombre: "ESPÍRITU GHOST CAT",
+    rareza: "MYTHIC",
+    nivel: 1,
+    imagen: "../../assets/images/espiritu-fortnite-ghost-cat.jpg",
+    descripcion: "Un gato fantasmal muy travieso que aparece entre las estrellas. Su ronroneo mágico ilumina las aventuras y recuerda que siempre hay un compañero cerca.",
+    bonus: "Otorga +100% de magia felina y compañía."
+  },
   esther: {
     nombre: "ESPÍRITU ESTHER",
     rareza: "SPECIAL",
@@ -35,7 +43,7 @@ const equipButton = document.querySelector("#equip-button");
 const equipLabel = equipButton.querySelector(".equip-label");
 const equipMessage = document.querySelector("#equip-message");
 const equipToast = document.querySelector("#equip-toast");
-let selectedSpiritId = "esther";
+let selectedSpiritId = "ghost-cat";
 let equippedSpiritId = null;
 let toastTimeout;
 
@@ -65,7 +73,7 @@ function selectSpirit(spiritId, focusCard = false) {
   spriteBonus.textContent = spirit.bonus;
   spiritStage.setAttribute("aria-label", `${spirit.nombre} levitando sobre un pedestal luminoso`);
 
-  const spiritNumber = String(spiritIds.indexOf(spiritId) + 2).padStart(2, "0");
+  const spiritNumber = String(spiritIds.indexOf(spiritId) + 1).padStart(2, "0");
   stageNumber.textContent = spiritNumber;
   collectionCount.firstChild.textContent = `${spiritNumber} `;
 
@@ -74,7 +82,7 @@ function selectSpirit(spiritId, focusCard = false) {
     card.classList.toggle("is-selected", isSelected);
     card.setAttribute("aria-pressed", String(isSelected));
     const spiritNameForLabel = SPIRITS[card.dataset.spirit].nombre.replace("ESPÍRITU ", "Espíritu ");
-    card.setAttribute("aria-label", `${spiritNameForLabel}, nivel ${SPIRITS[card.dataset.spirit].nivel}${card.dataset.spirit === "viktor" ? ", nuevo" : ""}${isSelected ? ", seleccionado" : ""}`);
+    card.setAttribute("aria-label", `${spiritNameForLabel}, nivel ${SPIRITS[card.dataset.spirit].nivel}${card.dataset.spirit === "ghost-cat" ? ", nuevo" : ""}${isSelected ? ", seleccionado" : ""}`);
   });
 
   updateEquipState();
