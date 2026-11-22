@@ -240,8 +240,8 @@ function createDayNode(day) {
   card.dataset.day = String(day.day);
   card.style.setProperty("--float-delay", `${(day.day % 7) * -0.37}s`);
   card.setAttribute("aria-label", unlocked
-    ? `Día ${String(day.day).padStart(2, "0")}: ${day.name}, ${opened ? "abierto" : "disponible"}`
-    : `Día ${String(day.day).padStart(2, "0")}: ${day.name}, bloqueado hasta el ${day.day} de diciembre`);
+    ? `Día ${String(day.day).padStart(2, "0")}${isConstellation ? `: ${day.name}` : ""}, ${opened ? "abierto" : "disponible"}`
+    : `Día ${String(day.day).padStart(2, "0")}${isConstellation ? `: ${day.name}` : ""}, bloqueado hasta el ${day.day} de diciembre`);
 
   const marker = document.createElement("span");
   marker.className = "day-marker";
@@ -264,13 +264,17 @@ function createDayNode(day) {
   }
 
   const artwork = isConstellation ? createConstellationArt(day.type) : createPlanetArt(day.type);
-  const name = document.createElement("span");
-  name.className = "day-name";
-  name.textContent = day.name;
   const state = document.createElement("span");
   state.className = "day-state";
   state.textContent = opened ? "Abierto" : unlocked ? "Nuevo" : `Disponible el ${day.day} dic`;
-  card.append(marker, artwork, name, state);
+  if (isConstellation) {
+    const name = document.createElement("span");
+    name.className = "day-name";
+    name.textContent = day.name;
+    card.append(marker, artwork, name, state);
+  } else {
+    card.append(marker, artwork, state);
+  }
 
   card.addEventListener("click", () => openDay(day));
   return card;
