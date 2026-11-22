@@ -1,6 +1,3 @@
-const SIZE = 6;
-const CELL_COUNT = SIZE * SIZE;
-const EMPTY = CELL_COUNT - 1;
 const IMAGE_PATH = "../../assets/images/nosotros01.jpg";
 const board = document.querySelector("#puzzle-board");
 const moveCount = document.querySelector("#move-count");
@@ -9,34 +6,46 @@ const victoryPanel = document.querySelector("#victory-panel");
 const celebration = document.querySelector("#celebration");
 const snowfall = document.querySelector("#snowfall");
 
+let size = 6;
+let cellCount = size * size;
+let empty = cellCount - 1;
 let tiles = [];
-let emptyPosition = EMPTY;
+let emptyPosition = empty;
 let moves = 0;
 let isSolved = false;
 
+const difficultySteps = {
+  3: 50,
+  6: 220,
+  8: 420
+};
+
 function isAdjacent(first, second) {
-  const rowDifference = Math.abs(Math.floor(first / SIZE) - Math.floor(second / SIZE));
-  const columnDifference = Math.abs((first % SIZE) - (second % SIZE));
+  const rowDifference = Math.abs(Math.floor(first / size) - Math.floor(second / size));
+  const columnDifference = Math.abs((first % size) - (second % size));
   return rowDifference + columnDifference === 1;
 }
 
 function neighbors(position) {
-  const row = Math.floor(position / SIZE);
-  const column = position % SIZE;
+  const row = Math.floor(position / size);
+  const column = position % size;
   const result = [];
 
-  if (row > 0) result.push(position - SIZE);
-  if (row < SIZE - 1) result.push(position + SIZE);
+  if (row > 0) result.push(position - size);
+  if (row < size - 1) result.push(position + size);
   if (column > 0) result.push(position - 1);
-  if (column < SIZE - 1) result.push(position + 1);
+  if (column < size - 1) result.push(position + 1);
   return result;
 }
 
 function renderBoard() {
   const fragment = document.createDocumentFragment();
+  board.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
+  board.style.gridTemplateRows = `repeat(${size}, minmax(0, 1fr))`;
+  board.setAttribute("aria-label", `Puzzle deslizante de ${size} por ${size}`);
 
   tiles.forEach((tile, position) => {
-    if (tile === EMPTY && !isSolved) {
+    if (tile === empty && !isSolved) {
       const emptyCell = document.createElement("div");
       emptyCell.className = "empty-cell";
       emptyCell.setAttribute("role", "gridcell");
@@ -46,15 +55,20 @@ function renderBoard() {
     }
 
     const piece = document.createElement("button");
-    const row = Math.floor(tile / SIZE);
-    const column = tile % SIZE;
+    const row = Math.floor(tile / size);
+    const column = tile % size;
     piece.className = "tile";
-    if (tile === EMPTY) piece.classList.add("tile--last");
+    if (tile === empty) piece.classList.add("tile--last");
     piece.type = "button";
     piece.setAttribute("role", "gridcell");
     piece.setAttribute("aria-label", `Pieza ${tile + 1}, casilla correcta ${tile + 1}${isSolved ? ", colocada" : ""}`);
     piece.disabled = isSolved || !isAdjacent(position, emptyPosition);
-    piece.style.setProperty("--tile-position", `${(column / (SIZE - 1)) * 100}% ${(row / (SIZE - 1)) * 100}%`);
+    piece.style.setProperty("--tile-position", `${(column / (size - 1)) * 100}% ${(row / (size - 1)) * 100}%`);
+    piece.style.setProperty("--grid-size", `${size * 100}% ${size * 100}%`);
+    if (isSolved) {
+      const revealOrder = tile;
+      piece.style.setProperty("--reveal-delay", `${(revealOrder / (cellCount - 1)) * 700}ms`);
+    }
     const number = document.createElement("span");
     number.className = "tile-number";
     number.setAttribute("aria-hidden", "true");
@@ -88,11 +102,11 @@ function moveTile(position) {
 
 function shufflePuzzle() {
   do {
-    tiles = Array.from({ length: CELL_COUNT }, (_, index) => index);
-    emptyPosition = EMPTY;
+    tiles = Array.from({ length: cellCount }, (_, index) => index);
+    emptyPosition = empty;
     let previousEmptyPosition = -1;
 
-    for (let step = 0; step < 250; step += 1) {
+    for (let step = 0; step < difficultySteps[size]; step += 1) {
       const possibleMoves = neighbors(emptyPosition).filter((position) => position !== previousEmptyPosition);
       const nextPosition = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
       [tiles[nextPosition], tiles[emptyPosition]] = [tiles[emptyPosition], tiles[nextPosition]];
@@ -148,21 +162,35 @@ function createSnowfall() {
 
 shuffleButton.addEventListener("click", shufflePuzzle);
 
+document.querySelectorAll(".difficulty-button").forEach((button) => {
+  button.addEventListener("click", () => {
+    size = Number(button.dataset.size);
+    cellCount = size * size;
+    empty = cellCount - 1;
+    document.querySelectorAll(".difficulty-button").forEach((option) => {
+      const active = option === button;
+      option.classList.toggle("is-active", active);
+      option.setAttribute("aria-pressed", String(active));
+    });
+    shufflePuzzle();
+  });
+});
+
 document.addEventListener("keydown", (event) => {
   const isEditable = event.target instanceof HTMLElement
     && (event.target.isContentEditable || event.target.closest("input, textarea, select"));
   if (isEditable || !event.key.startsWith("Arrow")) return;
 
   const direction = {
-    ArrowUp: -SIZE,
-    ArrowDown: SIZE,
+    ArrowUp: -size,
+    ArrowDown: size,
     ArrowLeft: -1,
     ArrowRight: 1
   }[event.key];
   if (direction === undefined) return;
 
   const nextPosition = emptyPosition + direction;
-  if (nextPosition < 0 || nextPosition >= CELL_COUNT || !isAdjacent(nextPosition, emptyPosition)) return;
+  if (nextPosition < 0 || nextPosition >= cellCount || !isAdjacent(nextPosition, emptyPosition)) return;
   event.preventDefault();
   moveTile(nextPosition);
 });

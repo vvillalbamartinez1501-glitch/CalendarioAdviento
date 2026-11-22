@@ -25,21 +25,32 @@
       </a>
 
       <header class="page-heading">
-        <p class="eyebrow"><span aria-hidden="true">✦</span> Un recuerdo para atesorar <span aria-hidden="true">✦</span></p>
+        <p class="eyebrow"><span aria-hidden="true">✦</span> Puzzle para desenterrar el pasado <span aria-hidden="true">✦</span></p>
         <h1>Día 5 <span aria-hidden="true">—</span> 5 de Diciembre</h1>
-        <p class="intro">Desliza las piezas y vuelve a unir uno de nuestros momentos favoritos.</p>
+        <p class="intro">Desliza las piezas y vuelve a formar uno de nuestros momentos.</p>
       </header>
 
       <section class="game" aria-labelledby="puzzle-heading">
         <div class="game-heading">
           <div>
+            <!--
             <h2 id="puzzle-heading">Nuestro pequeño recuerdo</h2>
+            -->
             <p class="game-instructions" id="game-instructions">Toca una pieza junto al hueco o usa las flechas. Los números indican su lugar; la foto se enfocará al completar el puzzle.</p>
           </div>
           <p class="move-count" aria-live="polite">
             <span class="move-count__label">MOVIMIENTOS</span>
             <strong id="move-count">0</strong>
           </p>
+        </div>
+
+        <div class="difficulty-row">
+          <p class="control-label" id="difficulty-label">Elige tu nivel</p>
+          <div class="difficulty-options" role="group" aria-labelledby="difficulty-label">
+            <button class="difficulty-button" type="button" data-size="3" aria-pressed="false">Fácil <span>3 × 3</span></button>
+            <button class="difficulty-button is-active" type="button" data-size="6" aria-pressed="true">Medio <span>6 × 6</span></button>
+            <button class="difficulty-button" type="button" data-size="8" aria-pressed="false">Difícil <span>8 × 8</span></button>
+          </div>
         </div>
 
         <div class="board-wrap">
