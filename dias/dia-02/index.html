@@ -19,9 +19,11 @@
 
   <main class="day-page">
     <header class="day-heading">
-      <p class="day-kicker">Una noche para recordar</p>
+      <p class="day-kicker">La luna está preciosa ¿Verdad?</p>
       <h1>Día 2 — 2 de diciembre</h1>
+      <!--
       <p class="day-date">Bajo una luna hecha de música</p>
+      -->
     </header>
 
     <section class="scene" aria-label="Escena nocturna con un disco de vinilo como luna">
@@ -54,20 +56,19 @@
       <!-- [HUECO_IMAGEN_2_JACK_SALLY_SIN_FONDO] Usa aqui un PNG transparente de Jack y Sally sobre la colina. -->
       <img class="characters" id="characters-image" src="../../assets/images/jackysally.png" alt="Siluetas de Jack y Sally sobre una colina en espiral">
       <div class="character-fallback" id="character-fallback" hidden>Añade aquí el PNG transparente de Jack y Sally para completar la escena.</div>
-      <p class="scene-caption">Dos corazones distintos, una misma luna.</p>
     </section>
 
     <section class="patch-card" aria-label="Dedicatoria y música del Día 2">
       <article class="note">
-        <p class="note-kicker">Un retal de nuestro cuento</p>
-        <h2>Una canción para dos</h2>
-        <p class="dedication">Si la noche se vuelve demasiado grande, <em>siempre encontraremos una melodía que nos lleve de vuelta el uno al otro.</em> Hoy, esta luna gira por nosotros.</p>
+        <!--<p class="note-kicker">Una pequeña dedicatoria</p> -->
+        <h2>Una melodía dedicada a lo que siento por ti</h2>
+        <p class="dedication">Si un día me perdiera, <em>encuéntrame en nuestras canciones.</em> </p>
       </article>
 
       <div class="music-panel">
-        <p class="track-label">La canción de hoy</p>
-        <p class="track-title">Bajo la luna de vinilo</p>
-        <p class="track-artist">Nuestra pequeña banda sonora</p>
+        <p class="track-label">Mi dedicatoria más sincera</p>
+        <p class="track-title">M.A.I</p>
+        <p class="track-artist">Nuestros latidos no son nuestra única banda sonora</p>
         <div class="music-controls">
           <button class="play-button" id="play-button" type="button" aria-label="Reproducir la escena" aria-pressed="false">
             <span class="play-icon" id="play-icon" aria-hidden="true">▶</span>
@@ -75,10 +76,13 @@
           </button>
           <span class="playing-status" id="playing-status" aria-live="polite">Aguja en pausa</span>
         </div>
+        <!--
         <div class="audio-slot">
-          <strong>Tu espacio musical</strong> · Añade aquí un reproductor de Spotify o un archivo de audio.
-          <!-- Puedes reemplazar este bloque por un iframe de Spotify o por un elemento <audio controls> con su <source>. -->
+          <strong>Mai</strong>
         </div>
+        -->
+          <audio id="mai-audio" src="../../assets/audio/mai.m4a" preload="auto" loop></audio>
+
       </div>
     </section>
 
@@ -94,6 +98,7 @@
     const recordArt = document.querySelector(".record-art");
     const charactersImage = document.querySelector("#characters-image");
     const characterFallback = document.querySelector("#character-fallback");
+    const maiAudio = document.querySelector("#mai-audio");
 
     function setPlaying(isPlaying) {
       const label = isPlaying ? "Pausar la escena" : "Reproducir la escena";
@@ -105,6 +110,16 @@
       playLabel.textContent = isPlaying ? "Pausar" : "Reproducir";
       playIcon.textContent = isPlaying ? "Ⅱ" : "▶";
       playingStatus.textContent = isPlaying ? "La luna está girando" : "Aguja en pausa";
+
+      if (isPlaying) {
+        maiAudio.play().catch((error) => {
+          if (error.name !== "NotAllowedError") {
+            console.error("No se pudo reproducir mai.m4a.", error);
+          }
+        });
+      } else {
+        maiAudio.pause();
+      }
     }
 
     function togglePlaying() {
