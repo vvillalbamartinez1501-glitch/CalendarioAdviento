@@ -1,12 +1,15 @@
-const image = document.querySelector("#memory-image");
-const placeholder = document.querySelector("#photo-placeholder");
+const portrait = document.querySelector("#sally-portrait");
+const placeholder = document.querySelector("#portrait-placeholder");
 
-image.addEventListener("load", () => {
-  image.hidden = false;
+function showPortrait() {
+  portrait.hidden = false;
   placeholder.hidden = true;
-});
+}
 
-image.addEventListener("error", () => {
-  image.hidden = true;
+portrait.addEventListener("load", showPortrait);
+portrait.addEventListener("error", () => {
+  portrait.hidden = true;
   placeholder.hidden = false;
 });
+
+if (portrait.complete && portrait.naturalWidth > 0) showPortrait();
