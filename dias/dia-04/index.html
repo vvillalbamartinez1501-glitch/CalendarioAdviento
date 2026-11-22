@@ -12,13 +12,35 @@
   <script src="../../assets/js/tracker.js" defer></script>
 </head>
 <body>
-  <!-- Si abres esta página en local sin servidor raíz, cambia la ruta a ../../assets/video/jojos.mp4. -->
-  <video id="bg-video" src="/assets/video/jojos.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
+  <section class="jojo-stage" id="jojo-stage" aria-label="Caos de JoJo's">
+    <!-- Si abres esta página en local sin servidor raíz, cambia la ruta a ../../assets/video/jojos.mp4. -->
+    <video id="bg-video" src="/assets/video/jojos.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
 
-  <!-- Si el archivo está en /assets/audio/spinning.mp3 o abres en local, script.js probará las rutas alternativas. -->
-  <audio id="bg-audio" src="/assets/audiospinning.mp3" loop preload="auto"></audio>
+    <!-- Si el archivo está en /assets/audio/spinning.mp3 o abres en local, script.js probará las rutas alternativas. -->
+    <audio id="bg-audio" src="/assets/audio/spinning.mp3" loop preload="auto"></audio>
 
-  <main id="popup-container" aria-label="Alertas de JoJo's"></main>
-  <a class="back-link" href="../../index.html">← Volver al calendario</a>
+    <main id="popup-container" aria-label="Alertas de JoJo's"></main>
+    <a class="back-link" href="../../index.html">← Volver al calendario</a>
+
+    <button class="scroll-cue" id="scroll-cue" type="button" aria-label="Bajar al mensaje personalizado">
+      <span>Bajar al mensaje</span>
+      <span aria-hidden="true">↓</span>
+    </button>
+  </section>
+
+  <main class="message-section" id="message-section">
+    <article class="message-card">
+      <p class="message-kicker">Buenos díaaaaas</p>
+      <h1>Día 4 — Último viernes de jojos</h1>
+
+      <!-- HUECO 1: sustituye este párrafo Lorem ipsum por tu mensaje personalizado. -->
+      <p class="personal-message">Este día es un poco gilipollez, pero prioridad a lo prioritario, tienes que ver el último episodio de Jojo's, ¿o NO?.</p>
+      <p class="personal-message">Aun que sé que probablemente vayas a esperar a verlo con Mapoi</p>
+      <p class="personal-message">Pues ya sabes, te quiero mucho, disrfuta de tu serie y hasta mañana.</p>
+      </div>
+
+      <a class="back-link back-link--bottom" href="../../index.html">← Volver al calendario</a>
+    </article>
+  </main>
 </body>
 </html>

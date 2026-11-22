@@ -8,17 +8,23 @@ const messages = [
   "¡Ve a ver el final de JoJo's!",
   "¡Es el último viernes de JoJo's!",
   "¡Deja este calendario y ponte JoJo's ya!",
-  "Yare Yare Daze... ¿qué haces mirando esto en vez de JoJo's?",
+  "¿Qué haces mirando esto en vez de JoJo's?",
   "¡ORA ORA ORA! ¡Abre el capítulo ahora mismo!",
   "¡Alerta crítica! El final de JoJo's te está esperando"
 ];
 
 const popupContainer = document.querySelector("#popup-container");
 const audio = document.querySelector("#bg-audio");
+const video = document.querySelector("#bg-video");
+const jojoStage = document.querySelector("#jojo-stage");
+const scrollCue = document.querySelector("#scroll-cue");
+const messageSection = document.querySelector("#message-section");
 const audioFallbacks = ["../../assets/audio/spinning.mp3", "/assets/audio/spinning.mp3"];
 let nextZIndex = 10;
 let audioUnlocked = false;
 let audioFallbackIndex = 0;
+let popupInterval = null;
+let jojoRunning = true;
 
 function playAudio() {
   audio.volume = 1;
@@ -176,11 +182,51 @@ function createPopup() {
   });
 }
 
-for (let index = 0; index < INITIAL_POPUPS; index += 1) {
-  createPopup();
+function startJojoLoop() {
+  if (!jojoRunning) return;
+  if (popupContainer.children.length === 0) {
+    for (let index = 0; index < INITIAL_POPUPS; index += 1) {
+      createPopup();
+    }
+  }
+  if (!popupInterval) {
+    popupInterval = window.setInterval(createPopup, POPUP_INTERVAL);
+  }
+  video.play().catch(() => {});
+  if (audioUnlocked) playAudio();
 }
 
-window.setInterval(createPopup, POPUP_INTERVAL);
+function stopJojoLoop() {
+  jojoRunning = false;
+  if (popupInterval) {
+    window.clearInterval(popupInterval);
+    popupInterval = null;
+  }
+  popupContainer.replaceChildren();
+  video.pause();
+  audio.pause();
+  jojoStage.classList.add("is-left");
+}
+
+function resumeJojoLoop() {
+  jojoRunning = true;
+  jojoStage.classList.remove("is-left");
+  startJojoLoop();
+}
+
+scrollCue.addEventListener("click", () => {
+  messageSection.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+const stageObserver = new IntersectionObserver((entries) => {
+  const isVisible = entries[0].isIntersecting;
+  if (isVisible) resumeJojoLoop();
+  else stopJojoLoop();
+}, { threshold: 0.35 });
+
+stageObserver.observe(jojoStage);
+
+startJojoLoop();
 
 window.addEventListener("resize", () => {
   for (const popup of popupContainer.children) {
