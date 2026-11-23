@@ -193,7 +193,7 @@ function startTravelTransition(day) {
     } catch (error) {
       console.error("No se pudo preparar la transición de llegada.", error);
     }
-    window.location.href = day.url;
+    window.location.href = day.day === 9 ? "dias/dia-09/transicion.html" : day.url;
   }, TRANSITION_DURATION_MS);
 }
 
