@@ -24,13 +24,15 @@ const GREENS = [22, 22, 28, 28, 34, 34, 40, 46, 82, 118];
 const BROWNS = [52, 94, 94, 130, 136];
 const ORNAMENT_COLORS = [196, 202, 226, 21, 201, 51, 129];
 const PALETTE = {
-  21: "#0000ff", 22: "#005f00", 28: "#008700", 34: "#00af00",
+  21: "#0000ff", 22: "#005f00", 24: "#005f87", 27: "#005fff",
+  28: "#008700", 33: "#0087ff", 34: "#00af00", 39: "#00afff",
   40: "#00d700", 46: "#00ff00", 51: "#00ffff", 52: "#5f0000",
-  82: "#5fff00", 94: "#875f00", 118: "#87ff00", 129: "#af00ff",
-  130: "#af5f00", 136: "#af8700", 196: "#ff0000", 201: "#ff00ff",
-  202: "#ff5f00", 208: "#ff8700", 220: "#ffd700", 226: "#ffff00",
-  230: "#ffffd7", 231: "#ffffff", 238: "#444444", 240: "#585858",
-  245: "#8a8a8a", 250: "#bcbcbc", 255: "#eeeeee",
+  82: "#5fff00", 94: "#875f00", 118: "#87ff00", 124: "#af0000",
+  129: "#af00ff", 130: "#af5f00", 136: "#af8700", 160: "#d70000",
+  196: "#ff0000", 201: "#ff00ff", 202: "#ff5f00", 208: "#ff8700",
+  220: "#ffd700", 226: "#ffff00", 230: "#ffffd7", 231: "#ffffff",
+  238: "#444444", 240: "#585858", 245: "#8a8a8a", 250: "#bcbcbc",
+  255: "#eeeeee",
 };
 const LIGHT = (() => {
   const vector = [-0.45, 0.55, 0.7];
@@ -67,7 +69,7 @@ function radiusAt(y) {
 
 function buildScene() {
   const random = randomGenerator(7);
-  const result = { foliage: [], garland: [], ornaments: [], trunk: [], floor: [] };
+  const result = { foliage: [], garland: [], ornaments: [], trunk: [], platform: [], gifts: [], floor: [] };
   for (let i = 0; i < FOLIAGE_RINGS; i += 1) {
     const y = i / FOLIAGE_RINGS;
     const radius = radiusAt(y);
@@ -120,13 +122,84 @@ function buildScene() {
     }
   }
 
+  for (let ring = 0; ring < 6; ring += 1) {
+    const radius = 0.16 + ring * 0.055;
+    for (let k = 0; k < 160; k += 1) {
+      const angle = k / 160 * Math.PI * 2;
+      const highlight = k % 10 === 0;
+      const color = ring === 5 && highlight ? 220 : ring % 2 === 0 ? 136 : 94;
+      result.platform.push([
+        radius * Math.cos(angle),
+        -0.15,
+        radius * Math.sin(angle),
+        highlight ? "*" : ".",
+        color,
+      ]);
+    }
+  }
+
+  for (let i = 0; i < 6; i += 1) {
+    const angle = i / 6 * Math.PI * 2 + Math.PI / 6;
+    const radius = i % 2 === 0 ? 0.34 : 0.4;
+    const centerX = radius * Math.cos(angle);
+    const centerZ = radius * Math.sin(angle);
+    const width = 0.13 + (i % 3) * 0.025;
+    const height = 0.1 + (i % 2) * 0.025;
+    const boxDepth = width * 0.82;
+    const bottom = -0.14;
+    const top = bottom + height;
+    const isRed = i % 2 === 0;
+    const frontColor = isRed ? 196 : 27;
+    const sideColor = isRed ? 160 : 21;
+    const topColor = isRed ? 202 : 33;
+    const step = 0.022;
+
+    for (let y = bottom; y <= top; y += step) {
+      for (let x = -width / 2; x <= width / 2; x += step) {
+        const ribbon = Math.abs(x) < step * 0.6;
+        const color = ribbon ? 220 : y > top - step * 1.5 ? topColor : frontColor;
+        result.gifts.push([centerX + x, y, centerZ + boxDepth / 2, ribbon ? "|" : "#", color]);
+      }
+
+      for (let z = -boxDepth / 2; z <= boxDepth / 2; z += step) {
+        const ribbon = Math.abs(z) < step * 0.6;
+        result.gifts.push([
+          centerX + width / 2,
+          y,
+          centerZ + z,
+          ribbon ? "|" : "#",
+          ribbon ? 220 : sideColor,
+        ]);
+      }
+    }
+
+    for (let x = -width / 2; x <= width / 2; x += step) {
+      for (let z = -boxDepth / 2; z <= boxDepth / 2; z += step) {
+        const ribbon = Math.abs(x) < step * 0.6 || Math.abs(z) < step * 0.6;
+        result.gifts.push([
+          centerX + x,
+          top,
+          centerZ + z,
+          ribbon ? "+" : "=",
+          ribbon ? 220 : topColor,
+        ]);
+      }
+    }
+
+    result.gifts.push(
+      [centerX, top + step, centerZ, "*", 226],
+      [centerX - step, top + step, centerZ, "(", 220],
+      [centerX + step, top + step, centerZ, ")", 220],
+    );
+  }
+
   for (let i = 0; i < 900; i += 1) {
     const angle = random() * Math.PI * 2;
     const radius = 0.12 + Math.sqrt(random()) * 0.6;
     const characters = "....:'*";
     result.floor.push([
       radius * Math.cos(angle),
-      -0.15,
+      -0.18,
       radius * Math.sin(angle),
       characters[Math.floor(random() * characters.length)],
     ]);
@@ -227,6 +300,11 @@ function render(time) {
     plot(column, row, projectedZ - 0.5, character, shade);
   }
 
+  for (const [x, y, z, character, color] of scene.platform) {
+    const [column, row, projectedZ] = project(x, y, z);
+    plot(column, row, projectedZ, character, color);
+  }
+
   for (const [x, y, z, cosineNormal, sineNormal] of scene.trunk) {
     const [column, row, projectedZ] = project(x, y, z);
     const brightness = 0.2 + 0.8 * light(cosineNormal, sineNormal, 0);
@@ -254,6 +332,11 @@ function render(time) {
     if (twinkle > 0.92) plot(column, row, projectedZ + 0.03, "●", 231);
     else if (twinkle > 0.3) plot(column, row, projectedZ + 0.03, "●", color);
     else plot(column, row, projectedZ + 0.03, "o", color);
+  }
+
+  for (const [x, y, z, character, color] of scene.gifts) {
+    const [column, row, projectedZ] = project(x, y, z);
+    plot(column, row, projectedZ + 0.02, character, color);
   }
 
   const [starColumn, starRow] = project(0, 1.07, 0);
