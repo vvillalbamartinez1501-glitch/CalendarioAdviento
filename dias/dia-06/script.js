@@ -1,3 +1,4 @@
+// EDITAR TEXTO DE ESTHER AQUÍ: nombre, rareza, nivel, imagen, dedicatoria y bonus.
 const SPIRITS = {
   "ghost-cat": {
     nombre: "ESPÍRITU GHOST CAT",
@@ -15,6 +16,7 @@ const SPIRITS = {
     descripcion: "Un pequeño espíritu con una luz muy especial. Aparece para recordarte que incluso los días más normales pueden llenarse de magia cuando los compartimos.",
     bonus: "Otorga +100% de felicidad al jugar juntos."
   },
+  // EDITAR TEXTO DE VIKTOR AQUÍ: nombre, rareza, nivel, imagen, dedicatoria y bonus.
   viktor: {
     nombre: "ESPÍRITU VIKTOR",
     rareza: "MYTHIC",
@@ -36,7 +38,7 @@ const spriteLevel = document.querySelector("#sprite-level");
 const spriteDescription = document.querySelector("#sprite-description");
 const spriteBonus = document.querySelector("#sprite-bonus");
 const stageNumber = document.querySelector("#stage-number");
-const collectionCount = document.querySelector(".collection-count");
+const collectionCount = document.querySelector("#collection-count");
 const equipButton = document.querySelector("#equip-button");
 const equipLabel = equipButton.querySelector(".equip-label");
 const equipMessage = document.querySelector("#equip-message");
@@ -53,7 +55,7 @@ function updateEquipState() {
   equipMessage.textContent = isEquipped ? `✓ ${SPIRITS[selectedSpiritId].nombre} está equipado.` : "";
 }
 
-function selectSpirit(spiritId) {
+function selectSpirit(spiritId, focusCard = false) {
   const spirit = SPIRITS[spiritId];
   if (!spirit) return;
 
@@ -73,17 +75,38 @@ function selectSpirit(spiritId) {
 
   const spiritNumber = String(spiritIds.indexOf(spiritId) + 1).padStart(2, "0");
   stageNumber.textContent = spiritNumber;
-  collectionCount.firstChild.textContent = "02 ";
+  collectionCount.firstChild.textContent = `${spiritNumber} `;
 
   spiritCards.forEach((card) => {
     const isSelected = card.dataset.spirit === spiritId;
     card.classList.toggle("is-selected", isSelected);
     card.setAttribute("aria-pressed", String(isSelected));
+    const spiritNameForLabel = SPIRITS[card.dataset.spirit].nombre.replace("ESPÍRITU ", "Espíritu ");
+    card.setAttribute("aria-label", `${spiritNameForLabel}, nivel ${SPIRITS[card.dataset.spirit].nivel}${card.dataset.spirit === "ghost-cat" ? ", nuevo" : ""}${isSelected ? ", seleccionado" : ""}`);
   });
+
   updateEquipState();
+  if (focusCard) {
+    spiritCards.find((card) => card.dataset.spirit === spiritId).focus();
+  }
 }
 
-spiritCards.forEach((card) => card.addEventListener("click", () => selectSpirit(card.dataset.spirit)));
+spiritCards.forEach((card) => {
+  card.addEventListener("click", () => selectSpirit(card.dataset.spirit));
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.altKey || event.ctrlKey || event.metaKey) return;
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName) || event.target.isContentEditable) return;
+
+  if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+    event.preventDefault();
+    const currentIndex = spiritIds.indexOf(selectedSpiritId);
+    const direction = event.key === "ArrowRight" ? 1 : -1;
+    const nextIndex = (currentIndex + direction + spiritIds.length) % spiritIds.length;
+    selectSpirit(spiritIds[nextIndex], true);
+  }
+});
 
 equipButton.addEventListener("click", () => {
   const wasEquipped = equippedSpiritId === selectedSpiritId;
@@ -93,6 +116,11 @@ equipButton.addEventListener("click", () => {
     ? `${SPIRITS[selectedSpiritId].nombre} se ha guardado en la colección.`
     : `¡${SPIRITS[selectedSpiritId].nombre} está equipado!`;
   equipToast.classList.add("is-visible");
+
   window.clearTimeout(toastTimeout);
-  toastTimeout = window.setTimeout(() => equipToast.classList.remove("is-visible"), 2600);
+  toastTimeout = window.setTimeout(() => {
+    equipToast.classList.remove("is-visible");
+  }, 2600);
 });
+
+selectSpirit(selectedSpiritId);

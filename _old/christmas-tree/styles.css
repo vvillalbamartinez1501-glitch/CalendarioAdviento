@@ -1,0 +1,106 @@
+:root {
+  color-scheme: dark;
+  font-family: "Courier New", monospace;
+  background: #050508;
+  color: #a7adb9;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #050508;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #050508;
+}
+
+#tree-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.timer,
+.metrics,
+.back-link {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.035em;
+  text-shadow: 0 1px 5px #050508, 0 0 8px #050508;
+}
+
+.timer {
+  top: 17px;
+  right: 22px;
+  color: #d7d9df;
+}
+
+.metrics {
+  bottom: 17px;
+  left: 20px;
+  color: #727985;
+}
+
+.back-link {
+  right: 20px;
+  bottom: 17px;
+  color: #727985;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  color: #d7d9df;
+}
+
+.back-link:focus-visible {
+  outline: 1px solid #d7d9df;
+  outline-offset: 4px;
+}
+
+@media (max-width: 520px) {
+  .timer {
+    top: 12px;
+    right: 14px;
+  }
+
+  .metrics,
+  .back-link {
+    bottom: 11px;
+    font-size: 9px;
+  }
+
+  .metrics {
+    left: 12px;
+  }
+
+  .back-link {
+    right: 12px;
+  }
+}

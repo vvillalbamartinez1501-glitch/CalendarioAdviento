@@ -1,135 +1,46 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <link rel="icon" type="image/jpeg" href="../../assets/images/jackysallyheart.jpg">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d12">
+  <meta name="description" content="Un árbol de Navidad animado, hecho de luces, nieve y pequeños caracteres.">
+  <title>Día 7 · Un árbol para ti</title>
+  <link rel="icon" type="image/jpeg" href="../../assets/images/jackysallyheart.jpg">
   <script src="../../arrival-transition.js"></script>
-  <meta name="theme-color" content="#11131b">
-  <meta name="description" content="Día 7: elige entre dos espíritus especiales de nuestra colección.">
-  <title>Día 7 · Colección de espíritus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
   <script src="../../assets/js/tracker.js" defer></script>
 </head>
 <body>
-  <svg class="svg-filters" aria-hidden="true" focusable="false">
-    <filter id="sprite-black-key" color-interpolation-filters="sRGB" x="-10%" y="-10%" width="120%" height="120%">
-      <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 1 1 1 0 -0.08"></feColorMatrix>
-    </filter>
-  </svg>
-
-  <div class="game-shell">
-    <header class="top-hud">
-      <nav class="main-nav" aria-label="Navegación principal">
-        <span class="controller-hint">[LB]</span>
-        <a class="nav-link" href="#play">PLAY</a>
-        <a class="nav-link nav-link--active" href="#sprites" aria-current="page">SPRITES</a>
-        <a class="nav-link" href="#shop">SHOP</a>
-        <a class="nav-link" href="#locker">LOCKER</a>
-        <a class="nav-link nav-link--optional" href="#passes">PASSES</a>
-        <a class="nav-link nav-link--optional" href="#quests">QUESTS</a>
-        <a class="nav-link nav-link--optional" href="#compete">COMPETE</a>
-        <a class="nav-link nav-link--optional" href="#career">CAREER</a>
-        <span class="vbucks" aria-label="400 PaVos"><span aria-hidden="true">◉</span> 400</span>
-        <span class="controller-hint">[RB]</span>
-      </nav>
-      <div class="profile-hud">
-        <span class="profile-avatar" aria-hidden="true">✦</span>
-        <span class="dust-count">SPRITE DUST <strong>• 38,725</strong></span>
-        <button class="view-info" type="button" aria-label="Ver información">[Y] <span>View Info</span></button>
-      </div>
+  <main class="page-shell">
+    <header class="page-header">
+      <a class="back-link" href="../../index.html"><span aria-hidden="true">←</span> Volver al calendario</a>
+      <p class="day-label"><span aria-hidden="true">✦</span> Una pequeña sorpresa para ti <span aria-hidden="true">✦</span></p>
+      <h1>Día 7 <span aria-hidden="true">·</span> Un árbol para ti</h1>
+      <p class="intro">Gira despacito, pide un deseo y deja que nieve.</p>
+      <button class="motion-button" id="motion-button" type="button" aria-pressed="true">
+        <span class="motion-button__icon" aria-hidden="true">Ⅱ</span>
+        <span id="motion-label">Pausar animación</span>
+      </button>
     </header>
 
-    <nav class="sub-nav" aria-label="Secciones de sprites">
-      <span class="controller-hint">[LT]</span>
-      <a class="sub-nav__link sub-nav__link--active" href="#collection" aria-current="page">COLLECTION</a>
-      <a class="sub-nav__link" href="#rewards">REWARDS</a>
-      <span class="controller-hint">[RT]</span>
-    </nav>
+    <section class="tree-stage" aria-label="Árbol navideño animado">
+      <div class="stage-glow" aria-hidden="true"></div>
+      <canvas id="tree-canvas" aria-label="Árbol de Navidad tridimensional girando lentamente, decorado con una guirnalda dorada y luces de colores, bajo una estrella parpadeante y nieve. El mensaje dice Merry Christmas.">
+        Un árbol de Navidad gira entre luces y copos de nieve. Merry Christmas.
+      </canvas>
+      <span class="stage-caption" aria-hidden="true">✦ · ❄ · ✦</span>
+    </section>
 
-    <main class="collection-layout" id="collection">
-      <section class="sprite-library" id="sprites" aria-labelledby="library-title">
-        <div class="section-heading">
-          <span class="section-kicker">SPRITE ARCHIVE</span>
-          <span class="collection-count" id="collection-count">01 <i>/</i> 03</span>
-        </div>
-        <h1 id="library-title">ALL SPRITES</h1>
-        <div class="sprite-grid" role="group" aria-label="Elige un espíritu desbloqueado">
-          <button class="sprite-card sprite-card--ghost-cat is-unlocked is-selected" type="button" data-spirit="ghost-cat" aria-label="Espíritu Ghost Cat, nivel 1, nuevo, seleccionado" aria-pressed="true">
-            <span class="new-badge">NEW!</span>
-            <img class="sprite-thumb" src="../../assets/images/espiritu-fortnite-ghost-cat.jpg" alt="">
-            <span class="sprite-level">Lvl 1</span>
-          </button>
-          <button class="sprite-card sprite-card--esther is-unlocked" type="button" data-spirit="esther" aria-label="Espíritu Esther, nivel 1" aria-pressed="false">
-            <img class="sprite-thumb" src="../../assets/images/espiritu-fortnite-esther.jpg" alt="">
-            <span class="sprite-level">Lvl 1</span>
-          </button>
-          <button class="sprite-card sprite-card--viktor is-unlocked" type="button" data-spirit="viktor" aria-label="Espíritu Viktor, nivel 1, nuevo" aria-pressed="false">
-            <span class="new-badge">NEW!</span>
-            <img class="sprite-thumb" src="../../assets/images/espiritu-fortnite-viktor.jpg" alt="">
-            <span class="sprite-level">Lvl 1</span>
-          </button>
-        </div>
-        <p class="discover-timer">
-          <span class="clock-icon" aria-hidden="true">◷</span>
-          <span>New Sprites will be discoverable in:<strong>3D 2H</strong></span>
-        </p>
-        <p class="keyboard-hint"><kbd>←</kbd> <kbd>→</kbd> Cambiar espíritu</p>
-      </section>
-
-      <section class="spirit-stage" id="spirit-stage" aria-label="Espíritu Ghost Cat levitando sobre un pedestal luminoso">
-        <div class="stage-label"><span class="stage-dot"></span> COLLECTION <span>/</span> SPRITE <strong id="stage-number">01</strong></div>
-        <div class="stage-backdrop" aria-hidden="true"></div>
-        <div class="stage-light" aria-hidden="true"></div>
-        <div class="spirit-glow" aria-hidden="true"></div>
-        <div class="spirit-character" id="spirit-character">
-          <img id="spirit-image" src="../../assets/images/espiritu-fortnite-ghost-cat.jpg" alt="Espíritu Ghost Cat levitando">
-        </div>
-        <div class="pedestal" aria-hidden="true">
-          <span class="pedestal-ring pedestal-ring--outer"></span>
-          <span class="pedestal-ring pedestal-ring--inner"></span>
-          <span class="pedestal-core"></span>
-        </div>
-        <span class="stage-coordinate stage-coordinate--left" aria-hidden="true">X 04.28</span>
-        <span class="stage-coordinate stage-coordinate--right" aria-hidden="true">Y 09.16</span>
-      </section>
-
-      <aside class="sprite-details" aria-labelledby="sprite-name">
-        <div class="detail-topline">
-          <span class="rarity-pill" id="sprite-rarity">MYTHIC</span>
-          <span class="level-pill" id="sprite-level">Lvl 1</span>
-        </div>
-        <h2 id="sprite-name">ESPÍRITU GHOST CAT</h2>
-        <span class="title-rule" aria-hidden="true"></span>
-        <p class="sprite-description" id="sprite-description"></p>
-        <div class="bonus-card">
-          <span class="bonus-icon" aria-hidden="true">✦</span>
-          <div>
-            <span class="bonus-label">SPRITE BONUS</span>
-            <p id="sprite-bonus"></p>
-          </div>
-        </div>
-        <button class="equip-button" id="equip-button" type="button" aria-pressed="false">
-          <span class="button-key">[A]</span><span class="equip-label">EQUIP</span><span class="equip-arrow" aria-hidden="true">↗</span>
-        </button>
-        <p class="equip-message" id="equip-message" role="status" aria-live="polite"></p>
-        <p class="detail-footnote"><span aria-hidden="true">✧</span> A LITTLE MAGIC, JUST FOR YOU</p>
-      </aside>
-    </main>
-
-    <footer class="bottom-hud">
-      <a class="back-link" href="../../index.html"><span aria-hidden="true">←</span> Volver al calendario</a>
-      <div class="footer-controls" aria-label="Controles">
-        <span><kbd>[X]</kbd> Battle Pass Unlocks</span>
-        <span><kbd>[B]</kbd> Back</span>
-        <span><kbd>[≡]</kbd> Chat</span>
-      </div>
+    <footer class="page-footer">
+      <span class="footer-rule" aria-hidden="true"></span>
+      <p>Que nunca te falte un poquito de magia <span aria-hidden="true">♥</span></p>
+      <span class="footer-rule" aria-hidden="true"></span>
     </footer>
-    <div class="toast" id="equip-toast" role="status" aria-live="polite"></div>
-  </div>
+  </main>
 </body>
 </html>
