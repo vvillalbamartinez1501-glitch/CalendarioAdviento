@@ -1,29 +1,28 @@
-// EDITAR TEXTO DE ESTHER AQUÍ: nombre, rareza, nivel, imagen, dedicatoria y bonus.
+// EDITAR TEXTO DE LOS ESPÍRITUS AQUÍ: nombre, rareza, nivel, imagen, dedicatoria y bonificación.
 const SPIRITS = {
   "ghost-cat": {
-    nombre: "ESPÍRITU GHOST CAT",
-    rareza: "MYTHIC",
+    nombre: "ESPÍRITU GATO FANTASMA",
+    rareza: "MÍTICO",
     nivel: 1,
     imagen: "../../assets/images/espiritu-fortnite-ghost-cat.jpg",
-    descripcion: "Un gato fantasmal muy travieso que aparece entre las estrellas. Su ronroneo mágico ilumina las aventuras y recuerda que siempre hay un compañero cerca.",
-    bonus: "Otorga +100% de magia felina y compañía."
+    descripcion: "Un gato fantasmal muy amigo de zero, te acompaña siempre, aun cuando no lo ves.",
+    bonus: "Bonificación en ronroneos y bolas de pelo."
   },
   esther: {
     nombre: "ESPÍRITU ESTHER",
-    rareza: "SPECIAL",
-    nivel: 1,
+    rareza: "ESPECIAL",
+    nivel: 5,
     imagen: "../../assets/images/espiritu-fortnite-esther.jpg",
-    descripcion: "Un pequeño espíritu con una luz muy especial. Aparece para recordarte que incluso los días más normales pueden llenarse de magia cuando los compartimos.",
-    bonus: "Otorga +100% de felicidad al jugar juntos."
+    descripcion: "El espíritu más importante de la colección, la persona más importante de mi corazón",
+    bonus: "Aporta muchísima felicidad al jugar juntos."
   },
-  // EDITAR TEXTO DE VIKTOR AQUÍ: nombre, rareza, nivel, imagen, dedicatoria y bonus.
   viktor: {
     nombre: "ESPÍRITU VIKTOR",
-    rareza: "MYTHIC",
-    nivel: 1,
+    rareza: "MÍTICO",
+    nivel: 5,
     imagen: "../../assets/images/espiritu-fortnite-viktor.jpg",
-    descripcion: "Viktor llega desde otra dimensión para acompañarte en cada aventura. Su energía tranquila convierte cualquier partida en un recuerdo que vale la pena guardar.",
-    bonus: "Desbloquea +100% de aventuras y abrazos."
+    descripcion: "Espíritu que siempre estará y que te quiere mucho. Ahora está cansado por haber estado haciendo este calendario y necesita mimos",
+    bonus: "Bonificación al jugar de noche y madrugada."
   }
 };
 
@@ -43,7 +42,8 @@ const equipButton = document.querySelector("#equip-button");
 const equipLabel = equipButton.querySelector(".equip-label");
 const equipMessage = document.querySelector("#equip-message");
 const equipToast = document.querySelector("#equip-toast");
-let selectedSpiritId = "ghost-cat";
+const visitedSpiritIds = new Set();
+let selectedSpiritId = "esther";
 let equippedSpiritId = null;
 let toastTimeout;
 
@@ -51,7 +51,7 @@ function updateEquipState() {
   const isEquipped = equippedSpiritId === selectedSpiritId;
   equipButton.setAttribute("aria-pressed", String(isEquipped));
   equipButton.classList.toggle("is-equipped", isEquipped);
-  equipLabel.textContent = isEquipped ? "✓ EQUIPPED" : "EQUIP";
+  equipLabel.textContent = isEquipped ? "✓ EQUIPADO" : "EQUIPAR";
   equipMessage.textContent = isEquipped ? `✓ ${SPIRITS[selectedSpiritId].nombre} está equipado.` : "";
 }
 
@@ -59,6 +59,7 @@ function selectSpirit(spiritId, focusCard = false) {
   const spirit = SPIRITS[spiritId];
   if (!spirit) return;
 
+  visitedSpiritIds.add(spiritId);
   selectedSpiritId = spiritId;
   spiritImage.src = spirit.imagen;
   spiritImage.alt = `${spirit.nombre} levitando sobre el pedestal luminoso`;
@@ -67,8 +68,8 @@ function selectSpirit(spiritId, focusCard = false) {
   spiritCharacter.classList.add("is-changing");
   spriteName.textContent = spirit.nombre;
   spriteRarity.textContent = spirit.rareza;
-  spriteRarity.classList.toggle("rarity-pill--mythic", spirit.rareza === "MYTHIC");
-  spriteLevel.textContent = `Lvl ${spirit.nivel}`;
+  spriteRarity.classList.toggle("rarity-pill--mythic", spirit.rareza === "MÍTICO");
+  spriteLevel.textContent = `Niv. ${spirit.nivel}`;
   spriteDescription.textContent = spirit.descripcion;
   spriteBonus.textContent = spirit.bonus;
   spiritStage.setAttribute("aria-label", `${spirit.nombre} levitando sobre un pedestal luminoso`);
@@ -82,7 +83,13 @@ function selectSpirit(spiritId, focusCard = false) {
     card.classList.toggle("is-selected", isSelected);
     card.setAttribute("aria-pressed", String(isSelected));
     const spiritNameForLabel = SPIRITS[card.dataset.spirit].nombre.replace("ESPÍRITU ", "Espíritu ");
-    card.setAttribute("aria-label", `${spiritNameForLabel}, nivel ${SPIRITS[card.dataset.spirit].nivel}${card.dataset.spirit === "ghost-cat" ? ", nuevo" : ""}${isSelected ? ", seleccionado" : ""}`);
+    const isNew = (card.dataset.spirit === "ghost-cat" || card.dataset.spirit === "viktor")
+      && !visitedSpiritIds.has(card.dataset.spirit);
+    if (!isNew) {
+      const newBadge = card.querySelector(".new-badge");
+      if (newBadge) newBadge.remove();
+    }
+    card.setAttribute("aria-label", `${spiritNameForLabel}, nivel ${SPIRITS[card.dataset.spirit].nivel}${isNew ? ", nuevo" : ""}${isSelected ? ", seleccionado" : ""}`);
   });
 
   updateEquipState();

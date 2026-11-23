@@ -26,68 +26,67 @@
     <header class="top-hud">
       <nav class="main-nav" aria-label="Navegación principal">
         <span class="controller-hint">[LB]</span>
-        <a class="nav-link" href="#play">PLAY</a>
-        <a class="nav-link nav-link--active" href="#sprites" aria-current="page">SPRITES</a>
-        <a class="nav-link" href="#shop">SHOP</a>
-        <a class="nav-link" href="#locker">LOCKER</a>
-        <a class="nav-link nav-link--optional" href="#passes">PASSES</a>
-        <a class="nav-link nav-link--optional" href="#quests">QUESTS</a>
-        <a class="nav-link nav-link--optional" href="#compete">COMPETE</a>
-        <a class="nav-link nav-link--optional" href="#career">CAREER</a>
-        <span class="vbucks" aria-label="400 PaVos"><span aria-hidden="true">◉</span> 400</span>
+        <a class="nav-link" href="#play">JUGAR</a>
+        <a class="nav-link nav-link--active" href="#sprites" aria-current="page">ESPÍRITUS</a>
+        <a class="nav-link" href="#shop">TIENDA</a>
+        <a class="nav-link" href="#locker">TAQUILLA</a>
+        <a class="nav-link nav-link--optional" href="#passes">PASES</a>
+        <a class="nav-link nav-link--optional" href="#quests">MISIONES</a>
+        <a class="nav-link nav-link--optional" href="#compete">COMPETIR</a>
+        <a class="nav-link nav-link--optional" href="#career">CARRERA</a>
+        <span class="vbucks" aria-label="400 pavos"><span aria-hidden="true">◉</span> 400</span>
         <span class="controller-hint">[RB]</span>
       </nav>
       <div class="profile-hud">
         <span class="profile-avatar" aria-hidden="true">✦</span>
-        <span class="dust-count">SPRITE DUST <strong>• 38,725</strong></span>
-        <button class="view-info" type="button" aria-label="Ver información">[Y] <span>View Info</span></button>
+        <span class="dust-count">POLVO DE ESPÍRITU <strong>• 38,725</strong></span>
+        <button class="view-info" type="button" aria-label="Ver información">[Y] <span>Ver información</span></button>
       </div>
     </header>
 
-    <nav class="sub-nav" aria-label="Secciones de sprites">
+    <nav class="sub-nav" aria-label="Secciones de espíritus">
       <span class="controller-hint">[LT]</span>
-      <a class="sub-nav__link sub-nav__link--active" href="#collection" aria-current="page">COLLECTION</a>
-      <a class="sub-nav__link" href="#rewards">REWARDS</a>
+      <a class="sub-nav__link sub-nav__link--active" href="#collection" aria-current="page">COLECCIÓN</a>
+      <a class="sub-nav__link" href="#rewards">RECOMPENSAS</a>
       <span class="controller-hint">[RT]</span>
     </nav>
 
     <main class="collection-layout" id="collection">
       <section class="sprite-library" id="sprites" aria-labelledby="library-title">
         <div class="section-heading">
-          <span class="section-kicker">SPRITE ARCHIVE</span>
+          <span class="section-kicker">ARCHIVO DE ESPÍRITUS</span>
           <span class="collection-count" id="collection-count">01 <i>/</i> 03</span>
         </div>
-        <h1 id="library-title">ALL SPRITES</h1>
+        <h1 id="library-title">TODOS LOS ESPÍRITUS</h1>
         <div class="sprite-grid" role="group" aria-label="Elige un espíritu desbloqueado">
-          <button class="sprite-card sprite-card--ghost-cat is-unlocked  " type="button" data-spirit="ghost-cat" aria-label="Espíritu Ghost Cat, nivel 1, nuevo" aria-pressed="false">
-            <span class="new-badge">NEW!</span>
+          <button class="sprite-card sprite-card--ghost-cat is-unlocked  " type="button" data-spirit="ghost-cat" aria-label="Espíritu Gato Fantasma, nivel 1, nuevo" aria-pressed="false">
+            <span class="new-badge">¡NUEVO!</span>
             <img class="sprite-thumb" src="../../assets/images/espiritu-fortnite-ghost-cat.jpg" alt="">
-            <span class="sprite-level">Lvl 1</span>
+            <span class="sprite-level">Niv. 1</span>
           </button>
-          <button class="sprite-card sprite-card--esther is-unlocked is-selected" type="button" data-spirit="esther" aria-label="Espíritu Esther, nivel 1, nuevo , seleccionado" aria-pressed="true">
+          <button class="sprite-card sprite-card--esther is-unlocked is-selected" type="button" data-spirit="esther" aria-label="Espíritu Esther, nivel 1, seleccionado" aria-pressed="true">
             <img class="sprite-thumb" src="../../assets/images/espiritu-fortnite-esther.jpg" alt="">
-            <span class="sprite-level">Lvl 1</span>
+            <span class="sprite-level">Niv. 5</span>
           </button>
           <button class="sprite-card sprite-card--viktor is-unlocked" type="button" data-spirit="viktor" aria-label="Espíritu Viktor, nivel 1, nuevo" aria-pressed="false">
-            <span class="new-badge">NEW!</span>
+            <span class="new-badge">¡NUEVO!</span>
             <img class="sprite-thumb" src="../../assets/images/espiritu-fortnite-viktor.jpg" alt="">
-            <span class="sprite-level">Lvl 1</span>
+            <span class="sprite-level">Niv. 5</span>
           </button>
         </div>
         <p class="discover-timer">
           <span class="clock-icon" aria-hidden="true">◷</span>
-          <span>New Sprites will be discoverable in:<strong>3D 2H</strong></span>
+          <span>Se descubrirán nuevos espíritus dentro de:<strong>6 d 7 h</strong></span>
         </p>
-        <p class="keyboard-hint"><kbd>←</kbd> <kbd>→</kbd> Cambiar espíritu</p>
       </section>
 
-      <section class="spirit-stage" id="spirit-stage" aria-label="Espíritu Ghost Cat levitando sobre un pedestal luminoso">
-        <div class="stage-label"><span class="stage-dot"></span> COLLECTION <span>/</span> SPRITE <strong id="stage-number">01</strong></div>
+      <section class="spirit-stage" id="spirit-stage" aria-label="Espíritu Gato Fantasma levitando sobre un pedestal luminoso">
+        <div class="stage-label"><span class="stage-dot"></span> COLECCIÓN <span>/</span> ESPÍRITU <strong id="stage-number">01</strong></div>
         <div class="stage-backdrop" aria-hidden="true"></div>
         <div class="stage-light" aria-hidden="true"></div>
         <div class="spirit-glow" aria-hidden="true"></div>
         <div class="spirit-character" id="spirit-character">
-          <img id="spirit-image" src="../../assets/images/espiritu-fortnite-ghost-cat.jpg" alt="Espíritu Ghost Cat levitando">
+          <img id="spirit-image" src="../../assets/images/espiritu-fortnite-ghost-cat.jpg" alt="Espíritu Gato Fantasma levitando">
         </div>
         <div class="pedestal" aria-hidden="true">
           <span class="pedestal-ring pedestal-ring--outer"></span>
@@ -100,33 +99,33 @@
 
       <aside class="sprite-details" aria-labelledby="sprite-name">
         <div class="detail-topline">
-          <span class="rarity-pill" id="sprite-rarity">MYTHIC</span>
-          <span class="level-pill" id="sprite-level">Lvl 1</span>
+          <span class="rarity-pill" id="sprite-rarity">MÍTICO</span>
+          <span class="level-pill" id="sprite-level">Niv. 1</span>
         </div>
-        <h2 id="sprite-name">ESPÍRITU GHOST CAT</h2>
+        <h2 id="sprite-name">ESPÍRITU GATO FANTASMA</h2>
         <span class="title-rule" aria-hidden="true"></span>
         <p class="sprite-description" id="sprite-description"></p>
         <div class="bonus-card">
           <span class="bonus-icon" aria-hidden="true">✦</span>
           <div>
-            <span class="bonus-label">SPRITE BONUS</span>
+            <span class="bonus-label">BONIFICACIÓN DEL ESPÍRITU</span>
             <p id="sprite-bonus"></p>
           </div>
         </div>
         <button class="equip-button" id="equip-button" type="button" aria-pressed="false">
-          <span class="button-key">[A]</span><span class="equip-label">EQUIP</span><span class="equip-arrow" aria-hidden="true">↗</span>
+          <span class="button-key">[A]</span><span class="equip-label">EQUIPAR</span><span class="equip-arrow" aria-hidden="true">↗</span>
         </button>
         <p class="equip-message" id="equip-message" role="status" aria-live="polite"></p>
-        <p class="detail-footnote"><span aria-hidden="true">✧</span> A LITTLE MAGIC, JUST FOR YOU</p>
+        <p class="detail-footnote"><span aria-hidden="true">✧</span> Tu pequeña obsesión, un día más en el calendario</p>
       </aside>
     </main>
 
     <footer class="bottom-hud">
       <a class="back-link" href="../../index.html"><span aria-hidden="true">←</span> Volver al calendario</a>
       <div class="footer-controls" aria-label="Controles">
-        <span><kbd>[X]</kbd> Battle Pass Unlocks</span>
-        <span><kbd>[B]</kbd> Back</span>
-        <span><kbd>[≡]</kbd> Chat</span>
+        <span><kbd>[X]</kbd> Desbloqueos del Pase de batalla</span>
+        <span><kbd>[B]</kbd> Atrás</span>
+        <span><kbd>[≡]</kbd> Conversación</span>
       </div>
     </footer>
     <div class="toast" id="equip-toast" role="status" aria-live="polite"></div>

@@ -5,14 +5,17 @@ const motionLabel = document.querySelector("#motion-label");
 const motionIcon = motionButton.querySelector(".motion-button__icon");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-const FPS = 24;
-const SPIN_SPEED = 0.8;
+const FPS = 30;
+const SPIN_SPEED = 0.055;
 const TILT = 0.28;
 const CAM_DIST = 4;
 const TREE_R = 0.42;
 const TIERS = 5;
-const NUM_ORNAMENTS = 45;
+const FOLIAGE_RINGS = 120;
+const FOLIAGE_DENSITY = 260;
+const NUM_ORNAMENTS = 120;
 const GARLAND_TURNS = 4.5;
+const GARLAND_POINTS = 1000;
 const MESSAGE = "MERRY CHRISTMAS!";
 const SHADE = ".,:;=+*#%@";
 const SNOW_COLORS = [240, 245, 250, 255];
@@ -65,12 +68,10 @@ function radiusAt(y) {
 function buildScene() {
   const random = randomGenerator(7);
   const result = { foliage: [], garland: [], ornaments: [], trunk: [], floor: [] };
-  const rings = 80;
-
-  for (let i = 0; i < rings; i += 1) {
-    const y = i / rings;
+  for (let i = 0; i < FOLIAGE_RINGS; i += 1) {
+    const y = i / FOLIAGE_RINGS;
     const radius = radiusAt(y);
-    const count = Math.max(6, Math.floor(200 * radius / TREE_R));
+    const count = Math.max(6, Math.floor(FOLIAGE_DENSITY * radius / TREE_R));
     for (let k = 0; k < count; k += 1) {
       const angle = (k + random()) / count * Math.PI * 2;
       const distance = radius * (0.8 + random() * 0.2);
@@ -87,8 +88,8 @@ function buildScene() {
     }
   }
 
-  for (let i = 0; i < 650; i += 1) {
-    const t = i / 650;
+  for (let i = 0; i < GARLAND_POINTS; i += 1) {
+    const t = i / GARLAND_POINTS;
     const y = 0.04 + t * 0.86;
     const angle = t * GARLAND_TURNS * Math.PI * 2;
     const radius = radiusAt(y) * 1.06 + 0.01;
@@ -141,7 +142,7 @@ function resizeCanvas() {
   canvas.height = Math.round(bounds.height * pixelRatio);
   context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-  fontSize = Math.max(7, Math.min(13, bounds.width / 105, bounds.height / 58));
+  fontSize = Math.max(5.5, Math.min(11, bounds.width / 145, bounds.height / 80));
   cellWidth = fontSize * 0.64;
   lineHeight = fontSize * 1.2;
   columns = Math.max(30, Math.floor(bounds.width / cellWidth));
