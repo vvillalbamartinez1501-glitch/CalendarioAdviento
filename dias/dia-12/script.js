@@ -38,8 +38,8 @@ function makePieceSvg(id, targetMode = false) {
 
   const image = document.createElementNS(ns, "image");
   image.setAttribute("href", PHOTO_SRC);
-  image.setAttribute("x", targetMode ? -target.x : "0");
-  image.setAttribute("y", targetMode ? -target.y : "0");
+  image.setAttribute("x", "0");
+  image.setAttribute("y", "0");
   image.setAttribute("width", "500");
   image.setAttribute("height", "500");
   image.setAttribute("preserveAspectRatio", "xMidYMid slice");

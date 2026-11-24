@@ -140,10 +140,12 @@ h1 { margin: 0; font-family: var(--serif); font-size: clamp(2rem, 5vw, 4.2rem); 
 .drag-piece.is-snapped image { filter: blur(18px) saturate(1.15); }
 .drag-piece.is-dragging { z-index: 40; pointer-events: none; transform: scale(1.035); }
 
-.puzzle-shell.is-complete .puzzle-guide { opacity: 0; transition: opacity .7s ease; }
-.puzzle-shell.is-complete .drag-piece image,
-.puzzle-shell.is-complete .drag-piece.is-snapped image { filter: blur(0) saturate(1.12) brightness(1.04); }
-.puzzle-shell.is-complete .drag-piece .piece-outline { opacity: 0; transition: opacity .7s ease; }
+.puzzle-shell.is-complete .board-stage {
+  background: url("../../assets/images/nosotros02.jpg") center / cover no-repeat;
+}
+.puzzle-shell.is-complete .puzzle-guide,
+.puzzle-shell.is-complete .piece-layer,
+.puzzle-shell.is-complete .board-glow { display: none; }
 
 .tray-section { margin-top: 18px; }
 .tray-title { margin: 0 0 9px; text-align: center; color: rgba(248,250,252,.58); font-family: var(--serif); font-size: .78rem; letter-spacing: .12em; }
