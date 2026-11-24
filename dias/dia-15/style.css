@@ -138,6 +138,8 @@ button, select { -webkit-tap-highlight-color: transparent; }
 .toolbar-status { position: absolute; right: 8px; bottom: calc(100% + 8px); color: #fff7ed; font-size: 11px; text-shadow: 0 1px 4px #251712; white-space: nowrap; }
 .back-link { position: fixed; z-index: 101; top: max(17px, env(safe-area-inset-top)); left: 20px; padding: 9px 14px; border: 1px solid rgba(255,255,255,.17); border-radius: 999px; color: #fff7ed; background: rgba(24,16,14,.76); font-size: 11px; text-decoration: none; backdrop-filter: blur(8px); }
 .back-link:hover { background: rgba(24,16,14,.95); }
+body #privacy-panel-toggle { top: 12px; bottom: auto; }
+body #privacy-panel { top: 58px; bottom: auto; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
 
 body.is-capturing .toolbar, body.is-capturing .back-link, body.is-capturing .post-it__delete { visibility: hidden !important; }

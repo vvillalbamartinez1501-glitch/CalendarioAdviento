@@ -9,6 +9,10 @@ const penColor = document.querySelector("#pen-color");
 const penSize = document.querySelector("#pen-size");
 const clearDrawingButton = document.querySelector("#clear-drawing");
 const saveButton = document.querySelector("#save-board");
+const importButton = document.querySelector("#import-board");
+const exportButton = document.querySelector("#export-board");
+const importFileInput = document.querySelector("#import-board-file");
+const initialBoardStateElement = document.querySelector("#initial-board-state");
 const toolbarStatus = document.querySelector("#toolbar-status");
 const boardHint = document.querySelector("#board-hint");
 const storageKey = "calendario-adviento-dia-15-board-v1";
@@ -49,12 +53,14 @@ function getBoardState() {
 }
 
 function persistBoard() {
-  if (restoringBoard) return;
+  if (restoringBoard) return false;
   try {
     localStorage.setItem(storageKey, JSON.stringify(getBoardState()));
+    return true;
   } catch (error) {
     console.error("No se pudo guardar el tablero del día 15:", error);
     showToolbarStatus("No se pudo guardar en este navegador");
+    return false;
   }
 }
 
@@ -85,6 +91,39 @@ function isValidSavedState(state) {
     );
 }
 
+function applyBoardState(state) {
+  restoringBoard = true;
+  try {
+    board.querySelectorAll(".post-it, .pushpin").forEach((element) => element.remove());
+    noteCount = 0;
+    pinCount = 0;
+    selectedNote = null;
+    state.notes.forEach((savedNote) => {
+      createNote(savedNote.color, savedNote.text, savedNote);
+    });
+    state.pins.forEach((savedPin) => {
+      createPin(savedPin.color, savedPin);
+    });
+  } finally {
+    restoringBoard = false;
+  }
+}
+
+function getInitialBoardState() {
+  const serialized = initialBoardStateElement.textContent.trim();
+  if (!serialized) return null;
+
+  try {
+    const state = JSON.parse(serialized);
+    if (!isValidSavedState(state)) throw new Error("Formato de tablero no válido.");
+    return state;
+  } catch (error) {
+    console.error("El tablero inicial del código fuente no es válido:", error);
+    showToolbarStatus("El tablero inicial del código fuente no es válido");
+    return null;
+  }
+}
+
 function restoreBoard() {
   let serialized;
   try {
@@ -110,16 +149,12 @@ function restoreBoard() {
     return "failed";
   }
 
-  restoringBoard = true;
   try {
-    state.notes.forEach((savedNote) => {
-      createNote(savedNote.color, savedNote.text, savedNote);
-    });
-    state.pins.forEach((savedPin) => {
-      createPin(savedPin.color, savedPin);
-    });
-  } finally {
-    restoringBoard = false;
+    applyBoardState(state);
+  } catch (error) {
+    console.error("No se pudo restaurar el tablero del día 15:", error);
+    showToolbarStatus("No se pudo restaurar el tablero guardado");
+    return "failed";
   }
   return "loaded";
 }
@@ -397,6 +432,45 @@ saveButton.addEventListener("click", async () => {
   }
 });
 
+exportButton.addEventListener("click", () => {
+  try {
+    const state = JSON.stringify(getBoardState(), null, 2).replace(/</g, "\\u003c");
+    const url = URL.createObjectURL(new Blob([state], { type: "application/json" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "tablero-dia15.json";
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showToolbarStatus("JSON exportado; puedes pegarlo en initial-board-state");
+  } catch (error) {
+    console.error("No se pudo exportar el tablero del día 15:", error);
+    showToolbarStatus("No se pudo exportar el tablero");
+  }
+});
+
+importButton.addEventListener("click", () => importFileInput.click());
+importFileInput.addEventListener("change", async () => {
+  const file = importFileInput.files[0];
+  if (!file) return;
+
+  try {
+    const serialized = await file.text();
+    const state = JSON.parse(serialized);
+    if (!isValidSavedState(state)) {
+      throw new Error("El archivo no tiene un formato de tablero compatible.");
+    }
+    if (!window.confirm("Importar reemplazará el tablero actual. ¿Quieres continuar?")) return;
+
+    applyBoardState(state);
+    if (persistBoard()) showToolbarStatus("Tablero importado");
+  } catch (error) {
+    console.error("No se pudo importar el tablero del día 15:", error);
+    showToolbarStatus("No se pudo importar; comprueba el archivo JSON");
+  } finally {
+    importFileInput.value = "";
+  }
+});
+
 function drawInitialDoodle(note, type, color) {
   const canvas = note.querySelector(".post-it__canvas");
   const context = canvas.getContext("2d");
@@ -453,8 +527,10 @@ function addInitialBoard() {
 
 const restoredState = restoreBoard();
 if (restoredState === "missing" || restoredState === "failed") {
-  addInitialBoard();
-  if (restoredState === "missing") persistBoard();
+  const initialState = getInitialBoardState();
+  if (initialState) applyBoardState(initialState);
+  else addInitialBoard();
+  persistBoard();
 }
 
 window.addEventListener("resize", () => {

@@ -13,6 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <!-- Pega aquí el JSON exportado para establecer el tablero inicial de esta copia. -->
+  <script id="initial-board-state" type="application/json"></script>
   <script src="script.js" defer></script>
   <script src="../../assets/js/tracker.js" defer></script>
 </head>
@@ -81,6 +83,12 @@
       </select>
       <label class="range-control"><span class="sr-only">Grosor del trazo</span><input id="pen-size" type="range" min="2" max="14" value="5" aria-label="Grosor del trazo"></label>
       <button class="tool-button tool-button--icon" id="clear-drawing" type="button" aria-label="Borrar el dibujo de la nota seleccionada" title="Borrar dibujo">⌫</button>
+    </div>
+
+    <div class="tool-group tool-group--board-data">
+      <button class="tool-button tool-button--secondary" id="import-board" type="button">Importar JSON</button>
+      <button class="tool-button tool-button--secondary" id="export-board" type="button">Exportar JSON</button>
+      <input id="import-board-file" type="file" accept=".json,application/json" hidden>
     </div>
 
     <button class="tool-button tool-button--save" id="save-board" type="button">Guardar foto del corcho <span aria-hidden="true">↗</span></button>
