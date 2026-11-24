@@ -13,10 +13,10 @@ const celebration = document.querySelector("#celebration");
 const escapeMessages = [
   "NO",
   "¿Seguro?",
-  "¡El Grinch te hackeó!",
-  "Error 404: No encontrado",
-  "¡Hace frío ahí fuera!",
-  "¡Dale al SÍ!"
+  "Seguro?",
+  "Epa, aqui no es",
+  "Mmm, esta opción no es",
+  "Dale a si, dale a si"
 ];
 let escapeCount = 0;
 let isMinimized = false;
