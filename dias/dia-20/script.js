@@ -1,48 +1,204 @@
-const app = document.querySelector("#app");
 const snowContainer = document.querySelector("#snowfall");
-const postArtwork = document.querySelector("#post-artwork");
-const postImage = document.querySelector("#post-image");
-const likeButton = document.querySelector("#like-button");
-const likeCount = document.querySelector("#like-count");
-const heartAnimation = document.querySelector("#double-tap-heart");
-const saveButton = document.querySelector("#save-button");
-const downloadButton = document.querySelector("#download-button");
-const downloadStatus = document.querySelector("#download-status");
+const postFeed = document.querySelector("#post-feed");
+const postTemplate = document.querySelector("#post-template");
 const storyViewer = document.querySelector("#story-viewer");
 const storyImage = document.querySelector("#story-viewer-image");
-const storyCaption = document.querySelector("#story-caption");
+const storyEyebrow = document.querySelector("#story-viewer-eyebrow");
 const storyProgress = document.querySelector("#story-progress");
 const storyCloseButton = document.querySelector("#story-close");
 const toast = document.querySelector("#toast");
 
-const stories = [
+// Personaliza aquí las cuentas, fotos, descripciones y fechas del feed.
+const PUBLICACIONES = [
   {
-    image: "../../assets/images/jackysally.jpg",
-    alt: "Un recuerdo de nosotros",
-    caption: "Mi lugar favorito siempre es a tu lado."
+    username: "nostalgia",
+    location: "Un pequeño paseo",
+    avatar: "../../assets/images/jackysally.jpg",
+    image: "../../assets/images/nosotros01.jpg",
+    imageAlt: "Selfi juntos con bluey",
+    caption: "Cualquier plan es divertido si es contigo. 💙",
+    likes: 24,
+    dateTime: "2023-12-18",
+    dateLabel: "18 DE DICIEMBRE"
   },
   {
-    image: "../../assets/images/jackysallyheart.jpg",
-    alt: "Un recuerdo lleno de cariño",
-    caption: "Los momentos pequeños se vuelven nuestros favoritos."
+    username: "mi_persona_favorita",
+    location: "Pausa en medio del día",
+    avatar: "../../assets/images/jackysallyheart.jpg",
+    image: "../../assets/images/nosotros02.jpg",
+    imageAlt: "Selfi durante la cuarentena",
+    caption: "El covid fue hace 6 años pero contigo el tiempo se me pasa volando",
+    likes: 38,
+    dateTime: "2021-12-14",
+    dateLabel: "14 DE DICIEMBRE"
   },
   {
-    image: "../../assets/images/jackysally.png",
-    alt: "Un recuerdo para compartir",
-    caption: "Tú haces que cada día tenga un poquito de magia."
+    username: "un_invierno_hace_unas_cuantas_primaveras",
+    location: "Nuestro reflejo favorito",
+    avatar: "../../assets/images/jackysally.png",
+    image: "../../assets/images/nosotros03.jpg",
+    imageAlt: "Foto en el espejo durante una salida juntos",
+    caption: "Una de las pocas fotos que tenemos juntos, pero un recuerdo de los que más aprecio",
+    likes: 31,
+    dateTime: "2023-12-11",
+    dateLabel: "11 DE DICIEMBRE"
   },
   {
-    image: "../../assets/images/jackysally.jpg",
-    alt: "Un recuerdo de Navidad",
-    caption: "Que esta Navidad nos encuentre juntitos."
+    username: "navidad_en_pareja",
+    location: "Un detalle para compartir",
+    avatar: "../../assets/images/jackysallyheart.jpg",
+    image: "../../assets/images/fondo-navideño-tiktok.jpg",
+    imageAlt: "Ilustración navideña con personajes abrazados y adornos de Navidad",
+    caption: "Fondo de pantalla para nuestro chat de tiktok con temática navideña",
+    likes: 52,
+    dateTime: "2026-12-01",
+    dateLabel: "1 DE DICIEMBRE",
+  },
+  {
+    username: "sticker_to_flamas",
+    location: "Un lugar en mi corazoncito",
+    avatar: "../../assets/images/Gemini_Generated_Image_74yrbz74yrbz74yr.jpg",
+    image: "../../assets/images/Gemini_Generated_Image_74yrbz74yrbz74yr.jpg",
+    imageAlt: "Stickers",
+    caption: "Un pack de stickers todito para nosotros",
+    likes: 45,
+    dateTime: "2026-12-07",
+    dateLabel: "7 DE DICIEMBRE"
   }
 ];
 
-let liked = false;
+const stories = [
+  {
+    title: "Job applications",
+    slides: [
+      {
+        image: "../../assets/images/jobapplication.jpg",
+        alt: "Meme de una solicitud de empleo con el texto JOB APPLICATION",
+        caption: "Cuando toca volver a mandar solicitudes… otra vez."
+      },
+      {
+        image: "../../assets/images/jobapplication.png",
+        alt: "Formulario de solicitud de empleo",
+        caption: "La parte menos divertida: completar el formulario."
+      }
+    ]
+  },
+  {
+    title: "Espíritus Fortnite",
+    slides: [
+      {
+        image: "../../assets/images/espiritu-fortnite-ghost-cat.jpg",
+        alt: "Espíritu gato fantasma de Fortnite",
+        caption: "Un gatito fantasma apareció en la isla. 👻"
+      },
+      {
+        image: "../../assets/images/espiritu-fortnite-esther.jpg",
+        alt: "Espíritu Esther de Fortnite",
+        caption: "Esther llegó para unirse a la colección."
+      },
+      {
+        image: "../../assets/images/espiritu-fortnite-viktor.jpg",
+        alt: "Espíritu Viktor de Fortnite",
+        caption: "Y Viktor también está listo para la partida."
+      }
+    ]
+  },
+  {
+    title: "Stickers",
+    slides: [
+      {
+        image: "../../assets/images/sticker01.jpeg",
+        alt: "Sticker de la pareja abrazándose",
+        caption: "Un abrazo que cabe en cualquier chat. 🫂"
+      },
+      {
+        image: "../../assets/images/sticker02.jpeg",
+        alt: "Sticker de la pareja compartiendo un momento cariñoso",
+        caption: "Un poquito de cariño para mandarte cuando quieras."
+      },
+      {
+        image: "../../assets/images/stickers.jpg",
+        alt: "Colección de stickers románticos de la pareja",
+        caption: "Toda una colección de reacciones para nosotros."
+      },
+      ...Array.from({ length: 11 }, (_, index) => ({
+        image: `../../assets/images/sticker (${index + 1}).png`,
+        alt: `Sticker de pareja número ${index + 1}`,
+        caption: "Otro sticker para nuestra colección. 💌"
+      }))
+    ]
+  },
+  {
+    title: "Navidad",
+    slides: [
+      {
+        image: "../../assets/images/jackysally.jpg",
+        alt: "Un recuerdo de Navidad",
+        caption: "Que esta Navidad nos encuentre juntitos."
+      }
+    ]
+  }
+];
+
+const storyImageCache = new Map();
+stories.forEach(({ slides }) => {
+  slides.forEach(({ image: source }) => {
+    const image = new Image();
+    image.src = source;
+    storyImageCache.set(source, image);
+  });
+});
+
 let currentStory = 0;
+let currentStorySlide = 0;
+let storyRenderId = 0;
 let storyTimer;
 let toastTimer;
 let lastFocusedElement;
+
+function renderFeed() {
+  const fragment = document.createDocumentFragment();
+
+  [...PUBLICACIONES].reverse().forEach((publication) => {
+    const post = postTemplate.content.firstElementChild.cloneNode(true);
+    const image = post.querySelector(".post-image");
+    const artwork = post.querySelector(".post-artwork");
+
+    post.setAttribute("aria-label", `Publicación de @${publication.username}`);
+    post.querySelector(".profile-avatar").src = publication.avatar;
+    post.querySelector(".profile-avatar").alt = `Avatar de @${publication.username}`;
+    post.querySelector(".post-username").textContent = `@${publication.username}`;
+    post.querySelector(".post-location").textContent = publication.location;
+    post.querySelector(".like-count strong").textContent = String(publication.likes);
+    post.querySelector(".caption-username").textContent = `@${publication.username}`;
+    post.querySelector(".caption-text").textContent = publication.caption;
+
+    const date = post.querySelector(".caption time");
+    date.dateTime = publication.dateTime;
+    date.textContent = publication.dateLabel;
+
+    image.alt = publication.imageAlt;
+    image.src = publication.image;
+    post.querySelector(".post-figure figcaption").textContent =
+      `${publication.imageAlt}. Haz doble clic para indicar que te gusta.`;
+    image.addEventListener("load", () => {
+      image.hidden = false;
+      artwork.classList.add("has-image");
+    });
+    image.addEventListener("error", () => {
+      image.hidden = true;
+      artwork.classList.remove("has-image");
+    });
+    if (image.complete && image.naturalWidth > 0) {
+      image.hidden = false;
+      artwork.classList.add("has-image");
+    }
+
+    fragment.append(post);
+  });
+
+  postFeed.replaceChildren(fragment);
+}
 
 function createSnowfall() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -69,55 +225,84 @@ function showToast(message) {
   toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2600);
 }
 
-function setLiked(nextValue) {
-  if (liked === nextValue) return;
-  liked = nextValue;
-  likeButton.setAttribute("aria-pressed", String(liked));
-  likeButton.setAttribute("aria-label", liked ? "Quitar me gusta" : "Me gusta");
-  likeCount.textContent = String(Number(likeCount.textContent) + (liked ? 1 : -1));
+function setLiked(button, nextValue) {
+  const isLiked = button.getAttribute("aria-pressed") === "true";
+  if (isLiked === nextValue) return;
+
+  const likeCount = button.closest(".post").querySelector(".like-count strong");
+  button.setAttribute("aria-pressed", String(nextValue));
+  button.setAttribute("aria-label", nextValue ? "Quitar me gusta" : "Me gusta");
+  likeCount.textContent = String(Number(likeCount.textContent) + (nextValue ? 1 : -1));
 }
 
-function animateHeart() {
-  heartAnimation.classList.remove("is-visible");
-  void heartAnimation.offsetWidth;
-  heartAnimation.classList.add("is-visible");
+function animateHeart(post) {
+  const heart = post.querySelector(".double-tap-heart");
+  heart.classList.remove("is-visible");
+  void heart.offsetWidth;
+  heart.classList.add("is-visible");
 }
 
 function renderStoryProgress() {
   storyProgress.replaceChildren();
-  stories.forEach((story, index) => {
+  stories[currentStory].slides.forEach((slide, index) => {
     const segment = document.createElement("span");
     segment.className = "story-progress-segment";
-    if (index < currentStory) segment.classList.add("is-complete");
-    if (index === currentStory) segment.classList.add("is-current");
+    if (index < currentStorySlide) segment.classList.add("is-complete");
+    if (index === currentStorySlide) segment.classList.add("is-current");
     segment.append(document.createElement("span"));
     storyProgress.append(segment);
   });
 }
 
-function showStory(index) {
+async function showStory(index, slideIndex = 0) {
   currentStory = (index + stories.length) % stories.length;
   const story = stories[currentStory];
-  storyImage.src = story.image;
-  storyImage.alt = story.alt;
-  storyCaption.textContent = story.caption;
-  renderStoryProgress();
-
+  currentStorySlide = (slideIndex + story.slides.length) % story.slides.length;
+  const slide = story.slides[currentStorySlide];
+  const renderId = ++storyRenderId;
   window.clearTimeout(storyTimer);
+
+  try {
+    await storyImageCache.get(slide.image).decode();
+  } catch {
+    if (renderId === storyRenderId) showToast("No se pudo cargar la imagen de esta story.");
+    return;
+  }
+  if (renderId !== storyRenderId) return;
+
+  storyImage.src = slide.image;
+  storyImage.alt = slide.alt;
+  storyEyebrow.textContent = story.title;
+  renderStoryProgress();
+  storyViewer.hidden = false;
+
   storyTimer = window.setTimeout(() => {
-    if (currentStory === stories.length - 1) {
+    if (currentStorySlide === story.slides.length - 1) {
       closeStory();
     } else {
-      showStory(currentStory + 1);
+      showStory(currentStory, currentStorySlide + 1);
     }
   }, 5000);
 }
 
-function openStory(index) {
+function moveStory(direction) {
+  const story = stories[currentStory];
+  const nextSlide = currentStorySlide + direction;
+
+  if (nextSlide >= 0 && nextSlide < story.slides.length) {
+    showStory(currentStory, nextSlide);
+    return;
+  }
+
+  const nextStory = (currentStory + direction + stories.length) % stories.length;
+  const lastSlide = direction < 0 ? stories[nextStory].slides.length - 1 : 0;
+  showStory(nextStory, lastSlide);
+}
+
+async function openStory(index) {
   lastFocusedElement = document.activeElement;
-  storyViewer.hidden = false;
-  showStory(index);
-  storyCloseButton.focus();
+  await showStory(index);
+  if (!storyViewer.hidden) storyCloseButton.focus();
 }
 
 function closeStory() {
@@ -127,101 +312,55 @@ function closeStory() {
   if (lastFocusedElement instanceof HTMLElement) lastFocusedElement.focus();
 }
 
-function makeDownloadLink(url) {
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "fondo-navideño-tiktok.jpg";
-  link.hidden = true;
-  document.body.append(link);
-  link.click();
-  link.remove();
-}
-
-async function downloadWallpaper() {
-  if (postImage.naturalWidth === 0) {
-    downloadStatus.textContent = "Añade fondo-navideño-tiktok.jpg a la carpeta del Día 20 para poder descargarlo.";
-    downloadStatus.classList.add("is-error");
-    return;
-  }
-
-  downloadStatus.classList.remove("is-error");
-  downloadStatus.textContent = "";
-  downloadButton.disabled = true;
-
-  const imageUrl = new URL(postImage.getAttribute("src"), document.baseURI);
-  try {
-    const response = await fetch(imageUrl);
-    if (!response.ok) throw new Error(`No se pudo descargar el fondo (${response.status}).`);
-
-    const imageBlob = await response.blob();
-    const objectUrl = URL.createObjectURL(imageBlob);
-    makeDownloadLink(objectUrl);
-    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-    downloadStatus.textContent = "¡Tu fondo navideño se está descargando!";
-  } catch {
-    makeDownloadLink(imageUrl.href);
-    downloadStatus.textContent = "La descarga se inició usando el enlace de respaldo.";
-  } finally {
-    downloadButton.disabled = false;
-  }
-}
-
 createSnowfall();
+renderFeed();
 
-postImage.addEventListener("load", () => {
-  postImage.hidden = false;
-  postArtwork.classList.add("has-image");
+postFeed.addEventListener("click", (event) => {
+  const target = event.target instanceof Element ? event.target : null;
+  const button = target?.closest("button[data-action]");
+  if (!button) return;
+
+  const post = button.closest(".post");
+  if (button.dataset.action === "like") {
+    setLiked(button, button.getAttribute("aria-pressed") !== "true");
+  } else if (button.dataset.action === "save") {
+    const isSaved = button.getAttribute("aria-pressed") !== "true";
+    button.setAttribute("aria-pressed", String(isSaved));
+    button.setAttribute("aria-label", isSaved ? "Quitar de guardados" : "Guardar publicación");
+    showToast(isSaved ? "Recuerdo guardado en tus favoritos." : "Recuerdo quitado de tus favoritos.");
+  } else if (button.dataset.action === "comment") {
+    post.querySelector(".caption").scrollIntoView({ behavior: "smooth", block: "center" });
+    showToast("Una dedicatoria para leer y guardar con cariño.");
+  } else if (button.dataset.action === "more") {
+    showToast(`Una publicación especial de ${post.querySelector(".post-username").textContent}.`);
+  }
 });
 
-postImage.addEventListener("error", () => {
-  postImage.hidden = true;
-  postArtwork.classList.remove("has-image");
-});
-
-if (postImage.complete && postImage.naturalWidth > 0) {
-  postImage.hidden = false;
-  postArtwork.classList.add("has-image");
-}
-
-likeButton.addEventListener("click", () => setLiked(!liked));
-
-postArtwork.addEventListener("dblclick", (event) => {
+postFeed.addEventListener("dblclick", (event) => {
+  const target = event.target instanceof Element ? event.target : null;
+  const artwork = target?.closest(".post-artwork");
+  if (!artwork) return;
   event.preventDefault();
-  setLiked(true);
-  animateHeart();
+  const post = artwork.closest(".post");
+  setLiked(post.querySelector(".like-button"), true);
+  animateHeart(post);
 });
 
-heartAnimation.addEventListener("animationend", () => heartAnimation.classList.remove("is-visible"));
-
-saveButton.addEventListener("click", () => {
-  const isSaved = saveButton.getAttribute("aria-pressed") !== "true";
-  saveButton.setAttribute("aria-pressed", String(isSaved));
-  saveButton.setAttribute("aria-label", isSaved ? "Quitar de guardados" : "Guardar publicación");
-  showToast(isSaved ? "Recuerdo guardado en tus favoritos." : "Recuerdo quitado de tus favoritos.");
+postFeed.addEventListener("animationend", (event) => {
+  if (event.target.matches(".double-tap-heart")) event.target.classList.remove("is-visible");
 });
-
-document.querySelector("#comment-button").addEventListener("click", () => {
-  document.querySelector(".caption").scrollIntoView({ behavior: "smooth", block: "center" });
-  showToast("Una dedicatoria para leer y guardar con cariño.");
-});
-
-document.querySelector(".more-button").addEventListener("click", () => {
-  showToast("Una publicación especial, solo para nosotros.");
-});
-
-downloadButton.addEventListener("click", downloadWallpaper);
 
 document.querySelectorAll(".story").forEach((button) => {
   button.addEventListener("click", () => openStory(Number(button.dataset.story)));
 });
 
 storyCloseButton.addEventListener("click", closeStory);
-document.querySelector("#story-next").addEventListener("click", () => showStory(currentStory + 1));
-document.querySelector("#story-previous").addEventListener("click", () => showStory(currentStory - 1));
+document.querySelector("#story-next").addEventListener("click", () => moveStory(1));
+document.querySelector("#story-previous").addEventListener("click", () => moveStory(-1));
 
 document.addEventListener("keydown", (event) => {
   if (storyViewer.hidden) return;
   if (event.key === "Escape") closeStory();
-  if (event.key === "ArrowRight") showStory(currentStory + 1);
-  if (event.key === "ArrowLeft") showStory(currentStory - 1);
+  if (event.key === "ArrowRight") moveStory(1);
+  if (event.key === "ArrowLeft") moveStory(-1);
 });

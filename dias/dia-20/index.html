@@ -36,20 +36,17 @@
 
     <section class="stories-section" aria-label="Stories de Navidad">
       <div class="stories-list">
-        <button class="story" type="button" data-story="0" aria-label="Ver story: Nosotros">
-          <!-- HUECO STORY 1 -->
-          <span class="story-ring"><img src="../../assets/images/jackysally.jpg" alt="Recuerdo de nosotros"></span>
-          <span class="story-name">Nosotros</span>
+        <button class="story" type="button" data-story="0" aria-label="Ver story: Job applications">
+          <span class="story-ring story-ring--text" aria-hidden="true">JOB</span>
+          <span class="story-name">Job applications</span>
         </button>
-        <button class="story" type="button" data-story="1" aria-label="Ver story: Recuerdo 1">
-          <!-- HUECO STORY 2 -->
-          <span class="story-ring"><img src="../../assets/images/jackysallyheart.jpg" alt="Recuerdo lleno de cariño"></span>
-          <span class="story-name">Recuerdo 1</span>
+        <button class="story" type="button" data-story="1" aria-label="Ver story: Espíritus Fortnite">
+          <span class="story-ring"><img src="../../assets/images/espiritu-fortnite-ghost-cat.jpg" alt="Gato fantasma de Fortnite"></span>
+          <span class="story-name">Espíritus Fortnite</span>
         </button>
-        <button class="story" type="button" data-story="2" aria-label="Ver story: Chat">
-          <!-- HUECO STORY 3 -->
-          <span class="story-ring"><img src="../../assets/images/jackysally.png" alt="Un recuerdo para compartir"></span>
-          <span class="story-name">Chat</span>
+        <button class="story" type="button" data-story="2" aria-label="Ver story: Stickers">
+          <span class="story-ring"><img src="../../assets/images/sticker01.jpeg" alt="Sticker de los dos abrazándose"></span>
+          <span class="story-name">Stickers</span>
         </button>
         <button class="story" type="button" data-story="3" aria-label="Ver story: Navidad">
           <!-- HUECO STORY 4 -->
@@ -59,85 +56,85 @@
       </div>
     </section>
 
-    <article class="post" aria-label="Publicación navideña">
-      <header class="post-header">
-        <!-- HUECO AVATAR PERFIL -->
-        <img class="profile-avatar" src="../../assets/images/jackysally.jpg" alt="Avatar de nuestros_chats">
-        <div class="post-identity">
-          <strong>@nuestros_chats</strong>
-          <span>Polo Norte <span aria-hidden="true">·</span> Fondo Especial</span>
-        </div>
-        <button class="more-button" type="button" aria-label="Más opciones">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
-        </button>
-      </header>
+    <header class="feed-heading">
+      <h1>Nuestros recuerdos</h1>
+      <p>Un poco de doomscrolling con sentido.</p>
+    </header>
 
-      <figure class="post-figure">
-        <div class="post-artwork" id="post-artwork">
-          <div class="artwork-fallback" aria-hidden="true">
-            <span class="artwork-label">UN RECUERDO PARA GUARDAR</span>
-            <span class="artwork-snowflake artwork-snowflake--one">❄</span>
-            <span class="artwork-snowflake artwork-snowflake--two">✳</span>
-            <div class="artwork-copy">
-              <span class="artwork-overline">NUESTRO PEQUEÑO</span>
-              <span class="artwork-title">Invierno<br>juntos</span>
-              <span class="artwork-date">DICIEMBRE · DÍA 20</span>
+    <section class="post-feed" id="post-feed" aria-label="Publicaciones de nuestro álbum">
+      <template id="post-template">
+        <article class="post">
+          <header class="post-header">
+            <img class="profile-avatar" alt="">
+            <div class="post-identity">
+              <strong class="post-username"></strong>
+              <span class="post-location"></span>
             </div>
-            <span class="artwork-footnote">SIEMPRE, TÚ Y YO <span aria-hidden="true">♥</span></span>
+            <button class="more-button" type="button" data-action="more" aria-label="Más opciones">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+            </button>
+          </header>
+
+          <figure class="post-figure">
+            <div class="post-artwork">
+              <div class="artwork-fallback" aria-hidden="true">
+                <span class="artwork-label">UN RECUERDO PARA GUARDAR</span>
+                <span class="artwork-snowflake artwork-snowflake--one">❄</span>
+                <span class="artwork-snowflake artwork-snowflake--two">✳</span>
+                <div class="artwork-copy">
+                  <span class="artwork-overline">NUESTRO PEQUEÑO</span>
+                  <span class="artwork-title">Invierno<br>juntos</span>
+                  <span class="artwork-date">DICIEMBRE · DÍA 20</span>
+                </div>
+                <span class="artwork-footnote">TQM <span aria-hidden="true">♥</span></span>
+              </div>
+              <img class="post-image" alt="" hidden>
+              <span class="double-tap-heart" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
+              </span>
+            </div>
+            <figcaption class="sr-only"></figcaption>
+          </figure>
+
+          <div class="post-actions">
+            <div class="action-group">
+              <button class="icon-button like-button" type="button" data-action="like" aria-label="Me gusta" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
+              </button>
+              <button class="icon-button comment-button" type="button" data-action="comment" aria-label="Ver mensaje">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 11.5a8.2 8.2 0 0 1-8.5 7.8 9 9 0 0 1-3.8-.8L3 20l1.5-4.1a7.5 7.5 0 0 1-1.2-4.1A8.2 8.2 0 0 1 12 4a8.2 8.2 0 0 1 8.2 7.5Z"/></svg>
+              </button>
+            </div>
+            <button class="icon-button save-button" type="button" data-action="save" aria-label="Guardar publicación" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-4-6 4V4.8Z"/></svg>
+            </button>
           </div>
-          <!-- Si el archivo es .png o .webp, cambia aquí la extensión del src. -->
-          <img class="post-image" id="post-image" src="../../assets/images/fondo-navideño-tiktok.jpg" alt="Fondo navideño especial para guardar y compartir" hidden>
-          <span class="double-tap-heart" id="double-tap-heart" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
-          </span>
-        </div>
-        <figcaption class="sr-only">Fondo de pantalla navideño del Día 20. Haz doble clic para indicar que te gusta.</figcaption>
-      </figure>
+          <p class="like-count"><strong></strong> Me gusta</p>
 
-      <div class="post-actions">
-        <div class="action-group">
-          <button class="icon-button like-button" id="like-button" type="button" aria-label="Me gusta" aria-pressed="false">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
-          </button>
-          <button class="icon-button comment-button" id="comment-button" type="button" aria-label="Ver mensaje">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 11.5a8.2 8.2 0 0 1-8.5 7.8 9 9 0 0 1-3.8-.8L3 20l1.5-4.1a7.5 7.5 0 0 1-1.2-4.1A8.2 8.2 0 0 1 12 4a8.2 8.2 0 0 1 8.2 7.5Z"/></svg>
-          </button>
-        </div>
-        <button class="icon-button save-button" id="save-button" type="button" aria-label="Guardar publicación" aria-pressed="false">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-4-6 4V4.8Z"/></svg>
-        </button>
-      </div>
-      <p class="like-count"><strong id="like-count">24</strong> Me gusta</p>
-
-      <button class="download-button" id="download-button" type="button">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 16v4h16v-4"/></svg>
-        <span>Descargar fondo de pantalla</span>
-      </button>
-      <p class="download-status" id="download-status" role="status" aria-live="polite"></p>
-
-      <div class="caption">
-        <p><strong>@nuestros_chats</strong> <span><!-- ESCRIBE AQUÍ TU MENSAJE PERSONALIZADO -->Un pedacito de nuestra historia para llevar contigo. Que cada copo te recuerde que, incluso en los días más fríos, mi lugar favorito siempre es a tu lado. Feliz Navidad, mi amor. <span aria-hidden="true">❄️❤️</span></span></p>
-        <time datetime="2026-12-20">20 DE DICIEMBRE</time>
-      </div>
-    </article>
-    <p class="app-footer">HECHO CON AMOR <span aria-hidden="true">♥</span></p>
-
-    <section class="story-viewer" id="story-viewer" role="dialog" aria-modal="true" aria-label="Story de Navidad" hidden>
-      <div class="story-progress" id="story-progress" aria-hidden="true"></div>
-      <button class="story-close" id="story-close" type="button" aria-label="Cerrar story">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
-      </button>
-      <button class="story-nav story-nav--previous" id="story-previous" type="button" aria-label="Story anterior"></button>
-      <img class="story-viewer-image" id="story-viewer-image" src="../../assets/images/jackysally.jpg" alt="">
-      <div class="story-shade" aria-hidden="true"></div>
-      <div class="story-viewer-copy">
-        <span class="story-viewer-eyebrow">UN RECUERDO NUESTRO</span>
-        <p id="story-caption"></p>
-      </div>
-      <button class="story-nav story-nav--next" id="story-next" type="button" aria-label="Siguiente story"></button>
+          <div class="caption">
+            <p><strong class="caption-username"></strong> <span class="caption-text"></span></p>
+            <time></time>
+          </div>
+        </article>
+      </template>
     </section>
+    <p class="app-footer">HECHO CON AMOR <span aria-hidden="true">♥</span></p>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </main>
+  <section class="story-viewer" id="story-viewer" role="dialog" aria-modal="true" aria-label="Story de Navidad" hidden>
+    <div class="story-progress" id="story-progress" aria-hidden="true"></div>
+    <button class="story-close" id="story-close" type="button" aria-label="Cerrar story">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
+    <button class="story-nav story-nav--previous" id="story-previous" type="button" aria-label="Story anterior"></button>
+    <img class="story-viewer-image" id="story-viewer-image" src="../../assets/images/jackysally.jpg" alt="">
+    <div class="story-shade" aria-hidden="true"></div>
+    <div class="story-viewer-copy">
+      <span class="story-viewer-eyebrow" id="story-viewer-eyebrow">Un feed bien construido</span>
+      <!-- <p id="story-caption"></p> -->
+    </div>
+    <button class="story-nav story-nav--next" id="story-next" type="button" aria-label="Siguiente story"></button>
+  </section>
 </body>
 </html>
