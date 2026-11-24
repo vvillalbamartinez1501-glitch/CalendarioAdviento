@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080d12">
-  <meta name="description" content="Un árbol de Navidad animado, hecho de luces, nieve y pequeños caracteres.">
+  <meta name="description" content="Un árbol de Navidad en ASCII que gira entre luces de colores, espumillón, regalos y nieve.">
   <title>Día 7 · Un árbol para ti</title>
   <link rel="icon" type="image/jpeg" href="../../assets/images/jackysallyheart.jpg">
   <script src="../../arrival-transition.js"></script>
@@ -28,12 +28,18 @@
       </button>
     </header>
 
-    <section class="tree-stage" aria-label="Árbol navideño animado">
-      <div class="stage-glow" aria-hidden="true"></div>
-      <canvas id="tree-canvas" aria-label="Árbol de Navidad tridimensional girando lentamente, decorado con una guirnalda dorada, luces de colores y regalos rojos y azules sobre una plataforma giratoria, bajo una estrella parpadeante y nieve. El mensaje dice Merry Christmas.">
-        Un árbol de Navidad gira con regalos rojos y azules sobre una plataforma, entre luces y copos de nieve. Merry Christmas.
-      </canvas>
-      <span class="stage-caption" aria-hidden="true">✦ · ❄ · ✦</span>
+    <section class="tree-stage" aria-label="Árbol navideño ASCII animado">
+      <div class="stage-glow halo" aria-hidden="true"></div>
+      <div class="snow back" aria-hidden="true"></div>
+      <div class="tree-content">
+        <div class="tree-wrap">
+          <canvas id="tree" role="img" aria-label="Árbol de Navidad ASCII en 3D que gira, con luces de colores, espumillón dorado, adornos y regalos">
+            Árbol de Navidad hecho de caracteres ASCII con luces, adornos y regalos.
+          </canvas>
+        </div>
+        <div class="controller" role="group" aria-label="Modo de las luces"></div>
+      </div>
+      <div class="snow front" aria-hidden="true"></div>
     </section>
 
     <footer class="page-footer">

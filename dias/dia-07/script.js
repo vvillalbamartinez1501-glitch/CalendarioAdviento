@@ -1,443 +1,531 @@
-const canvas = document.querySelector("#tree-canvas");
-const context = canvas.getContext("2d");
-const motionButton = document.querySelector("#motion-button");
-const motionLabel = document.querySelector("#motion-label");
-const motionIcon = motionButton.querySelector(".motion-button__icon");
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+"use strict";
 
-const FPS = 30;
-const SPIN_SPEED = 0.055;
-const TILT = 0.28;
-const CAM_DIST = 4;
-const TREE_R = 0.42;
-const TIERS = 5;
-const FOLIAGE_RINGS = 120;
-const FOLIAGE_DENSITY = 260;
-const NUM_ORNAMENTS = 120;
-const GARLAND_TURNS = 4.5;
-const GARLAND_POINTS = 1000;
-const MESSAGE = "MERRY CHRISTMAS!";
-const SHADE = ".,:;=+*#%@";
-const SNOW_COLORS = [240, 245, 250, 255];
-const TEXT_COLORS = [196, 208, 226, 46, 51, 21, 201];
-const GREENS = [22, 22, 28, 28, 34, 34, 40, 46, 82, 118];
-const BROWNS = [52, 94, 94, 130, 136];
-const ORNAMENT_COLORS = [196, 202, 226, 21, 201, 51, 129];
-const PALETTE = {
-  21: "#0000ff", 22: "#005f00", 24: "#005f87", 27: "#005fff",
-  28: "#008700", 33: "#0087ff", 34: "#00af00", 39: "#00afff",
-  40: "#00d700", 46: "#00ff00", 51: "#00ffff", 52: "#5f0000",
-  82: "#5fff00", 94: "#875f00", 118: "#87ff00", 124: "#af0000",
-  129: "#af00ff", 130: "#af5f00", 136: "#af8700", 160: "#d70000",
-  196: "#ff0000", 201: "#ff00ff", 202: "#ff5f00", 208: "#ff8700",
-  220: "#ffd700", 226: "#ffff00", 230: "#ffffd7", 231: "#ffffff",
-  238: "#444444", 240: "#585858", 245: "#8a8a8a", 250: "#bcbcbc",
-  255: "#eeeeee",
-};
-const LIGHT = (() => {
-  const vector = [-0.45, 0.55, 0.7];
-  const length = Math.hypot(...vector);
-  return vector.map((value) => value / length);
-})();
+    const canvas = document.getElementById("tree");
+    const ctx = canvas.getContext("2d");
+    const stage = document.querySelector(".tree-stage");
+    const halo = document.querySelector(".halo");
+    const controller = document.querySelector(".controller");
+    const motionButton = document.querySelector("#motion-button");
+    const motionLabel = document.querySelector("#motion-label");
+    const motionIcon = motionButton.querySelector(".motion-button__icon");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let playing = !reducedMotion.matches;
+    let frameHandle = 0;
+    let snowCreated = false;
 
-let scene;
-let snow = [];
-let columns = 0;
-let rows = 0;
-let cellWidth = 0;
-let lineHeight = 0;
-let fontSize = 10;
-let animationFrame = 0;
-let playing = !reducedMotion.matches;
-let startTime = 0;
-let lastFrameTime = 0;
-let lastSnowUpdate = 0;
+    // ------------------------------------------------------------
+    // 1. EL MODELO 3D
+    //    El árbol es un cono. Cada carácter es un punto de su superficie
+    //    descrito por tres datos: altura (y), radio (r) y ángulo alrededor
+    //    del tronco. Girar el árbol = sumar lo mismo a todos los ángulos.
+    //    Unidades: el radio en "anchos de carácter", la altura en "filas".
+    // ------------------------------------------------------------
+    const HEIGHT = 26;        // filas de copa
+    const RADIUS = 16;        // radio de la base
+    const ROW_ASPECT = 1.9;   // una fila mide ~1.9 anchos de carácter
+    const TILT = 0.2;         // la cámara mira un poco desde arriba
+    const SPIN = 0.35;        // velocidad de giro (radianes por segundo)
 
-function randomGenerator(seed) {
-  let state = seed;
-  return () => {
-    state = (state * 1664525 + 1013904223) >>> 0;
-    return state / 4294967296;
-  };
-}
+    const NEEDLES = ["*", "^", "+", "'", ".", "^"];
 
-function radiusAt(y) {
-  if (y >= 1) return 0;
-  const tier = (y * TIERS) % 1;
-  return TREE_R * (1 - y) * (0.62 + 0.38 * (1 - tier));
-}
-
-function buildScene() {
-  const random = randomGenerator(7);
-  const result = { foliage: [], garland: [], ornaments: [], trunk: [], platform: [], gifts: [], floor: [] };
-  for (let i = 0; i < FOLIAGE_RINGS; i += 1) {
-    const y = i / FOLIAGE_RINGS;
-    const radius = radiusAt(y);
-    const count = Math.max(6, Math.floor(FOLIAGE_DENSITY * radius / TREE_R));
-    for (let k = 0; k < count; k += 1) {
-      const angle = (k + random()) / count * Math.PI * 2;
-      const distance = radius * (0.8 + random() * 0.2);
-      const cosine = Math.cos(angle);
-      const sine = Math.sin(angle);
-      result.foliage.push([
-        distance * cosine,
-        y + (random() - 0.5) * 0.01,
-        distance * sine,
-        cosine,
-        sine,
-        (random() - 0.5) * 0.24,
-      ]);
-    }
-  }
-
-  for (let i = 0; i < GARLAND_POINTS; i += 1) {
-    const t = i / GARLAND_POINTS;
-    const y = 0.04 + t * 0.86;
-    const angle = t * GARLAND_TURNS * Math.PI * 2;
-    const radius = radiusAt(y) * 1.06 + 0.01;
-    result.garland.push([radius * Math.cos(angle), y, radius * Math.sin(angle), t]);
-  }
-
-  for (let i = 0; i < NUM_ORNAMENTS; i += 1) {
-    const y = 0.04 + (1 - Math.sqrt(random())) * 0.85;
-    const angle = random() * Math.PI * 2;
-    const radius = radiusAt(y) * 1.04 + 0.01;
-    result.ornaments.push([
-      radius * Math.cos(angle),
-      y,
-      radius * Math.sin(angle),
-      ORNAMENT_COLORS[Math.floor(random() * ORNAMENT_COLORS.length)],
-      random() * Math.PI * 2,
-      1.5 + random() * 2.5,
-    ]);
-  }
-
-  for (let i = 0; i < 14; i += 1) {
-    const y = -0.14 + i * 0.01;
-    for (let k = 0; k < 40; k += 1) {
-      const angle = k / 40 * Math.PI * 2;
-      const cosine = Math.cos(angle);
-      const sine = Math.sin(angle);
-      result.trunk.push([0.06 * cosine, y, 0.06 * sine, cosine, sine]);
-    }
-  }
-
-  for (let ring = 0; ring < 6; ring += 1) {
-    const radius = 0.16 + ring * 0.055;
-    for (let k = 0; k < 160; k += 1) {
-      const angle = k / 160 * Math.PI * 2;
-      const highlight = k % 10 === 0;
-      const color = ring === 5 && highlight ? 220 : ring % 2 === 0 ? 136 : 94;
-      result.platform.push([
-        radius * Math.cos(angle),
-        -0.15,
-        radius * Math.sin(angle),
-        highlight ? "*" : ".",
-        color,
-      ]);
-    }
-  }
-
-  for (let i = 0; i < 6; i += 1) {
-    const angle = i / 6 * Math.PI * 2 + Math.PI / 6;
-    const radius = i % 2 === 0 ? 0.34 : 0.4;
-    const centerX = radius * Math.cos(angle);
-    const centerZ = radius * Math.sin(angle);
-    const width = 0.13 + (i % 3) * 0.025;
-    const height = 0.1 + (i % 2) * 0.025;
-    const boxDepth = width * 0.82;
-    const bottom = -0.14;
-    const top = bottom + height;
-    const isRed = i % 2 === 0;
-    const frontColor = isRed ? 196 : 27;
-    const sideColor = isRed ? 160 : 21;
-    const topColor = isRed ? 202 : 33;
-    const step = 0.022;
-
-    for (let y = bottom; y <= top; y += step) {
-      for (let x = -width / 2; x <= width / 2; x += step) {
-        const ribbon = Math.abs(x) < step * 0.6;
-        const color = ribbon ? 220 : y > top - step * 1.5 ? topColor : frontColor;
-        result.gifts.push([centerX + x, y, centerZ + boxDepth / 2, ribbon ? "|" : "#", color]);
-      }
-
-      for (let z = -boxDepth / 2; z <= boxDepth / 2; z += step) {
-        const ribbon = Math.abs(z) < step * 0.6;
-        result.gifts.push([
-          centerX + width / 2,
-          y,
-          centerZ + z,
-          ribbon ? "|" : "#",
-          ribbon ? 220 : sideColor,
-        ]);
-      }
-    }
-
-    for (let x = -width / 2; x <= width / 2; x += step) {
-      for (let z = -boxDepth / 2; z <= boxDepth / 2; z += step) {
-        const ribbon = Math.abs(x) < step * 0.6 || Math.abs(z) < step * 0.6;
-        result.gifts.push([
-          centerX + x,
-          top,
-          centerZ + z,
-          ribbon ? "+" : "=",
-          ribbon ? 220 : topColor,
-        ]);
-      }
-    }
-
-    result.gifts.push(
-      [centerX, top + step, centerZ, "*", 226],
-      [centerX - step, top + step, centerZ, "(", 220],
-      [centerX + step, top + step, centerZ, ")", 220],
-    );
-  }
-
-  for (let i = 0; i < 900; i += 1) {
-    const angle = random() * Math.PI * 2;
-    const radius = 0.12 + Math.sqrt(random()) * 0.6;
-    const characters = "....:'*";
-    result.floor.push([
-      radius * Math.cos(angle),
-      -0.18,
-      radius * Math.sin(angle),
-      characters[Math.floor(random() * characters.length)],
-    ]);
-  }
-
-  return result;
-}
-
-function resizeCanvas() {
-  const bounds = canvas.getBoundingClientRect();
-  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.round(bounds.width * pixelRatio);
-  canvas.height = Math.round(bounds.height * pixelRatio);
-  context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-
-  fontSize = Math.max(5.5, Math.min(11, bounds.width / 145, bounds.height / 80));
-  cellWidth = fontSize * 0.64;
-  lineHeight = fontSize * 1.2;
-  columns = Math.max(30, Math.floor(bounds.width / cellWidth));
-  rows = Math.max(18, Math.floor(bounds.height / lineHeight));
-  snow = [];
-  updateSnow(0);
-  render(playing ? (lastFrameTime - startTime) / 1000 : 0);
-}
-
-function updateSnow(deltaTime) {
-  const target = Math.max(10, Math.floor(columns * (rows - 2) / 45));
-  while (snow.length < target) {
-    snow.push([
-      Math.random(),
-      Math.random(),
-      0.04 + Math.random() * 0.08,
-      Math.random() * Math.PI * 2,
-      ".*.:'"[Math.floor(Math.random() * 5)],
-    ]);
-  }
-  snow.length = target;
-
-  for (const flake of snow) {
-    flake[1] += flake[2] * deltaTime;
-    if (flake[1] >= 1) {
-      flake[0] = Math.random();
-      flake[1] = 0;
-    }
-  }
-}
-
-function render(time) {
-  if (!columns || !rows) return;
-  const characters = Array.from({ length: rows }, () => Array(columns).fill(" "));
-  const colors = Array.from({ length: rows }, () => Array(columns).fill(0));
-  const depth = Array.from({ length: rows }, () => Array(columns).fill(-Infinity));
-  const viewRows = rows - 2;
-  const scale = Math.max(1, Math.min((viewRows - 2) / 1.65, (columns - 2) / 2.9));
-  const sxScale = scale * 2;
-  const centerX = columns / 2;
-  const centerY = 1 + 0.7 * scale;
-  const angle = time * SPIN_SPEED;
-  const cosine = Math.cos(angle);
-  const sine = Math.sin(angle);
-  const tiltCosine = Math.cos(TILT);
-  const tiltSine = Math.sin(TILT);
-  const lightAngle = time * 6;
-
-  function project(x, y, z) {
-    const rotatedX = x * cosine - z * sine;
-    const rotatedZ = x * sine + z * cosine;
-    const shiftedY = y - 0.45;
-    const tiltedY = shiftedY * tiltCosine - rotatedZ * tiltSine;
-    const tiltedZ = shiftedY * tiltSine + rotatedZ * tiltCosine;
-    const perspective = CAM_DIST / (CAM_DIST - tiltedZ);
-    return [
-      Math.floor(centerX + rotatedX * perspective * sxScale),
-      Math.floor(centerY - tiltedY * perspective * scale),
-      tiltedZ,
+    const PALETTE = [
+      [255, 70, 90],    // rojo
+      [255, 180, 60],   // ámbar
+      [70, 170, 255],   // azul
+      [255, 110, 215],  // rosa
+      [255, 238, 200]   // blanco cálido
     ];
-  }
 
-  function plot(column, row, z, character, color) {
-    if (row >= 0 && row < viewRows && column >= 0 && column < columns && z > depth[row][column]) {
-      depth[row][column] = z;
-      characters[row][column] = character;
-      colors[row][column] = color;
+    const BAUBLE_COLORS = [[232, 58, 85], [242, 193, 78], [215, 227, 238], [180, 140, 255]];
+    const TINSEL_DIM = [184, 146, 62];
+    const TINSEL_BRIGHT = [255, 244, 194];
+
+    // Verde de las ramas según la profundidad: de detrás (oscuro) a delante (vivo).
+    const NEEDLE_SHADES = Array.from({ length: 8 }, (_, i) => {
+      const k = i / 7;
+      return rgba(mix([24, 90, 66], [72, 230, 150], k), 0.3 + 0.7 * k);
+    });
+
+    function random(min, max) { return min + Math.random() * (max - min); }
+    function randomItem(items) { return items[Math.floor(Math.random() * items.length)]; }
+    function mod(a, n) { return ((a % n) + n) % n; }
+    function mix(a, b, k) { return a.map((c, i) => c + (b[i] - c) * k); }
+    function rgba([r, g, b], a) {
+      return `rgba(${r | 0}, ${g | 0}, ${b | 0}, ${a.toFixed(2)})`;
     }
-  }
 
-  function light(cosineNormal, sineNormal, yNormal) {
-    const normalX = cosineNormal * cosine - sineNormal * sine;
-    const normalZ = cosineNormal * sine + sineNormal * cosine;
-    const normalY = yNormal * tiltCosine - normalZ * tiltSine;
-    const tiltedZ = yNormal * tiltSine + normalZ * tiltCosine;
-    return Math.max(0, normalX * LIGHT[0] + normalY * LIGHT[1] + tiltedZ * LIGHT[2]);
-  }
-
-  for (const [x, y, z, character] of scene.floor) {
-    const [column, row, projectedZ] = project(x, y, z);
-    const shade = SNOW_COLORS[Math.min(3, Math.max(0, Math.floor((projectedZ + 0.8) * 2.5)))];
-    plot(column, row, projectedZ - 0.5, character, shade);
-  }
-
-  for (const [x, y, z, character, color] of scene.platform) {
-    const [column, row, projectedZ] = project(x, y, z);
-    plot(column, row, projectedZ, character, color);
-  }
-
-  for (const [x, y, z, cosineNormal, sineNormal] of scene.trunk) {
-    const [column, row, projectedZ] = project(x, y, z);
-    const brightness = 0.2 + 0.8 * light(cosineNormal, sineNormal, 0);
-    plot(column, row, projectedZ, SHADE[Math.floor(brightness * 9.99)], BROWNS[Math.floor(brightness * 4.99)]);
-  }
-
-  for (const [x, y, z, cosineNormal, sineNormal, jitter] of scene.foliage) {
-    const [column, row, projectedZ] = project(x, y, z);
-    const brightness = Math.min(0.999, Math.max(0, 0.15 + 0.85 * light(cosineNormal, sineNormal, 0.33) + jitter));
-    const shade = Math.min(9, Math.floor(brightness * 10));
-    plot(column, row, projectedZ, SHADE[shade], GREENS[shade]);
-  }
-
-  for (const [x, y, z, progress] of scene.garland) {
-    const [column, row, projectedZ] = project(x, y, z);
-    const wave = Math.sin(progress * 70 - lightAngle);
-    const character = wave > 0.8 ? "*" : wave > 0.1 ? "o" : ".";
-    const color = wave > 0.8 ? 230 : wave > 0.1 ? 220 : 136;
-    plot(column, row, projectedZ + 0.01, character, color);
-  }
-
-  for (const [x, y, z, color, phase, speed] of scene.ornaments) {
-    const [column, row, projectedZ] = project(x, y, z);
-    const twinkle = 0.5 + 0.5 * Math.sin(time * speed + phase);
-    if (twinkle > 0.92) plot(column, row, projectedZ + 0.03, "●", 231);
-    else if (twinkle > 0.3) plot(column, row, projectedZ + 0.03, "●", color);
-    else plot(column, row, projectedZ + 0.03, "o", color);
-  }
-
-  for (const [x, y, z, character, color] of scene.gifts) {
-    const [column, row, projectedZ] = project(x, y, z);
-    plot(column, row, projectedZ + 0.02, character, color);
-  }
-
-  const [starColumn, starRow] = project(0, 1.07, 0);
-  const flicker = Math.floor(time * 4) % 2;
-  const rays = flicker
-    ? [[-2, 0, "-"], [-1, 0, "-"], [1, 0, "-"], [2, 0, "-"], [0, -1, "|"]]
-    : [[-1, -1, "\\"], [1, -1, "/"], [-1, 1, "/"], [1, 1, "\\"], [0, -1, "'"]];
-  for (const [offsetX, offsetY, character] of rays) {
-    plot(starColumn + offsetX, starRow + offsetY, 99, character, 220);
-  }
-  plot(starColumn, starRow, 100, "★", flicker ? 226 : 231);
-
-  for (const [x, y, _, phase, character] of snow) {
-    const column = Math.floor((x + 0.01 * Math.sin(time * 1.5 + phase)) * columns) % columns;
-    const row = Math.floor(y * viewRows);
-    if (row >= 0 && row < viewRows && depth[row][column] === -Infinity) {
-      characters[row][column] = character;
-      colors[row][column] = SNOW_COLORS[Math.floor(phase) % 4];
+    // Tres pisos de ramas: en cada piso el radio crece y al empezar el
+    // siguiente se recoge un poco. Eso dibuja las "faldas" del abeto.
+    function radiusAt(y) {
+      const progress = (y / HEIGHT) * 3 % 1;
+      return RADIUS * (y / HEIGHT) * (0.78 + 0.22 * progress);
     }
-  }
 
-  const messageRow = rows - 2;
-  const messageStart = Math.max(0, Math.floor((columns - MESSAGE.length) / 2));
-  const colorShift = Math.floor(time * 8);
-  for (let i = 0; i < MESSAGE.length; i += 1) {
-    if (messageStart + i < columns) {
-      characters[messageRow][messageStart + i] = MESSAGE[i];
-      colors[messageRow][messageStart + i] = TEXT_COLORS[(i + colorShift) % TEXT_COLORS.length];
+    // Ramas: anillos de caracteres apilados de la punta a la base.
+    const needles = [];
+    for (let y = 0.6; y < HEIGHT; y += 0.8) {
+      const r = radiusAt(y);
+      const count = Math.max(3, Math.round((2 * Math.PI * r) / 1.3));
+      for (let k = 0; k < count; k++) {
+        needles.push({
+          kind: "needle",
+          ch: randomItem(NEEDLES),
+          y: y + random(-0.15, 0.15),
+          r,
+          angle: (k / count) * Math.PI * 2 + random(-0.1, 0.1)
+        });
+      }
     }
-  }
 
-  const hint = "@alishsharma on tiktok";
-  const hintStart = Math.max(0, Math.floor((columns - hint.length) / 2));
-  for (let i = 0; i < hint.length && hintStart + i < columns; i += 1) {
-    characters[rows - 1][hintStart + i] = hint[i];
-    colors[rows - 1][hintStart + i] = 238;
-  }
+    // Recorre una espiral alrededor del cono y llama a onPoint
+    // cada "spacing" de cable (medido en 3D, no en pantalla).
+    function walkSpiral(rowsPerTurn, startAngle, spacing, onPoint) {
+      let length = 0;
+      let nextAt = 0;
+      let prev = null;
 
-  context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-  context.font = `${fontSize}px Consolas, "Courier New", monospace`;
-  context.textBaseline = "alphabetic";
-  for (let row = 0; row < rows; row += 1) {
-    let column = 0;
-    while (column < columns) {
-      const color = colors[row][column];
-      if (!color || characters[row][column] === " ") {
-        column += 1;
-        continue;
+      for (let a = 0; ; a += 0.01) {
+        const y = 0.8 + (a / (Math.PI * 2)) * rowsPerTurn;
+        if (y >= HEIGHT - 0.3) break;
+
+        const r = radiusAt(y) + 0.3;   // un pelín por fuera de las ramas
+        const angle = a + startAngle;
+        const p = { x: r * Math.sin(angle), y: y * ROW_ASPECT, z: r * Math.cos(angle) };
+
+        if (prev) length += Math.hypot(p.x - prev.x, p.y - prev.y, p.z - prev.z);
+        prev = p;
+
+        if (length < nextAt) continue;
+        nextAt = length + spacing;
+        onPoint({ y, r, angle, length });
+      }
+    }
+
+    // Cable de luces: cada bombilla sabe su número en el cable (index).
+    const lights = [];
+    walkSpiral(3.4, 0, 3.4, p => {
+      const color = PALETTE[lights.length % PALETTE.length];
+      lights.push({
+        ...p,
+        kind: "light",
+        ch: "o",
+        index: lights.length,
+        base: color,
+        rgb: [...color],
+        level: 0,
+        rate: random(1.5, 4),
+        phase: random(0, Math.PI * 2),
+        twinkleOn: Math.random() < 0.6,
+        twinkleAt: random(0, 1.5)
+      });
+    });
+
+    // Espumillón: otra espiral, más abierta, de "~" dorados.
+    const tinsel = [];
+    walkSpiral(6.5, 2.2, 0.9, p => tinsel.push({ ...p, kind: "tinsel", ch: "~" }));
+
+    // Bolas: puntos sueltos al azar.
+    const baubles = Array.from({ length: 14 }, () => {
+      const y = random(4, HEIGHT - 1.5);
+      return {
+        kind: "bauble",
+        ch: "@",
+        y,
+        r: radiusAt(y) + 0.2,
+        angle: random(0, Math.PI * 2),
+        color: randomItem(BAUBLE_COLORS)
+      };
+    });
+
+    const drawables = [...needles, ...tinsel, ...baubles, ...lights];
+
+    // ------------------------------------------------------------
+    // 2. PROYECCIÓN: de 3D a la pantalla.
+    //    x = r·sen(ángulo)  → izquierda / derecha
+    //    z = r·cos(ángulo)  → hacia ti (+) o hacia el fondo (−)
+    //    La z baja un poco el punto en pantalla (cámara desde arriba):
+    //    por eso los anillos se ven como elipses y el cono "tiene volumen".
+    // ------------------------------------------------------------
+    let cw, lh, cx, topY, cssW, cssH;
+
+    function project(d, spin) {
+      const a = d.angle + spin;
+      d.z = d.r * Math.cos(a);
+      d.facing = Math.cos(a);   // 1 = de frente, 0 = en el borde, −1 = detrás
+      d.X = cx + d.r * Math.sin(a) * cw;
+      d.Y = topY + d.y * lh + d.z * cw * TILT;
+    }
+
+    function resize() {
+      const fontSize = Math.max(5, Math.min(
+        15,
+        stage.clientWidth * 0.036,
+        Math.max(5, (stage.clientHeight - 60) * 0.0255)
+      ));
+      const font = `${fontSize}px ui-monospace, Consolas, "Cascadia Mono", Menlo, monospace`;
+
+      ctx.font = font;
+      cw = ctx.measureText("M").width;
+      lh = fontSize * 1.12;
+      cssW = (RADIUS * 2 + 6) * cw;
+      cssH = (HEIGHT + 9) * lh;
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+      canvas.style.width = `${cssW}px`;
+      canvas.style.height = `${cssH}px`;
+
+      // Cambiar el tamaño del canvas borra su configuración: se vuelve a poner.
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = font;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      cx = cssW / 2;
+      topY = lh * 3.2;
+    }
+
+    // ------------------------------------------------------------
+    // 3. DIBUJO de cada fotograma: del fondo hacia delante,
+    //    para que lo cercano tape a lo lejano.
+    // ------------------------------------------------------------
+    function glow(X, Y, radius, [r, g, b], alpha) {
+      const gradient = ctx.createRadialGradient(X, Y, 0, X, Y, radius);
+      gradient.addColorStop(0, `rgba(${r | 0}, ${g | 0}, ${b | 0}, ${alpha.toFixed(2)})`);
+      gradient.addColorStop(1, `rgba(${r | 0}, ${g | 0}, ${b | 0}, 0)`);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(X - radius, Y - radius, radius * 2, radius * 2);
+    }
+
+    function drawItem(d, t) {
+      const front = (d.facing + 1) / 2;   // 0 = detrás, 1 = delante
+
+      if (d.kind === "needle") {
+        ctx.fillStyle = NEEDLE_SHADES[Math.round(front * 7)];
+      } else if (d.kind === "tinsel") {
+        // Un destello que recorre la guirnalda hacia abajo.
+        const behind = mod(t * 14 - d.length, 45);
+        const shine = behind < 7 ? 1 - behind / 7 : 0;
+        ctx.fillStyle = rgba(mix(TINSEL_DIM, TINSEL_BRIGHT, shine), 0.25 + 0.75 * front);
+      } else if (d.kind === "bauble") {
+        ctx.fillStyle = rgba(d.color, 0.3 + 0.7 * front);
+      } else {
+        // Bombilla: apagada = cristal oscuro; encendida = color pleno.
+        // Las de detrás se ven más tenues, como en un árbol real.
+        d.v = d.level * (0.3 + 0.7 * front);
+        ctx.fillStyle = rgba(d.rgb.map(c => c * (0.22 + 0.78 * d.v)), 0.35 + 0.65 * front);
       }
 
-      const start = column;
-      let text = "";
-      while (column < columns && colors[row][column] === color && characters[row][column] !== " ") {
-        text += characters[row][column];
-        column += 1;
-      }
-      context.fillStyle = PALETTE[color] || "#fff";
-      context.fillText(text, start * cellWidth, (row + 1) * lineHeight - fontSize * 0.12);
+      ctx.fillText(d.ch, d.X, d.Y);
     }
-  }
-}
 
-function updateMotionButton() {
-  motionButton.setAttribute("aria-pressed", String(playing));
-  motionIcon.textContent = playing ? "Ⅱ" : "▶";
-  motionLabel.textContent = playing ? "Pausar animación" : "Reanudar animación";
-}
+    function drawStar(t) {
+      const Y = topY - 1.3 * lh;
+      const pulse = 0.75 + 0.25 * Math.sin(t * 3);
 
-function animate(timestamp) {
-  if (!playing) return;
-  animationFrame = window.requestAnimationFrame(animate);
-  if (timestamp - lastFrameTime < 1000 / FPS) return;
-  const deltaTime = Math.min((timestamp - (lastSnowUpdate || timestamp)) / 1000, 0.1);
-  lastSnowUpdate = timestamp;
-  lastFrameTime = timestamp;
-  if (!startTime) startTime = timestamp;
-  updateSnow(deltaTime);
-  render((timestamp - startTime) / 1000);
-}
+      ctx.globalCompositeOperation = "lighter";
+      glow(cx, Y, lh * (1.4 + 0.8 * pulse), [255, 200, 90], 0.5 * pulse);
+      ctx.globalCompositeOperation = "source-over";
 
-function setPlaying(nextPlaying) {
-  playing = nextPlaying;
-  updateMotionButton();
-  if (playing) {
-    startTime = 0;
-    lastFrameTime = 0;
-    lastSnowUpdate = 0;
-    animationFrame = window.requestAnimationFrame(animate);
-  } else {
-    window.cancelAnimationFrame(animationFrame);
-  }
-}
+      ctx.fillStyle = `rgba(255, 233, 163, ${(0.4 + 0.6 * Math.abs(Math.sin(t * 2.3))).toFixed(2)})`;
+      ctx.fillText("\\ | /", cx, Y - lh);
+      ctx.fillStyle = `rgba(255, 233, 163, ${(0.4 + 0.6 * Math.abs(Math.sin(t * 1.7 + 1))).toFixed(2)})`;
+      ctx.fillText("--   --", cx, Y);
+      ctx.fillStyle = "#fff6c8";
+      ctx.fillText("*", cx, Y);
+    }
 
-motionButton.addEventListener("click", () => setPlaying(!playing));
+    // Regalos de distintos tamaños, todos apoyados en el mismo suelo.
+    // [columna del centro, color, líneas de arriba abajo]
+    const GROUND = HEIGHT + 2.8;
+    const GIFTS = [
+      [-11.5, "#7fc8ff", ["[++]"]],
+      [-6, "#ff6b81", ["  \\/  ", "+-||-+", "|_||_|"]],
+      [5.5, "#ffc46b", [" \\/ ", "[||]", "[||]"]],
+      [9.5, "#c59bff", ["[#]"]]
+    ];
 
-reducedMotion.addEventListener("change", (event) => {
-  if (event.matches) setPlaying(false);
-});
+    function drawBase(part) {
+      const groundY = topY + GROUND * lh;
 
-scene = buildScene();
-updateMotionButton();
-new ResizeObserver(resizeCanvas).observe(canvas);
-resizeCanvas();
-if (playing) animationFrame = window.requestAnimationFrame(animate);
+      if (part === "trunk") {
+        // Sombra en el suelo: es lo que hace que el árbol y los regalos
+        // parezcan "apoyados" en vez de flotar.
+        ctx.save();
+        ctx.translate(cx, groundY + 0.4 * lh);
+        ctx.scale(1, 0.12);
+        const radius = (RADIUS + 2) * cw;
+        const shadow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+        shadow.addColorStop(0, "rgba(0, 0, 0, 0.45)");
+        shadow.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = shadow;
+        ctx.fillRect(-radius, -radius, radius * 2, radius * 2);
+        ctx.restore();
+
+        ctx.fillStyle = "#b88b63";
+        for (let r = 0; r < 3; r++) ctx.fillText("|||||", cx, groundY - r * lh);
+        return;
+      }
+
+      for (const [col, color, lines] of GIFTS) {
+        ctx.fillStyle = color;
+        lines.forEach((line, i) => {
+          const fromBottom = lines.length - 1 - i;
+          ctx.fillText(line, cx + col * cw, groundY - fromBottom * lh);
+        });
+      }
+    }
+
+    function draw(t, spin) {
+      ctx.clearRect(0, 0, cssW, cssH);
+      drawBase("trunk");   // el tronco va detrás de las ramas
+
+      for (const d of drawables) project(d, spin);
+      drawables.sort((a, b) => a.z - b.z);
+      for (const d of drawables) drawItem(d, t);
+
+      // El brillo de las bombillas se suma a lo que hay debajo ("lighter"):
+      // así "ilumina" las ramas de alrededor.
+      ctx.globalCompositeOperation = "lighter";
+      for (const light of lights) {
+        if (light.v > 0.08) glow(light.X, light.Y, lh * (0.5 + 1.3 * light.v), light.rgb, 0.45 * light.v);
+      }
+      ctx.globalCompositeOperation = "source-over";
+
+      drawBase("gifts");
+      drawStar(t);
+    }
+
+    // ------------------------------------------------------------
+    // 4. CONTROLADOR: cada modo es una función
+    //    (bombilla, tiempo) → brillo entre 0 y 1.
+    //    Las bombillas no deciden nada: obedecen al controlador,
+    //    que decide según su posición en el cable.
+    // ------------------------------------------------------------
+    function hslToRgb(h, s, l) {
+      const k = n => (n + h / 30) % 12;
+      const a = s * Math.min(l, 1 - l);
+      const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+      return [f(0) * 255, f(8) * 255, f(4) * 255];
+    }
+
+    const MODES = [
+      {
+        id: "twinkle",
+        label: "Twinkle",
+        // Cada bombilla se enciende y apaga a su aire.
+        level: light => (light.twinkleOn ? 1 : 0.05)
+      },
+      {
+        id: "chase",
+        label: "Chase",
+        // Cometas que corren por el cable: la cabeza brilla y deja estela.
+        level: (light, t) => {
+          const behind = mod(t * 14 - light.index, 12);
+          return behind < 4 ? (1 - behind / 4) ** 2 : 0.04;
+        }
+      },
+      {
+        id: "wave",
+        label: "Wave",
+        // Una ola de luz que baja de la punta a la base.
+        level: (light, t) => {
+          const wave = 0.5 + 0.5 * Math.sin((light.y / HEIGHT * 2 - t * 0.6) * Math.PI * 2);
+          return 0.04 + 0.96 * wave ** 3;
+        }
+      },
+      {
+        id: "flash",
+        label: "Flash",
+        // Dos circuitos (pares e impares) que se turnan.
+        level: (light, t) => (light.index % 2 === Math.floor(t * 1.8) % 2 ? 1 : 0.04)
+      },
+      {
+        id: "fade",
+        label: "Fade",
+        // Todo el árbol "respira" a la vez.
+        level: (light, t) => 0.06 + 0.94 * (0.5 - 0.5 * Math.cos(t * 1.4)) ** 1.5
+      },
+      {
+        id: "rainbow",
+        label: "Rainbow",
+        // Los colores viajan por el cable.
+        level: (light, t) => 0.85 + 0.15 * Math.sin(t * light.rate + light.phase),
+        color: (light, t) => hslToRgb(mod(light.index * 14 - t * 120, 360), 1, 0.62)
+      },
+      {
+        id: "steady",
+        label: "Steady",
+        level: (light, t) => 0.88 + 0.12 * Math.sin(t * light.rate + light.phase)
+      }
+    ];
+
+    const AUTO_SECONDS = 8;
+    const buttons = new Map();
+    let selected = "auto";
+    let runningId = null;
+
+    function buildController() {
+      for (const option of [{ id: "auto", label: "Auto" }, ...MODES]) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = option.label;
+        button.setAttribute("aria-pressed", String(option.id === selected));
+
+        button.addEventListener("click", () => {
+          selected = option.id;
+          buttons.forEach((b, id) => b.setAttribute("aria-pressed", String(id === selected)));
+        });
+
+        buttons.set(option.id, button);
+        controller.append(button);
+      }
+    }
+
+    function currentMode(t) {
+      if (selected !== "auto") return MODES.find(mode => mode.id === selected);
+      return MODES[Math.floor(t / AUTO_SECONDS) % MODES.length];
+    }
+
+    // En modo Auto, marca qué programa está sonando ahora.
+    function markRunning(mode) {
+      const id = selected === "auto" ? mode.id : null;
+      if (id === runningId) return;
+      buttons.get(runningId)?.classList.remove("running");
+      buttons.get(id)?.classList.add("running");
+      runningId = id;
+    }
+
+    function updateLight(light, mode, t, dt) {
+      if (t >= light.twinkleAt) {
+        light.twinkleOn = !light.twinkleOn;
+        light.twinkleAt = t + (light.twinkleOn ? random(0.4, 2.2) : random(0.08, 0.7));
+      }
+
+      // Una bombilla de verdad no salta de 0 a 1: el filamento tarda
+      // un poco en calentarse y algo más en enfriarse.
+      const target = mode.level(light, t);
+      const tau = target > light.level ? 0.04 : 0.14;
+      light.level += (target - light.level) * (1 - Math.exp(-dt / tau));
+
+      const targetColor = mode.color ? mode.color(light, t) : light.base;
+      const k = 1 - Math.exp(-dt / 0.25);
+      for (let c = 0; c < 3; c++) light.rgb[c] += (targetColor[c] - light.rgb[c]) * k;
+    }
+
+    // ------------------------------------------------------------
+    // 5. BUCLE: en cada fotograma, actualizar luces → girar → dibujar.
+    // ------------------------------------------------------------
+    let clock = 0;
+    let lastTime = null;
+    let dragSpin = 0;
+    let dragX = null;
+
+    function frame(now) {
+      const dt = lastTime === null ? 0 : Math.min(0.1, (now - lastTime) / 1000);
+      lastTime = now;
+      clock += dt;
+
+      const mode = currentMode(clock);
+      markRunning(mode);
+
+      let total = 0;
+      for (const light of lights) {
+        updateLight(light, mode, clock, dt);
+        total += light.level;
+      }
+      halo.style.opacity = (0.25 + 0.75 * total / lights.length).toFixed(3);
+
+      draw(clock, clock * SPIN + dragSpin);
+      if (playing) frameHandle = requestAnimationFrame(frame);
+    }
+
+    function updateMotionButton() {
+      motionButton.setAttribute("aria-pressed", String(playing));
+      motionIcon.textContent = playing ? "Ⅱ" : "▶";
+      motionLabel.textContent = playing ? "Pausar animación" : "Reanudar animación";
+    }
+
+    function setPlaying(nextPlaying) {
+      if (playing === nextPlaying) return;
+      playing = nextPlaying;
+      updateMotionButton();
+      if (playing) {
+        lastTime = null;
+        if (!snowCreated) {
+          createSnow();
+          snowCreated = true;
+        }
+        frameHandle = requestAnimationFrame(frame);
+      } else {
+        cancelAnimationFrame(frameHandle);
+      }
+    }
+
+    motionButton.addEventListener("click", () => setPlaying(!playing));
+
+    // Arrastrar en horizontal gira el árbol a mano.
+    canvas.addEventListener("pointerdown", e => {
+      dragX = e.clientX;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener("pointermove", e => {
+      if (dragX === null) return;
+      dragSpin += (e.clientX - dragX) * 0.012;
+      dragX = e.clientX;
+    });
+    canvas.addEventListener("pointerup", () => { dragX = null; });
+    canvas.addEventListener("pointercancel", () => { dragX = null; });
+
+    // ------------------------------------------------------------
+    // 6. NIEVE con profundidad: lo cercano es más grande,
+    //    más brillante y cae más rápido.
+    // ------------------------------------------------------------
+    function createSnow() {
+      const back = document.querySelector(".snow.back");
+      const front = document.querySelector(".snow.front");
+
+      for (let i = 0; i < 70; i++) {
+        const depth = Math.random();   // 0 = lejos, 1 = muy cerca
+        const flake = document.createElement("span");
+        const duration = 16 - depth * 9;
+
+        flake.className = "snowflake";
+        flake.textContent = depth > 0.7 ? "*" : ".";
+        flake.style.left = `${random(0, 100).toFixed(2)}%`;
+        flake.style.fontSize = `${(8 + depth * 14).toFixed(1)}px`;
+        flake.style.opacity = (0.25 + depth * 0.6).toFixed(2);
+        flake.style.setProperty("--drift", `${random(-60, 60).toFixed(0)}px`);
+        flake.style.animationDuration = `${duration.toFixed(1)}s`;
+        flake.style.animationDelay = `${(-random(0, duration)).toFixed(1)}s`;
+
+        (depth > 0.92 ? front : back).append(flake);
+      }
+    }
+
+    // ------------------------------------------------------------
+    // ARRANQUE
+    // ------------------------------------------------------------
+    resize();
+    buildController();
+    updateMotionButton();
+    if (reducedMotion.matches) {
+      halo.style.opacity = "1";
+      lights.forEach(light => { light.level = 1; });
+      draw(0, 0.4);
+    }
+    if (playing) {
+      createSnow();
+      snowCreated = true;
+      frameHandle = requestAnimationFrame(frame);
+    }
+
+    new ResizeObserver(() => {
+      resize();
+      if (!playing) draw(clock, reducedMotion.matches ? 0.4 : clock * SPIN + dragSpin);
+    }).observe(stage);
+    reducedMotion.addEventListener("change", event => {
+      if (event.matches) setPlaying(false);
+    });
+    window.addEventListener("pagehide", () => cancelAnimationFrame(frameHandle), { once: true });
