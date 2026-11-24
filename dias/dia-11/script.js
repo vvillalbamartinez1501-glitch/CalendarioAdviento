@@ -5,12 +5,12 @@ const levels = {
 };
 
 const loveMessages = [
-  "Eres mi lugar favorito, en cualquier estación y en cualquier parte del mundo. 💚",
-  "La Navidad brilla un poquito más desde que puedo compartirla contigo. ✨",
-  "Si pudiera pedir un deseo, volvería a elegirte una y mil veces. 🎄",
-  "Gracias por llenar mis días de calma, risas y ese cariño que se siente como hogar. 🏡",
-  "No hay luces más bonitas que las que enciendes en mi corazón. 🌟",
-  "Mi regalo favorito no viene envuelto: eres tú, hoy y todos los días. 🎁"
+  "Eres mi lugar favorito, en cualquier momento y en cualquier parte.",
+  "Mis días son mejores cuando estás a mi lado.",
+  "Ojalá poder seguir eligiéndonos mil diciembres más.",
+  "Gracias por estar siempre ahí.",
+  "Eres infinitamente importante para mi, nunca olvides que te quiero muchísimo.",
+  "Mi regalo favorito no viene envuelto: eres tú <3."
 ];
 
 const board = document.querySelector("#board");
@@ -18,6 +18,7 @@ const mineCount = document.querySelector("#mine-count");
 const timerDisplay = document.querySelector("#timer");
 const resetButton = document.querySelector("#reset-button");
 const messageDisplay = document.querySelector("#game-message");
+const replayButton = document.querySelector("#replay-button");
 const modeButton = document.querySelector("#mode-button");
 const modeLabel = document.querySelector("#mode-label");
 const victoryModal = document.querySelector("#victory-modal");
@@ -274,6 +275,8 @@ function endGame(isWin) {
   if (isWin) {
     setFace("😎");
     setMessage("¡Tablero despejado! Y ahora, una sorpresa para tu corazón. 💚", "win");
+    replayButton.textContent = "¡Volver a jugar!";
+    replayButton.classList.add("is-highlighted");
     messageIndex = 0;
     loveMessage.textContent = loveMessages[messageIndex];
     renderBoard();
@@ -285,6 +288,8 @@ function endGame(isWin) {
     });
     setFace("💥");
     setMessage("¡Ups! Pisaste un carbón navideño, pero mi amor por ti sigue intacto. ¡Inténtalo otra vez!", "loss");
+    replayButton.textContent = "¡Volver a jugar!";
+    replayButton.classList.add("is-highlighted");
     renderBoard();
     board.classList.remove("board-shake");
     void board.offsetWidth;
@@ -320,6 +325,8 @@ function resetGame() {
   modeLabel.textContent = "🔍 Descubrir";
   setFace("🎅");
   setMessage("Elige una casilla para comenzar. ¡Tu primer paso siempre es seguro! ✨");
+  replayButton.textContent = "Reiniciar nivel";
+  replayButton.classList.remove("is-highlighted");
   board.classList.remove("board-shake");
   celebrationLayer.replaceChildren();
   if (victoryModal.open) victoryModal.close();
@@ -342,6 +349,8 @@ document.querySelectorAll(".difficulty-button").forEach((button) => {
 });
 
 resetButton.addEventListener("click", resetGame);
+replayButton.addEventListener("click", resetGame);
+document.querySelector("#modal-replay-button").addEventListener("click", resetGame);
 modeButton.addEventListener("click", () => {
   flagMode = !flagMode;
   modeButton.setAttribute("aria-pressed", String(flagMode));

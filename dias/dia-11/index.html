@@ -27,14 +27,13 @@
       <span class="dedication-sparkle" aria-hidden="true">✦</span>
       <p class="eyebrow">Una sorpresa para ti</p>
       <h1>Buscaminas Navideño</h1>
-      <!-- ESCRIBE AQUÍ TU DEDICATORIA SUPERIOR DEL DÍA 11 -->
-      <p class="dedication-copy">Despeja el tablero con cuidado: detrás de cada casilla se esconde un pedacito de mi cariño para ti. 💚</p>
+      <p class="dedication-copy">Un pequeño juego, porque mi vida a veces se siente como un campo de minas donde tengo que tener siempre mucho cuidado, pero tú eres un lugar seguro para mi.</p>
       <span class="dedication-flourish" aria-hidden="true">❄ &nbsp; ♥ &nbsp; ❄</span>
     </header>
 
     <section class="game-card" aria-label="Juego Buscaminas Navideño">
       <div class="difficulty-row">
-        <p class="control-label" id="difficulty-label">Elige tu nivel</p>
+        <p class="control-label" id="difficulty-label">Elige dificultad</p>
         <div class="difficulty-options" role="group" aria-labelledby="difficulty-label">
           <button class="difficulty-button is-active" type="button" data-level="easy" aria-pressed="true">Fácil <span>8 × 8</span></button>
           <button class="difficulty-button" type="button" data-level="medium" aria-pressed="false">Medio <span>12 × 12</span></button>
@@ -48,7 +47,8 @@
         <div class="digital-counter timer-counter" aria-label="Tiempo transcurrido"><span aria-hidden="true">⏱️</span> <output id="timer">000</output></div>
       </div>
 
-      <div class="game-message" id="game-message" role="status" aria-live="polite">Elige una casilla para comenzar. ¡Tu primer paso siempre es seguro! ✨</div>
+      <div class="game-message" id="game-message" role="status" aria-live="polite">Elige una casilla para comenzar. El primer paso siempre es seguro </div>
+      <button class="replay-button" id="replay-button" type="button">Reiniciar nivel</button>
 
       <div class="board-frame">
         <div class="board" id="board" role="grid" aria-label="Tablero de Buscaminas Navideño"></div>
@@ -61,22 +61,21 @@
         </button>
       </div>
     </section>
-    <p class="page-signoff">Con amor, para mi persona favorita <span aria-hidden="true">♥</span></p>
+    <p class="page-signoff">Con amor, para mi lugar seguro <span aria-hidden="true">♥</span></p>
   </main>
 
   <dialog class="victory-modal" id="victory-modal" aria-labelledby="victory-title">
     <div class="celebration-layer" id="celebration-layer" aria-hidden="true"></div>
     <div class="modal-ornament" aria-hidden="true">✦ ❄ ✦</div>
     <p class="eyebrow">Una pequeña gran victoria</p>
-    <h2 id="victory-title">¡Lo lograste! Despejaste el camino directo a mi corazón</h2>
+    <h2 id="victory-title">¡Yipiiieee! Ganastes mil abrazos</h2>
     <!-- PERSONALIZAR MENSAJES DE AMOR AQUÍ -->
     <div class="love-note" aria-live="polite">
       <span class="love-note-icon" aria-hidden="true">💌</span>
       <p id="love-message"></p>
     </div>
     <div class="modal-actions">
-      <button class="message-button" id="next-message" type="button">Leer otro mensaje bonito 💌</button>
-      <button class="close-button" id="close-modal" type="button">Guardar este momento ✨</button>
+      <button class="replay-button is-modal-replay is-highlighted" id="modal-replay-button" type="button">Volver a jugar</button>
     </div>
   </dialog>
 </body>

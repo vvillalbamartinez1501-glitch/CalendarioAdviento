@@ -116,6 +116,11 @@ button { color: inherit; }
 .game-message { min-height: 24px; padding: 9px 3px 7px; color: #687486; font-size: .68rem; line-height: 1.45; text-align: center; }
 .game-message.is-loss { color: #a5202b; font-weight: 700; }
 .game-message.is-win { color: #17613e; font-weight: 700; }
+.replay-button { display: block; min-height: 42px; margin: 0 auto 10px; border: 1px solid #d5a927; border-radius: 22px; padding: 8px 22px; color: #fff; background: linear-gradient(135deg, #28704b, #17452f); box-shadow: 0 4px 13px rgba(27,67,50,.24); cursor: pointer; font-size: .76rem; font-weight: 800; transition: transform .16s ease, box-shadow .16s ease, filter .16s ease; }
+.replay-button.is-highlighted { color: #3e2e0c; background: linear-gradient(135deg, #ffe88a, #e7b934); box-shadow: 0 0 0 3px rgba(212,175,55,.2), 0 6px 17px rgba(162,112,11,.3); }
+.replay-button:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 7px 17px rgba(27,67,50,.3); }
+.replay-button.is-highlighted:hover { box-shadow: 0 0 0 3px rgba(212,175,55,.26), 0 8px 19px rgba(162,112,11,.36); }
+.replay-button.is-modal-replay { width: 100%; margin: 0; }
 .board-frame { width: fit-content; max-width: 100%; margin: 0 auto; border: 5px solid #d8c99a; border-radius: 8px; padding: 4px; background: #ded8c4; box-shadow: 0 5px 13px rgba(46,45,34,.16), inset 0 1px 2px rgba(255,255,255,.7); }
 .board { --cols: 8; display: grid; width: min(456px, calc(100vw - 62px)); grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 2px; margin: 0 auto; background: #b6b8a8; touch-action: manipulation; }
 .board-shake { animation: board-shake .36s ease-in-out; }
