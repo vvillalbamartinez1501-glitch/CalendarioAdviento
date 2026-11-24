@@ -115,11 +115,41 @@ let hintTimeout;
 
 function renderWordList() {
   wordListElement.replaceChildren();
+  const bulbColors = ["#FF2A2A", "#29B6F6", "#FFD54F", "#4ADE80", "#F472B6"];
   words.forEach((word, id) => {
     const item = document.createElement("li");
     item.className = "word-item";
     item.dataset.wordId = String(id);
-    item.textContent = word.label;
+    item.setAttribute("aria-label", word.label);
+
+    [...word.label.toUpperCase()].forEach((character, index) => {
+      if (/\s/.test(character)) {
+        const gap = document.createElement("span");
+        gap.className = "wire-gap";
+        gap.setAttribute("aria-hidden", "true");
+        item.append(gap);
+        return;
+      }
+
+      const slot = document.createElement("span");
+      slot.className = "bulb-slot";
+      slot.style.setProperty("--bulb-color", bulbColors[index % bulbColors.length]);
+
+      const bulb = document.createElement("span");
+      bulb.className = "bulb";
+      bulb.style.animationDuration = `${6 + ((id + index) % 3) * 0.7}s`;
+      bulb.style.animationDelay = `${(id * 0.23 + index * 0.17).toFixed(2)}s`;
+      bulb.setAttribute("aria-hidden", "true");
+
+      const letter = document.createElement("span");
+      letter.className = "painted-letter";
+      letter.textContent = character;
+      letter.setAttribute("aria-hidden", "true");
+
+      slot.append(bulb, letter);
+      item.append(slot);
+    });
+
     wordListElement.append(item);
   });
 }
@@ -162,7 +192,7 @@ function paintFoundWords() {
       cell.classList.add("is-found");
       cell.style.setProperty("--found-color", FOUND_COLORS[wordId % FOUND_COLORS.length]);
     }
-    wordListElement.querySelector(`[data-word-id="${wordId}"]`).classList.add("is-found");
+    wordListElement.querySelector(`[data-word-id="${wordId}"]`).classList.add("found");
   }
 }
 
