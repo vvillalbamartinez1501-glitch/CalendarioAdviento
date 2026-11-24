@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizador SVG sobre Imágenes</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #111827;
+      color: #f9fafb;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      align-items: center;
+    }
+    .level-card {
+      width: 100%;
+      max-width: 1100px;
+      background: #1f2937;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    h2 {
+      margin: 0 0 12px 0;
+      font-size: 1.2rem;
+      color: #e5e7eb;
+    }
+    .canvas-wrapper {
+      position: relative;
+      width: 100%;
+      border: 2px solid #374151;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .canvas-wrapper img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .canvas-wrapper svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    path {
+      fill-opacity: 0.45;
+      stroke-width: 4;
+    }
+    .esther {
+      fill: #38bdf8;
+      stroke: #0284c7;
+    }
+    .viktor {
+      fill: #a855f7;
+      stroke: #7e22ce;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LANDSCAPE 1 -->
+  <div class="level-card">
+    <h2>Landscape 1 (Esther: azul | Viktor: morado)</h2>
+    <div class="canvas-wrapper">
+      <!-- Asegúrate de que la ruta coincida con tu archivo -->
+      <img src="../../assets/images/landscape_1_sol.jpg" alt="Landscape 1">
+      <svg viewBox="0 0 1600 960" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Esther (abajo a la izquierda) -->
+        <path id="esther-1" class="esther" d="M3 677 L71 677 L68 836 L-2 833 Z" />
+        <!-- Viktor (derecha, zona media-baja) -->
+        <path id="viktor-1" class="viktor" d="M1200 500 L1274 502 L1276 616 L1202 615 Z" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- LANDSCAPE 2 -->
+  <div class="level-card">
+    <h2>Landscape 2 (Esther: azul | Viktor: morado)</h2>
+    <div class="canvas-wrapper">
+      <!-- Asegúrate de que la ruta coincida con tu archivo -->
+      <img src="../../assets/images/landscape_2_sol.jpg" alt="Landscape 2">
+      <svg viewBox="0 0 1600 1080" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Esther (esquina superior izquierda) -->
+        <path id="esther-2" class="esther" d="M0 0 L51 0 L51 116 L1 118 Z" />
+        <!-- Viktor (abajo, zona centro-izquierda) -->
+        <path id="viktor-2" class="viktor" d="M668 956 L733 956 L740 1075 L669 1073 Z" />
+      </svg>
+    </div>
+  </div>
+
+  
+</body>
+</html>

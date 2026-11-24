@@ -12,6 +12,7 @@ try {
 
 if (shouldRevealPage) {
   const transitionStyle = document.createElement("style");
+  transitionStyle.id = "arrival-transition-style";
   transitionStyle.textContent = `
     html.is-arriving::before {
       position: fixed;
@@ -24,9 +25,22 @@ if (shouldRevealPage) {
   `;
   document.head.append(transitionStyle);
   document.documentElement.classList.add("is-arriving");
+
+  function clearArrivalTransition() {
+    document.documentElement.classList.remove("is-arriving");
+    document.querySelector("#arrival-transition-style")?.remove();
+    document.querySelector("#arrival-transition-overlay")?.remove();
+  }
+
+  window.addEventListener("pagehide", clearArrivalTransition, { once: true });
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) clearArrivalTransition();
+  });
+
   window.addEventListener("load", () => {
     const revealOverlay = document.createElement("div");
     const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 500 : 1800;
+    revealOverlay.id = "arrival-transition-overlay";
     revealOverlay.setAttribute("aria-hidden", "true");
     revealOverlay.style.cssText = `position:fixed;inset:0;z-index:2147483647;background:#fff;opacity:1;pointer-events:none;transition:opacity ${duration}ms ease-in-out`;
     revealOverlay.addEventListener("transitionend", () => revealOverlay.remove(), { once: true });

@@ -34,7 +34,7 @@
   </header>
 
   <main class="game">
-    <p class="intro">¡Has encontrado a Hello Kitty! Ahora a por el desafío de verdad: encuentra a Esther y Viktor.</p>
+    <p class="intro">Ahora a por el desafío de verdad: encuentranos.</p>
 
     <section class="scene-frame" aria-label="Escenario de búsqueda">
       <div class="game-stage" id="game-stage">
@@ -66,11 +66,17 @@
       </svg>
       <p class="victory-kicker">Primer paisaje completado</p>
       <h2 id="victory-title">¡Esther y Viktor encontrados!</h2>
-      <p class="dedication">¡Muy bien! Aún queda un último paisaje por descubrir.</p>
+      <p class="dedication">Sigue siendo demasiado fácil? Aún queda un último paisaje por descubrir.</p>
       <a class="restart-button next-level-link" href="nivel-esther-viktor-2.html">Ir al segundo paisaje →</a>
       <button class="restart-button" id="restart-button" type="button">Volver a jugar</button>
     </section>
   </main>
+
+  <dialog class="victory-popup" id="victory-popup" aria-labelledby="victory-popup-title">
+    <button class="victory-popup-close" id="victory-popup-close" type="button" aria-label="Cerrar">×</button>
+    <p class="victory-kicker"></p>
+    <h2 id="victory-popup-title"></h2>
+  </dialog>
 
   <div class="celebration" id="celebration" aria-hidden="true"></div>
 </body>

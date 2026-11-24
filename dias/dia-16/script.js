@@ -74,13 +74,13 @@ const LEVELS = {
         id: "esther",
         name: "Esther",
         icon: "❄",
-        shape: "M0 801 L66 801 L63 955 L0 954 Z",
+        shape: "M3 677 L71 677 L68 836 L-2 833 Z",
       },
       {
         id: "viktor",
         name: "Viktor",
         icon: "✦",
-        shape: "M1426 608 L1484 608 L1485 740 L1427 741 Z",
+        shape: "M 1221 520 L 1289 519 L 1290 616 L 1220 615 ZM 1221 520 L 1289 519 L 1289 650 L 1221 651 Z",
       },
     ],
   },
@@ -97,7 +97,7 @@ const LEVELS = {
         id: "viktor",
         name: "Viktor",
         icon: "✦",
-        shape: "M808 959 L845 957 L851 983 L853 1070 L796 1072 L804 1001 L802 959 Z",
+        shape: "M 697 840 L 748 840 L 748 932 L 696 933 Z",
       },
     ],
   },
@@ -119,6 +119,8 @@ const coordinateReadout = document.querySelector("#coordinate-readout");
 const sceneStatus = document.querySelector("#scene-status");
 const victoryCard = document.querySelector("#victory-card");
 const restartButton = document.querySelector("#restart-button");
+const victoryPopup = document.querySelector("#victory-popup");
+const victoryPopupClose = document.querySelector("#victory-popup-close");
 const celebration = document.querySelector("#celebration");
 const foundCharacters = new Set();
 const characterElements = new Map();
@@ -249,6 +251,11 @@ function markFound(character, clientX, clientY) {
   if (foundCharacters.size === CHARACTERS.length) {
     document.body.classList.add("is-complete");
     victoryCard.hidden = false;
+    if (victoryPopup) {
+      victoryPopup.querySelector(".victory-kicker").textContent = victoryCard.querySelector(".victory-kicker").textContent;
+      victoryPopup.querySelector("h2").textContent = victoryCard.querySelector("h2").textContent;
+      victoryPopup.showModal();
+    }
     startCelebration();
   }
 }
@@ -333,6 +340,7 @@ function restartGame() {
   });
   document.body.classList.remove("is-complete");
   victoryCard.hidden = true;
+  if (victoryPopup && victoryPopup.open) victoryPopup.close();
   celebration.replaceChildren();
   sparkles.replaceChildren();
   coordinateReadout.hidden = true;
@@ -352,3 +360,6 @@ scene.addEventListener("click", handleSceneClick);
 hotspots.addEventListener("click", handleHotspotClick);
 hotspots.addEventListener("keydown", handleHotspotKeydown);
 restartButton.addEventListener("click", restartGame);
+if (victoryPopup && victoryPopupClose) {
+  victoryPopupClose.addEventListener("click", () => victoryPopup.close());
+}

@@ -504,14 +504,14 @@ function drawInitialDoodle(note, type, color) {
 }
 
 function addInitialBoard() {
-  const firstNote = createNote("#FEF08A", "Recuerdas los primeros regalos que hemos podido compartis? Dibujitos en post-its desde que somos pequeños");
+  const firstNote = createNote("#FEF08A", "Recuerdas los primeros regalos que hemos podido compartir? Dibujitos en post-its desde que somos pequeños");
   placeElement(firstNote, Math.max(24, board.clientWidth * 0.13), Math.max(92, board.clientHeight * 0.24));
 
-  const secondNote = createNote("#FBCFE8", "Me encanta guardar cada detalle contigo.");
+  const secondNote = createNote("#FBCFE8", "T'amoooo.");
   placeElement(secondNote, board.clientWidth * 0.48, board.clientHeight * 0.36);
   drawInitialDoodle(secondNote, "heart", "#DB2777");
 
-  const thirdNote = createNote("#B2F802", "Hasta los garabatos se convierten en recuerdos.");
+  const thirdNote = createNote("#B2F802", "Muak muak muak.");
   placeElement(thirdNote, board.clientWidth * 0.73, board.clientHeight * 0.2);
   drawInitialDoodle(thirdNote, "star", "#EC4899");
 
