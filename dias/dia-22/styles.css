@@ -80,6 +80,7 @@ h1 span { color: #fbbf24; }
 .hud-stat strong { color: #f8fafc; font: 19px var(--terminal); }
 .score-stat strong { color: #fbbf24; }
 .progress-stat { display: grid; gap: 9px; }
+.progress-stat[hidden] { display: none; }
 .progress-label { display: flex; justify-content: space-between; font-size: 7px; }
 .progress-label span:first-child { color: #fbbf24; }
 .progress-track { height: 12px; padding: 2px; border: 1px solid #64748b; background: #0b1222; }

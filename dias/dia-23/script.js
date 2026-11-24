@@ -6,6 +6,7 @@ const HEIGHT = 384;
 const GRAVITY = 0.58;
 const JUMP_SPEED = -11.2;
 const MOVE_SPEED = 2.8;
+const MIN_PLAYER_PROGRESS = TILE * 4;
 const PLAYER_WIDTH = 20;
 const PLAYER_HEIGHT = 27;
 const SPRITE_FILES = [
@@ -71,6 +72,7 @@ function createPlayer(name, position) {
   return {
     name,
     x: position.x * TILE + (TILE - PLAYER_WIDTH) / 2,
+    startX: position.x * TILE + (TILE - PLAYER_WIDTH) / 2,
     y: position.y * TILE,
     width: PLAYER_WIDTH,
     height: PLAYER_HEIGHT,
@@ -92,7 +94,7 @@ function startLevel() {
   state = "playing";
   animationTime = 0;
   ui.levelTitle.textContent = level.title;
-  ui.levelCount.textContent = `NIVEL ${String(levelIndex + 1).padStart(2, "0")} / 05`;
+  ui.levelCount.textContent = `NIVEL ${String(levelIndex + 1).padStart(2, "0")} / ${String(LEVELS.length).padStart(2, "0")}`;
   ui.hint.textContent = level.hint;
   ui.failOverlay.setAttribute("aria-hidden", "true");
   ui.completeOverlay.setAttribute("aria-hidden", "true");
@@ -177,6 +179,12 @@ function playerIsDead(player) {
 
 function rectanglesOverlap(a, b) {
   return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
+}
+
+function playerHasProgressed(player) {
+  return player.name === "esther"
+    ? player.x >= player.startX + MIN_PLAYER_PROGRESS
+    : player.x <= player.startX - MIN_PLAYER_PROGRESS;
 }
 
 function setFailure(player) {
@@ -297,7 +305,8 @@ function render() {
   if (players) {
     drawPlayer(players.esther);
     drawPlayer(players.viktor);
-    if (state === "level-complete" || state === "game-complete" || rectanglesOverlap(players.esther, players.viktor)) {
+    const reunited = playerHasProgressed(players.esther) && playerHasProgressed(players.viktor);
+    if (state === "level-complete" || state === "game-complete" || (reunited && rectanglesOverlap(players.esther, players.viktor))) {
       drawHeart((players.esther.x + players.viktor.x) / 2 + 5, Math.min(players.esther.y, players.viktor.y) - 17 - Math.sin(animationTime / 100) * 3);
     }
   }
@@ -323,7 +332,11 @@ function frame(time) {
     movePlayer(players.viktor, { left: "j", right: "l", jump: "i" }, delta);
     if (playerIsDead(players.esther)) setFailure(players.esther);
     else if (playerIsDead(players.viktor)) setFailure(players.viktor);
-    else if (rectanglesOverlap(players.esther, players.viktor)) completeLevel();
+    else if (
+      playerHasProgressed(players.esther) &&
+      playerHasProgressed(players.viktor) &&
+      rectanglesOverlap(players.esther, players.viktor)
+    ) completeLevel();
   }
 
   render();

@@ -28,6 +28,7 @@ const ui = {
   distance: document.querySelector("#distance"),
   gifts: document.querySelector("#gifts"),
   score: document.querySelector("#score"),
+  progressStat: document.querySelector(".progress-stat"),
   progress: document.querySelector("#progress-fill"),
   progressValue: document.querySelector("#progress-value"),
   progressTrack: document.querySelector("#progress-track"),
@@ -46,7 +47,8 @@ const ui = {
   together: document.querySelector("#together-image"),
   start: document.querySelector("#start-button"),
   retry: document.querySelector("#retry-button"),
-  playAgain: document.querySelector("#play-again-button")
+  playAgain: document.querySelector("#play-again-button"),
+  infinite: document.querySelector("#infinite-button")
 };
 
 const characterButtons = [...document.querySelectorAll(".character-card")];
@@ -66,6 +68,7 @@ let sprites;
 let items;
 let state = "loading";
 let selectedCharacter = "esther";
+let isInfiniteMode = false;
 let distancePixels = 0;
 let giftsCollected = 0;
 let giftPoints = 0;
@@ -124,7 +127,8 @@ async function loadAssets() {
 }
 
 function getDistance() {
-  return Math.min(META_CHURRERIA, Math.floor(distancePixels / PIXELS_PER_METER));
+  const distance = Math.floor(distancePixels / PIXELS_PER_METER);
+  return isInfiniteMode ? distance : Math.min(META_CHURRERIA, distance);
 }
 
 function getScore() {
@@ -133,13 +137,16 @@ function getScore() {
 
 function updateHud() {
   const distance = getDistance();
-  const progress = Math.min(100, (distance / META_CHURRERIA) * 100);
   ui.distance.textContent = `${String(distance).padStart(4, "0")} m`;
   ui.gifts.textContent = `🎁 ${giftsCollected}`;
   ui.score.textContent = String(getScore());
-  ui.progress.style.width = `${progress}%`;
-  ui.progressValue.textContent = `${Math.floor(progress)}%`;
-  ui.progressTrack.setAttribute("aria-valuenow", String(distance));
+  ui.progressStat.hidden = isInfiniteMode;
+  if (!isInfiniteMode) {
+    const progress = Math.min(100, (distance / META_CHURRERIA) * 100);
+    ui.progress.style.width = `${progress}%`;
+    ui.progressValue.textContent = `${Math.floor(progress)}%`;
+    ui.progressTrack.setAttribute("aria-valuenow", String(distance));
+  }
 }
 
 function chooseCharacter(name) {
@@ -151,8 +158,9 @@ function chooseCharacter(name) {
   });
 }
 
-function startGame() {
+function startGame(infiniteMode = false) {
   if (!sprites || !items) return;
+  isInfiniteMode = infiniteMode;
   distancePixels = 0;
   giftsCollected = 0;
   giftPoints = 0;
@@ -171,7 +179,9 @@ function startGame() {
   ui.selection.setAttribute("aria-hidden", "true");
   ui.fail.setAttribute("aria-hidden", "true");
   ui.win.setAttribute("aria-hidden", "true");
-  ui.message.textContent = "¡Vamos! Salta para esquivar los árboles.";
+  ui.message.textContent = isInfiniteMode
+    ? "Modo infinito: sobrevive y consigue tantos regalos como puedas."
+    : "¡Vamos! Salta para esquivar los árboles.";
   updateHud();
 }
 
@@ -310,7 +320,7 @@ function updateGame(delta) {
     }
   }
 
-  if (remaining > 80) {
+  if (isInfiniteMode || remaining > 80) {
     while (nextObstacleAt - distancePixels < WIDTH + speed * delta) createObstacleGroup();
     while (nextGiftAt - distancePixels < WIDTH + speed * delta) createGift();
   } else {
@@ -342,7 +352,7 @@ function updateGame(delta) {
   walkTime += delta * (speed / 7.5);
   updateHud();
 
-  if (getDistance() >= META_CHURRERIA) winGame();
+  if (!isInfiniteMode && getDistance() >= META_CHURRERIA) winGame();
 }
 
 function drawSky() {
@@ -373,7 +383,7 @@ function drawSky() {
 }
 
 function drawHouses() {
-  const offset = -((distancePixels * 0.17) % 230);
+  const offset = Math.round(-((distancePixels * 0.17) % 230));
   for (let index = -1; index < 6; index += 1) {
     const x = offset + index * 230;
     const height = 50 + ((index + 2) % 3) * 14;
@@ -449,7 +459,7 @@ function drawSnow(delta) {
 function drawShop() {
   const remaining = Math.max(0, META_CHURRERIA - getDistance());
   const progress = Math.max(0, Math.min(1, (80 - remaining) / 80));
-  const x = WIDTH + 102 - progress * (WIDTH + 102 - (PLAYER_X + 83));
+  const x = Math.round(WIDTH + 102 - progress * (WIDTH + 102 - (PLAYER_X + 83)));
   const y = 206;
   ctx.fillStyle = "#451A03";
   ctx.fillRect(x + 10, y + 34, 173, 114);
@@ -480,9 +490,8 @@ function drawShop() {
   ctx.fillStyle = "#CBD5E1";
   ctx.fillRect(x + 153, y - 16, 21, 5);
   ctx.fillStyle = "rgba(241,245,249,.7)";
-  const puff = Math.floor(animationTime / 220) % 4;
-  ctx.fillRect(x + 145 - puff * 3, y - 30 - puff * 4, 10, 5);
-  ctx.fillRect(x + 158 - puff * 2, y - 43 - puff * 3, 8, 5);
+  ctx.fillRect(x + 145, y - 30, 10, 5);
+  ctx.fillRect(x + 158, y - 43, 8, 5);
   ctx.fillStyle = "#FDE047";
   ctx.fillRect(x + 4, y + 45, 5, 5);
 }
@@ -507,16 +516,16 @@ function drawObstacles() {
 
 function drawGifts() {
   gifts.forEach((gift) => {
-    const bob = Math.round(Math.sin(animationTime / 150 + gift.x) * 2);
+    const x = Math.round(gift.x);
     if (gift.type === 2) {
       ctx.fillStyle = "#FDE047";
-      ctx.fillRect(gift.x - 2, gift.y + bob - 2, gift.width + 4, gift.height + 4);
+      ctx.fillRect(x - 2, gift.y - 2, gift.width + 4, gift.height + 4);
       ctx.save();
       ctx.globalCompositeOperation = "multiply";
-      ctx.drawImage(gift.image, gift.x, gift.y + bob, gift.width, gift.height);
+      ctx.drawImage(gift.image, x, gift.y, gift.width, gift.height);
       ctx.restore();
     } else {
-      ctx.drawImage(gift.image, gift.x, gift.y + bob, gift.width, gift.height);
+      ctx.drawImage(gift.image, x, gift.y, gift.width, gift.height);
     }
   });
 }
@@ -540,7 +549,7 @@ function render(delta) {
   drawStreetlights();
   drawGround();
   drawSnow(delta);
-  if (getDistance() >= META_CHURRERIA - 80) drawShop();
+  if (!isInfiniteMode && getDistance() >= META_CHURRERIA - 80) drawShop();
   drawObstacles();
   drawGifts();
   drawPlayer();
@@ -577,9 +586,10 @@ function updatePreviews(time) {
 characterButtons.forEach((button) => {
   button.addEventListener("click", () => chooseCharacter(button.dataset.character));
 });
-ui.start.addEventListener("click", startGame);
-ui.retry.addEventListener("click", startGame);
-ui.playAgain.addEventListener("click", startGame);
+ui.start.addEventListener("click", () => startGame());
+ui.retry.addEventListener("click", () => startGame(isInfiniteMode));
+ui.playAgain.addEventListener("click", () => startGame());
+ui.infinite.addEventListener("click", () => startGame(true));
 
 window.addEventListener("keydown", (event) => {
   const key = event.key.toLowerCase();

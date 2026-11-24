@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../../arrival-transition.js"></script>
   <meta name="theme-color" content="#0f172a">
-  <title>Día 22 · Camino a la Churrería</title>
+  <title>Día 22 · A por unos churros </title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -18,8 +18,8 @@
   <main class="arcade">
     <a class="back-link" href="../../index.html">← Volver al calendario</a>
     <header class="page-heading">
-      <p class="eyebrow">DÍA 22 · UNA AVENTURA INVERNAL</p>
-      <h1>Camino a la <span>Churrería</span></h1>
+      <p class="eyebrow">DÍA 22 · Desayuno invernal</p>
+      <h1>A por unos <span>churros</span></h1>
       <p class="intro">Una carrera entre nieve, regalos y árboles para llegar al chocolate calentito.</p>
     </header>
 
@@ -40,19 +40,19 @@
         <canvas id="game-canvas" width="960" height="420" aria-label="Corre y salta los árboles para llegar a la churrería."></canvas>
         <section class="overlay selection-overlay" id="selection-overlay" aria-labelledby="selection-title">
           <div class="overlay-card selection-card">
-            <p class="eyebrow">PREPARA TUS BOTAS</p>
+            <p class="eyebrow">VAMOS, VAMOS</p>
             <h2 id="selection-title">Misión: Chocolate<br>con Churros <span aria-hidden="true">☕</span></h2>
             <p class="selection-copy">Elige quién se lanza a la aventura.</p>
             <div class="character-options" role="group" aria-label="Elige tu personaje">
               <button class="character-card is-selected" type="button" data-character="esther" aria-pressed="true">
                 <span class="character-art"><img id="esther-preview" alt=""></span>
                 <strong>Esther</strong>
-                <small>¡La nieve no la detiene!</small>
+                <small>Puede con todo y más</small>
               </button>
               <button class="character-card" type="button" data-character="viktor" aria-pressed="false">
                 <span class="character-art"><img id="viktor-preview" alt=""></span>
                 <strong>Viktor</strong>
-                <small>¡Rápido como un rayo!</small>
+                <small>No se rendirá</small>
               </button>
             </div>
             <button class="primary-button" id="start-button" type="button">¡Correr a la Churrería! <kbd>Espacio</kbd></button>
@@ -66,7 +66,7 @@
         <span id="game-message" aria-live="polite">Pulsa espacio o toca para saltar.</span>
       </footer>
     </section>
-    <p class="page-signoff">El premio: una taza calentita y compartirla contigo <span aria-hidden="true">♥</span></p>
+    <p class="page-signoff">El premio: poder compartir el mejor desayuno con mi persona favorita <span aria-hidden="true">♥</span></p>
   </main>
 
   <section class="overlay result-overlay" id="fail-overlay" aria-labelledby="fail-title" aria-hidden="true">
@@ -74,13 +74,14 @@
       <p class="eyebrow">FIN DE LA CARRERA</p>
       <img class="result-character pixel-art" id="fail-image" alt="">
       <h2 id="fail-title">¡Vaya tropiezo!</h2>
-      <p class="result-copy">Un árbol se cruzó en el camino, pero siempre hay otra oportunidad.</p>
+      <p class="result-copy">Te chocaste con un árbol, pero siempre puede volver a intentarlo.</p>
       <div class="result-stats">
         <span>Distancia <strong id="fail-distance">0 m</strong></span>
         <span>Regalos <strong id="fail-gifts">🎁 0</strong></span>
         <span>Total <strong id="fail-score">0</strong></span>
       </div>
       <button class="primary-button" id="retry-button" type="button">Intentar de nuevo <kbd>Espacio</kbd></button>
+      <p><a class="back-link" href="./index.html">Volver al inicio</a></p>
     </div>
   </section>
 
@@ -89,7 +90,7 @@
       <p class="eyebrow">¡META ALCANZADA!</p>
       <img class="together-art pixel-art" id="together-image" alt="Esther y Viktor celebran juntos">
       <h2 id="win-title">¡Chocolate con churros!</h2>
-      <p class="result-copy">Lo conseguiste. Ahora toca entrar en calor y disfrutar juntos.</p>
+      <p class="result-copy">Yipiiiee. Lo conseguiste. Ahora toca entrar en calor y disfrutar juntos.</p>
       <div class="victory-illustration" aria-label="Dos tazas de chocolate caliente con churros">
         <svg viewBox="0 0 220 92" role="img" aria-hidden="true">
           <g class="steam"><path d="M66 31c-12-11 9-13-2-26M104 31c-12-11 9-13-2-26M151 31c-12-11 9-13-2-26" /></g>
@@ -110,9 +111,11 @@
       </div>
       <p class="record-message" id="record-message" aria-live="polite"></p>
       <div class="dedication">
-        <p><!-- ESCRIBE AQUÍ TU MENSAJE DEL DÍA 22 -->Que el mejor plan sea siempre compartir una taza de chocolate caliente con churros, una tarde de invierno y un ratito juntos. ♥</p>
+        <p>Ojalá poder desayunar a tu lado, que la distancia no nos separara y que todo fuera más fácil, pero hasta entonces me vale con querernos desde lejos e ir juntos a por nuestras metas ♥</p>
       </div>
       <button class="primary-button" id="play-again-button" type="button">¡Otra carrera!</button>
+      <p><button class="primary-button" id="infinite-button" type="button">Modo infinito</button></p>
+      <p><a class="back-link" href="./index.html">Volver al inicio</a></p>
     </div>
   </section>
 </body>
