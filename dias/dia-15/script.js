@@ -11,11 +11,118 @@ const clearDrawingButton = document.querySelector("#clear-drawing");
 const saveButton = document.querySelector("#save-board");
 const toolbarStatus = document.querySelector("#toolbar-status");
 const boardHint = document.querySelector("#board-hint");
+const storageKey = "calendario-adviento-dia-15-board-v1";
 
 let drawingMode = false;
 let selectedNote = null;
 let noteCount = 0;
 let pinCount = 0;
+let restoringBoard = false;
+let statusTimeout;
+
+function showToolbarStatus(message) {
+  window.clearTimeout(statusTimeout);
+  toolbarStatus.textContent = message;
+  statusTimeout = window.setTimeout(() => { toolbarStatus.textContent = ""; }, 3000);
+}
+
+function getBoardState() {
+  return {
+    version: 1,
+    notes: [...board.querySelectorAll(".post-it")].map((note) => {
+      const canvas = note.querySelector(".post-it__canvas");
+      return {
+        x: Number.parseFloat(note.style.left) || 0,
+        y: Number.parseFloat(note.style.top) || 0,
+        color: note.style.getPropertyValue("--note-color").trim(),
+        rotation: note.style.getPropertyValue("--note-rotation").trim(),
+        text: note.querySelector(".post-it__text").value,
+        drawing: canvas.dataset.pendingDrawing || canvas.toDataURL("image/png")
+      };
+    }),
+    pins: [...board.querySelectorAll(".pushpin")].map((pin) => ({
+      x: Number.parseFloat(pin.style.left) || 0,
+      y: Number.parseFloat(pin.style.top) || 0,
+      color: pin.style.getPropertyValue("--pin-color").trim()
+    }))
+  };
+}
+
+function persistBoard() {
+  if (restoringBoard) return;
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(getBoardState()));
+  } catch (error) {
+    console.error("No se pudo guardar el tablero del día 15:", error);
+    showToolbarStatus("No se pudo guardar en este navegador");
+  }
+}
+
+function isValidSavedState(state) {
+  const isColor = (value) => typeof value === "string" && /^#[\da-f]{6}$/i.test(value);
+  const isPosition = (value) => Number.isFinite(value) && value >= 0;
+  const isRotation = (value) => typeof value === "string" && /^-?\d+(\.\d+)?deg$/.test(value);
+
+  return state?.version === 1
+    && Array.isArray(state.notes)
+    && Array.isArray(state.pins)
+    && state.notes.every((note) =>
+      note
+      && isPosition(note.x)
+      && isPosition(note.y)
+      && isColor(note.color)
+      && isRotation(note.rotation)
+      && typeof note.text === "string"
+      && note.text.length <= 10000
+      && typeof note.drawing === "string"
+      && (note.drawing === "" || note.drawing.startsWith("data:image/png;base64,"))
+    )
+    && state.pins.every((pin) =>
+      pin
+      && isPosition(pin.x)
+      && isPosition(pin.y)
+      && isColor(pin.color)
+    );
+}
+
+function restoreBoard() {
+  let serialized;
+  try {
+    serialized = localStorage.getItem(storageKey);
+  } catch (error) {
+    console.error("No se pudo acceder al guardado del día 15:", error);
+    showToolbarStatus("El navegador no permite acceder al guardado");
+    return "failed";
+  }
+  if (serialized === null) return "missing";
+
+  let state;
+  try {
+    state = JSON.parse(serialized);
+  } catch (error) {
+    console.error("El guardado del día 15 no es válido:", error);
+    showToolbarStatus("No se pudo leer el tablero guardado");
+    return "failed";
+  }
+  if (!isValidSavedState(state)) {
+    console.error("El guardado del día 15 tiene un formato no válido.");
+    showToolbarStatus("El tablero guardado tiene un formato no válido");
+    return "failed";
+  }
+
+  restoringBoard = true;
+  try {
+    state.notes.forEach((savedNote) => {
+      createNote(savedNote.color, savedNote.text, savedNote);
+    });
+    state.pins.forEach((savedPin) => {
+      createPin(savedPin.color, savedPin);
+    });
+  } finally {
+    restoringBoard = false;
+  }
+  return "loaded";
+}
 
 function randomRotation() {
   return `${(Math.random() * 8 - 4).toFixed(1)}deg`;
@@ -52,6 +159,7 @@ function startDragging(element, event) {
     element.removeEventListener("pointerup", finish);
     element.removeEventListener("pointercancel", finish);
     if (element.hasPointerCapture(endEvent.pointerId)) element.releasePointerCapture(endEvent.pointerId);
+    persistBoard();
   }
 
   element.addEventListener("pointermove", move);
@@ -65,11 +173,11 @@ function selectNote(note) {
   if (selectedNote) selectedNote.classList.add("is-selected");
 }
 
-function createNote(color, initialText = "") {
+function createNote(color, initialText = "", savedNote = null) {
   const note = document.createElement("article");
   note.className = "post-it";
   note.style.setProperty("--note-color", color);
-  note.style.setProperty("--note-rotation", randomRotation());
+  note.style.setProperty("--note-rotation", savedNote?.rotation || randomRotation());
   note.setAttribute("aria-label", "Nota Post-it");
 
   const grip = document.createElement("span");
@@ -80,6 +188,7 @@ function createNote(color, initialText = "") {
   textarea.className = "post-it__text";
   textarea.placeholder = "Escribe un recuerdo...";
   textarea.setAttribute("aria-label", "Texto de la nota");
+  textarea.spellcheck = false;
   textarea.value = initialText;
 
   const canvas = document.createElement("canvas");
@@ -87,6 +196,20 @@ function createNote(color, initialText = "") {
   canvas.width = 420;
   canvas.height = 420;
   canvas.setAttribute("aria-label", "Dibujo de la nota");
+  if (savedNote?.drawing) {
+    canvas.dataset.pendingDrawing = savedNote.drawing;
+    const savedDrawing = new Image();
+    savedDrawing.onload = () => {
+      canvas.getContext("2d").drawImage(savedDrawing, 0, 0, canvas.width, canvas.height);
+      delete canvas.dataset.pendingDrawing;
+    };
+    savedDrawing.onerror = () => {
+      delete canvas.dataset.pendingDrawing;
+      console.error("No se pudo restaurar un dibujo del día 15.");
+      showToolbarStatus("No se pudo recuperar uno de los dibujos");
+    };
+    savedDrawing.src = savedNote.drawing;
+  }
 
   const remove = document.createElement("button");
   remove.className = "post-it__delete";
@@ -96,9 +219,12 @@ function createNote(color, initialText = "") {
 
   note.append(grip, textarea, canvas, remove);
   board.append(note);
-  const location = defaultPosition(noteCount++, note.offsetWidth, note.offsetHeight);
+  const index = noteCount++;
+  const location = savedNote
+    ? { x: savedNote.x, y: savedNote.y }
+    : defaultPosition(index, note.offsetWidth, note.offsetHeight);
   placeElement(note, location.x, location.y);
-  selectNote(note);
+  if (!restoringBoard) selectNote(note);
 
   note.addEventListener("pointerdown", (event) => {
     if (drawingMode || event.target === canvas || event.target === remove) return;
@@ -127,6 +253,7 @@ function createNote(color, initialText = "") {
         window.removeEventListener("pointermove", onMove);
         window.removeEventListener("pointerup", onEnd);
         window.removeEventListener("pointercancel", onEnd);
+        if (dragging) persistBoard();
       };
       window.addEventListener("pointermove", onMove);
       window.addEventListener("pointerup", onEnd);
@@ -136,12 +263,18 @@ function createNote(color, initialText = "") {
     startDragging(note, event);
   });
   textarea.addEventListener("focus", () => selectNote(note));
+  textarea.addEventListener("input", persistBoard);
   remove.addEventListener("click", () => {
     if (selectedNote === note) selectedNote = null;
     note.remove();
+    persistBoard();
   });
   canvas.addEventListener("pointerdown", (event) => {
     if (!drawingMode) return;
+    if (canvas.dataset.pendingDrawing) {
+      showToolbarStatus("Cargando el dibujo guardado...");
+      return;
+    }
     selectNote(note);
     const context = canvas.getContext("2d");
     const scaleX = canvas.width / canvas.clientWidth;
@@ -169,6 +302,7 @@ function createNote(color, initialText = "") {
       canvas.removeEventListener("pointerup", finish);
       canvas.removeEventListener("pointercancel", finish);
       if (canvas.hasPointerCapture(endEvent.pointerId)) canvas.releasePointerCapture(endEvent.pointerId);
+      persistBoard();
     };
     canvas.addEventListener("pointermove", draw);
     canvas.addEventListener("pointerup", finish);
@@ -187,18 +321,28 @@ function createPin(color, position) {
   pin.setAttribute("aria-label", "Chincheta, arrástrala para colocarla o haz doble clic para quitarla");
   pin.innerHTML = '<span class="pushpin__head" aria-hidden="true"></span><span class="pushpin__tip" aria-hidden="true"></span>';
   board.append(pin);
-  const location = position || defaultPosition(pinCount++, pin.offsetWidth, pin.offsetHeight);
+  const index = pinCount++;
+  const location = position || defaultPosition(index, pin.offsetWidth, pin.offsetHeight);
   placeElement(pin, location.x, location.y);
   pin.addEventListener("pointerdown", (event) => {
     event.stopPropagation();
     startDragging(pin, event);
   });
-  pin.addEventListener("dblclick", () => pin.remove());
+  pin.addEventListener("dblclick", () => {
+    pin.remove();
+    persistBoard();
+  });
   return pin;
 }
 
-addNoteButton.addEventListener("click", () => createNote(noteColor.value));
-addPinButton.addEventListener("click", () => createPin(pinColor.value));
+addNoteButton.addEventListener("click", () => {
+  createNote(noteColor.value);
+  persistBoard();
+});
+addPinButton.addEventListener("click", () => {
+  createPin(pinColor.value);
+  persistBoard();
+});
 
 modeToggle.addEventListener("click", () => {
   drawingMode = !drawingMode;
@@ -211,11 +355,15 @@ modeToggle.addEventListener("click", () => {
 clearDrawingButton.addEventListener("click", () => {
   const canvas = selectedNote && selectedNote.querySelector(".post-it__canvas");
   if (!canvas) {
-    toolbarStatus.textContent = "Selecciona una nota para borrar su dibujo";
-    window.setTimeout(() => { toolbarStatus.textContent = ""; }, 2200);
+    showToolbarStatus("Selecciona una nota para borrar su dibujo");
+    return;
+  }
+  if (canvas.dataset.pendingDrawing) {
+    showToolbarStatus("Cargando el dibujo guardado...");
     return;
   }
   canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+  persistBoard();
 });
 
 saveButton.addEventListener("click", async () => {
@@ -249,13 +397,65 @@ saveButton.addEventListener("click", async () => {
   }
 });
 
-// PERSONALIZAR MENSAJE INICIAL DEL CORCHO AQUÍ
-const firstNote = createNote("#FEF08A", "Un lugar para guardar todos esos pequeños momentos que hacen que diciembre sea tan nuestro. ✨");
-placeElement(firstNote, Math.max(24, board.clientWidth * 0.13), Math.max(92, board.clientHeight * 0.24));
-createPin("#DC2626", {
-  x: Math.max(24, board.clientWidth * 0.13 + 82),
-  y: Math.max(84, board.clientHeight * 0.24 - 11)
-});
+function drawInitialDoodle(note, type, color) {
+  const canvas = note.querySelector(".post-it__canvas");
+  const context = canvas.getContext("2d");
+  context.strokeStyle = color;
+  context.lineWidth = 9;
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.beginPath();
+
+  if (type === "heart") {
+    context.moveTo(210, 385);
+    context.bezierCurveTo(180, 355, 130, 325, 165, 295);
+    context.bezierCurveTo(185, 278, 205, 295, 210, 307);
+    context.bezierCurveTo(225, 278, 260, 282, 270, 305);
+    context.bezierCurveTo(285, 335, 238, 365, 210, 385);
+  } else {
+    const centerX = 315;
+    const centerY = 345;
+    for (let point = 0; point < 10; point += 1) {
+      const radius = point % 2 === 0 ? 44 : 20;
+      const angle = -Math.PI / 2 + point * Math.PI / 5;
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      if (point === 0) context.moveTo(x, y);
+      else context.lineTo(x, y);
+    }
+    context.closePath();
+  }
+
+  context.stroke();
+}
+
+function addInitialBoard() {
+  const firstNote = createNote("#FEF08A", "Recuerdas los primeros regalos que hemos podido compartis? Dibujitos en post-its desde que somos pequeños");
+  placeElement(firstNote, Math.max(24, board.clientWidth * 0.13), Math.max(92, board.clientHeight * 0.24));
+
+  const secondNote = createNote("#FBCFE8", "Me encanta guardar cada detalle contigo.");
+  placeElement(secondNote, board.clientWidth * 0.48, board.clientHeight * 0.36);
+  drawInitialDoodle(secondNote, "heart", "#DB2777");
+
+  const thirdNote = createNote("#B2F802", "Hasta los garabatos se convierten en recuerdos.");
+  placeElement(thirdNote, board.clientWidth * 0.73, board.clientHeight * 0.2);
+  drawInitialDoodle(thirdNote, "star", "#EC4899");
+
+  createPin("#DC2626", {
+    x: Math.max(24, board.clientWidth * 0.13 + 82),
+    y: Math.max(84, board.clientHeight * 0.24 - 11)
+  });
+  createPin("#EC4899", {
+    x: Math.max(24, board.clientWidth * 0.48 + 82),
+    y: Math.max(84, board.clientHeight * 0.36 - 11)
+  });
+}
+
+const restoredState = restoreBoard();
+if (restoredState === "missing" || restoredState === "failed") {
+  addInitialBoard();
+  if (restoredState === "missing") persistBoard();
+}
 
 window.addEventListener("resize", () => {
   for (const element of board.querySelectorAll(".post-it, .pushpin")) {
@@ -263,4 +463,5 @@ window.addEventListener("resize", () => {
     const y = Number.parseFloat(element.style.top) || 0;
     placeElement(element, x, y);
   }
+  persistBoard();
 });
