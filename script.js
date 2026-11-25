@@ -229,7 +229,7 @@ function renderDay25() {
   day25Sun.classList.toggle("day25-sun--new", !opened);
   day25Sun.classList.toggle("day25-sun--opened", opened);
   day25State.textContent = opened ? "★ Abierto" : "Nuevo";
-  day25Sun.setAttribute("aria-label", `Día 25: El Sol, ${state}`);
+  day25Sun.setAttribute("aria-label", `Día 25: El Sol, último regalo, ${state}`);
 }
 
 function renderCalendar() {

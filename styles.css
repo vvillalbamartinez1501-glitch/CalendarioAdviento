@@ -311,8 +311,21 @@ a { color: inherit; }
   color: #fff4d2;
   background: transparent;
   cursor: pointer;
+  isolation: isolate;
   transform: translate(-50%, -50%);
   transition: width .8s cubic-bezier(.22, 1, .36, 1), height .8s cubic-bezier(.22, 1, .36, 1), filter .5s ease;
+}
+
+.day25-sun--new::before, .day25-sun--opened::before {
+  position: absolute;
+  z-index: -2;
+  inset: -28px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 227, 144, .88) 0deg 3deg, transparent 3deg 17deg);
+  content: "";
+  mask: radial-gradient(circle, transparent 76%, #000 80% 95%, transparent 99%);
+  -webkit-mask: radial-gradient(circle, transparent 76%, #000 80% 95%, transparent 99%);
+  animation: solarRays 36s linear infinite;
 }
 
 .day25-sun__disc {
@@ -328,17 +341,18 @@ a { color: inherit; }
 
 .day25-sun__number { font-size: .72rem; font-weight: 700; letter-spacing: .13em; }
 .day25-sun__name { margin-top: 2px; font-family: Cinzel, Georgia, serif; font-size: .82rem; font-weight: 700; }
+.day25-sun__final { margin-top: 5px; color: #fff4c2; font-size: .54rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 0 9px rgba(255, 228, 143, .9); white-space: nowrap; }
 .day25-sun .day-state { margin-top: 4px; color: #fff0c1; font-size: .58rem; }
 .day25-sun[hidden] { display: none; }
 .day25-sun--new, .day25-sun--opened { width: 185px; height: 185px; }
-.day25-sun--new { filter: drop-shadow(0 0 22px rgba(251, 191, 36, .44)); }
+.day25-sun--new, .day25-sun--opened { filter: drop-shadow(0 0 38px rgba(251, 191, 36, .78)); }
 .day25-sun--new .day25-sun__disc {
   border-color: rgba(255, 238, 163, .9);
-  box-shadow: 0 0 70px rgba(251, 191, 36, .75), 0 0 115px rgba(251, 191, 36, .25), inset -9px -10px 24px rgba(114, 39, 38, .2);
+  box-shadow: 0 0 105px rgba(251, 191, 36, .98), 0 0 175px rgba(251, 191, 36, .68), 0 0 250px rgba(251, 191, 36, .3), inset -9px -10px 24px rgba(114, 39, 38, .15);
   animation: solarCorona 3.2s ease-in-out infinite;
 }
 
-.day25-sun--opened .day25-sun__disc { border-color: #fff0a0; box-shadow: 0 0 70px rgba(250, 204, 21, .72), 0 0 105px rgba(250, 204, 21, .25); }
+.day25-sun--opened .day25-sun__disc { border-color: #fff0a0; box-shadow: 0 0 105px rgba(250, 204, 21, .98), 0 0 175px rgba(250, 204, 21, .68), 0 0 250px rgba(250, 204, 21, .3); animation: solarCorona 3.2s ease-in-out infinite; }
 .day25-sun--new .day25-sun__number, .day25-sun--opened .day25-sun__number { font-size: .9rem; }
 .day25-sun--new .day25-sun__name, .day25-sun--opened .day25-sun__name { font-size: 1rem; }
 .day25-sun--new .day-state { color: #fff6cf; animation: pulseGlow 2.2s ease-in-out infinite; }
@@ -375,7 +389,8 @@ a { color: inherit; }
 .dialog-button:hover { background: rgba(76, 151, 194, .28); }
 
 @keyframes pulseGlow { 0%, 100% { opacity: .78; text-shadow: 0 0 5px rgba(117, 223, 255, .25); } 50% { opacity: 1; text-shadow: 0 0 12px rgba(117, 223, 255, .8); } }
-@keyframes solarCorona { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.14); } }
+@keyframes solarCorona { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.28); } }
+@keyframes solarRays { to { transform: rotate(360deg); } }
 @keyframes planetOrbit { from { transform: rotate(var(--orbit-angle)); } to { transform: rotate(calc(var(--orbit-angle) + 360deg)); } }
 @keyframes drift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 @keyframes twinkle { 0%, 100% { opacity: .25; } 50% { opacity: .95; } }
