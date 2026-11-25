@@ -57,8 +57,7 @@ h1 { margin: 8px 0 0; color: var(--cream); font-family: var(--pixel); font-size:
 #game-canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; }
 .loading-screen { position: absolute; inset: 0; display: grid; place-items: center; color: var(--gold); background: rgba(16, 35, 42, .96); font-family: var(--pixel); font-size: clamp(10px, 2vw, 15px); }
 .loading-screen[hidden] { display: none; }
-.game-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-top: 16px; }
-.hint { color: var(--muted); font-size: 23px; line-height: 1.1; }
+.game-footer { display: flex; align-items: center; justify-content: flex-end; gap: 18px; padding-top: 16px; }
 .controls { display: flex; gap: 8px; }
 .control-chip { display: flex; align-items: center; gap: 5px; padding: 7px 8px; border: 1px solid #385760; color: var(--cream); font-family: var(--pixel); font-size: 7px; white-space: nowrap; }
 .control-chip i { width: 8px; height: 8px; margin-right: 3px; background: var(--red); }
@@ -76,6 +75,7 @@ h1 { margin: 8px 0 0; color: var(--cream); font-family: var(--pixel); font-size:
 .overlay-copy { margin: 12px auto 20px; color: var(--muted); font-size: 25px; line-height: 1.1; }
 .primary-button { justify-self: auto; min-height: 48px; border-color: var(--gold); color: var(--gold); font-size: 23px; }
 .primary-button kbd { margin-left: 5px; }
+.secondary-button { display: block; margin: 12px auto 0; border-color: var(--edge); color: var(--muted); }
 .dedication { margin-top: 24px; padding: 16px; border: 2px dashed #8a7952; color: var(--cream); background: #1b353b; text-align: left; }
 .dedication p { margin: 0; font-size: 27px; line-height: 1.15; }
 .dedication[hidden] { display: none; }

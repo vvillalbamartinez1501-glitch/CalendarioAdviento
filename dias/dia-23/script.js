@@ -6,7 +6,6 @@ const HEIGHT = 384;
 const GRAVITY = 0.58;
 const JUMP_SPEED = -11.2;
 const MOVE_SPEED = 2.8;
-const MIN_PLAYER_PROGRESS = TILE * 4;
 const PLAYER_WIDTH = 20;
 const PLAYER_HEIGHT = 27;
 const SPRITE_FILES = [
@@ -32,7 +31,6 @@ ctx.imageSmoothingEnabled = false;
 const ui = {
   levelTitle: document.querySelector("#level-title"),
   levelCount: document.querySelector("#level-count"),
-  hint: document.querySelector("#level-hint"),
   loading: document.querySelector("#loading-screen"),
   failOverlay: document.querySelector("#fail-overlay"),
   failTitle: document.querySelector("#fail-title"),
@@ -43,6 +41,7 @@ const ui = {
   completeCopy: document.querySelector("#complete-copy"),
   togetherImage: document.querySelector("#together-image"),
   nextButton: document.querySelector("#next-button"),
+  homeButton: document.querySelector("#home-button"),
   dedication: document.querySelector("#dedication")
 };
 
@@ -57,6 +56,8 @@ let previousTime = 0;
 let animationTime = 0;
 let togetherTime = 0;
 let victoryFrame = 0;
+let fragileTimers;
+let removedFragileTiles;
 
 function loadSprite(filename) {
   return new Promise((resolve, reject) => {
@@ -72,7 +73,6 @@ function createPlayer(name, position) {
   return {
     name,
     x: position.x * TILE + (TILE - PLAYER_WIDTH) / 2,
-    startX: position.x * TILE + (TILE - PLAYER_WIDTH) / 2,
     y: position.y * TILE,
     width: PLAYER_WIDTH,
     height: PLAYER_HEIGHT,
@@ -87,6 +87,8 @@ function createPlayer(name, position) {
 
 function startLevel() {
   level = LEVELS[levelIndex];
+  fragileTimers = new Map();
+  removedFragileTiles = new Set();
   players = {
     esther: createPlayer("esther", level.esther),
     viktor: createPlayer("viktor", level.viktor)
@@ -95,19 +97,25 @@ function startLevel() {
   animationTime = 0;
   ui.levelTitle.textContent = level.title;
   ui.levelCount.textContent = `NIVEL ${String(levelIndex + 1).padStart(2, "0")} / ${String(LEVELS.length).padStart(2, "0")}`;
-  ui.hint.textContent = level.hint;
   ui.failOverlay.setAttribute("aria-hidden", "true");
   ui.completeOverlay.setAttribute("aria-hidden", "true");
   ui.loading.hidden = true;
 }
 
+function isButtonPressed() {
+  return Object.values(players).some((player) =>
+    overlappingTiles(player).some((cell) => cell.tile === "B")
+  );
+}
+
 function isSolid(tile) {
-  return tile === "#";
+  return tile === "#" || (tile === "D" && !isButtonPressed());
 }
 
 function tileAt(column, row) {
   if (row < 0 || row >= level.grid.length || column < 0 || column >= level.grid[0].length) return ".";
-  return level.grid[row][column];
+  const tile = level.grid[row][column];
+  return tile === "!" && removedFragileTiles.has(`${column},${row}`) ? "." : tile;
 }
 
 function overlappingTiles(player) {
@@ -148,12 +156,15 @@ function movePlayer(player, controls, delta) {
   player.y += player.vy * delta;
   player.grounded = false;
   for (const cell of overlappingTiles(player)) {
-    if (isSolid(cell.tile) || cell.tile === "=") {
+    if (isSolid(cell.tile) || cell.tile === "=" || cell.tile === "!") {
       const tileTop = cell.row * TILE;
       if (player.vy >= 0 && oldBottom <= tileTop && player.y + player.height >= tileTop) {
         player.y = tileTop - player.height;
         player.vy = 0;
         player.grounded = true;
+        if (cell.tile === "!" && !fragileTimers.has(`${cell.column},${cell.row}`)) {
+          fragileTimers.set(`${cell.column},${cell.row}`, animationTime);
+        }
       } else if (isSolid(cell.tile) && player.vy < 0 && player.y <= (cell.row + 1) * TILE) {
         player.y = (cell.row + 1) * TILE;
         player.vy = 0;
@@ -174,17 +185,13 @@ function movePlayer(player, controls, delta) {
 }
 
 function playerIsDead(player) {
-  return player.y > HEIGHT || overlappingTiles(player).some((cell) => cell.tile === "^" || cell.tile === "~");
+  return player.y > HEIGHT || overlappingTiles(player).some((cell) =>
+    cell.tile === "^" || cell.tile === "v" || cell.tile === "~"
+  );
 }
 
 function rectanglesOverlap(a, b) {
   return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
-}
-
-function playerHasProgressed(player) {
-  return player.name === "esther"
-    ? player.x >= player.startX + MIN_PLAYER_PROGRESS
-    : player.x <= player.startX - MIN_PLAYER_PROGRESS;
 }
 
 function setFailure(player) {
@@ -239,27 +246,81 @@ function drawBlock(x, y) {
   ctx.fillRect(x + 22, y + 25, 4, 3);
 }
 
-function drawSpike(x, y, lava) {
+function drawSpike(x, y, lava, inverted = false) {
+  const baseY = inverted ? y + 5 : y + TILE - 5;
+  const tipY = inverted ? y + TILE - 4 : y + 4;
   ctx.fillStyle = lava ? "#7F2937" : "#532C39";
-  ctx.fillRect(x, y + TILE - 5, TILE, 5);
+  ctx.fillRect(x, inverted ? y : y + TILE - 5, TILE, 5);
   ctx.fillStyle = lava ? "#EF4444" : "#D8E0D9";
   for (let offset = 0; offset < TILE; offset += 10) {
     ctx.beginPath();
-    ctx.moveTo(x + offset, y + TILE - 5);
-    ctx.lineTo(x + offset + 5, y + (lava ? 11 : 4));
-    ctx.lineTo(x + Math.min(offset + 10, TILE), y + TILE - 5);
+    ctx.moveTo(x + offset, baseY);
+    ctx.lineTo(x + offset + 5, lava ? y + 11 : tipY);
+    ctx.lineTo(x + Math.min(offset + 10, TILE), baseY);
     ctx.closePath();
     ctx.fill();
   }
 }
 
+function drawFragilePlatform(x, y, column, row) {
+  const startedAt = fragileTimers.get(`${column},${row}`);
+  ctx.save();
+  if (startedAt !== undefined) {
+    ctx.globalAlpha = 0.4 + (Math.sin((animationTime - startedAt) / 45) + 1) * 0.3;
+  }
+  ctx.fillStyle = "#F5A66B";
+  ctx.fillRect(x, y, TILE, 5);
+  ctx.strokeStyle = "#FFD0A8";
+  ctx.lineWidth = 2;
+  ctx.setLineDash([4, 3]);
+  ctx.beginPath();
+  ctx.moveTo(x + 2, y + 8);
+  ctx.lineTo(x + TILE - 2, y + 8);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawButton(x, y, pressed) {
+  ctx.fillStyle = "#344B50";
+  ctx.fillRect(x + 3, y + TILE - 7, TILE - 6, 7);
+  ctx.fillStyle = pressed ? "#EF5961" : "#F4C96B";
+  ctx.fillRect(x + 6, y + TILE - (pressed ? 9 : 14), TILE - 12, pressed ? 4 : 9);
+  ctx.fillStyle = pressed ? "#B83E4C" : "#FFE29A";
+  ctx.fillRect(x + 9, y + TILE - (pressed ? 9 : 14), TILE - 18, 2);
+}
+
+function drawDoor(x, y, open) {
+  ctx.save();
+  if (open) {
+    ctx.globalAlpha = 0.45;
+    ctx.strokeStyle = "#F4C96B";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(x + 4, y + 3, TILE - 8, TILE - 6);
+  } else {
+    ctx.fillStyle = "#594B3C";
+    ctx.fillRect(x + 2, y, TILE - 4, TILE);
+    ctx.fillStyle = "#D6A95D";
+    ctx.fillRect(x + 5, y + 3, TILE - 10, 3);
+    ctx.fillRect(x + 5, y + TILE - 6, TILE - 10, 3);
+    ctx.fillStyle = "#9A7549";
+    ctx.fillRect(x + 8, y + 8, 3, TILE - 16);
+    ctx.fillRect(x + TILE - 11, y + 8, 3, TILE - 16);
+    ctx.fillStyle = "#F4C96B";
+    ctx.fillRect(x + TILE - 11, y + 14, 3, 4);
+  }
+  ctx.restore();
+}
+
 function drawMap() {
+  const buttonPressed = isButtonPressed();
   level.grid.forEach((row, rowIndex) => {
     [...row].forEach((tile, columnIndex) => {
       const x = columnIndex * TILE;
       const y = rowIndex * TILE;
+      if (tile === "!" && removedFragileTiles.has(`${columnIndex},${rowIndex}`)) return;
       if (tile === "#") drawBlock(x, y);
       if (tile === "^") drawSpike(x, y, false);
+      if (tile === "v") drawSpike(x, y, false, true);
       if (tile === "~") drawSpike(x, y, true);
       if (tile === "=") {
         ctx.fillStyle = "#F4C96B";
@@ -267,8 +328,20 @@ function drawMap() {
         ctx.fillStyle = "#6E664E";
         ctx.fillRect(x + 3, y + 5, TILE - 6, 3);
       }
+      if (tile === "!") drawFragilePlatform(x, y, columnIndex, rowIndex);
+      if (tile === "B") drawButton(x, y, buttonPressed);
+      if (tile === "D") drawDoor(x, y, buttonPressed);
     });
   });
+}
+
+function updateFragilePlatforms(time) {
+  for (const [key, startedAt] of fragileTimers) {
+    if (time - startedAt >= 500) {
+      removedFragileTiles.add(key);
+      fragileTimers.delete(key);
+    }
+  }
 }
 
 function drawPlayer(player) {
@@ -305,8 +378,8 @@ function render() {
   if (players) {
     drawPlayer(players.esther);
     drawPlayer(players.viktor);
-    const reunited = playerHasProgressed(players.esther) && playerHasProgressed(players.viktor);
-    if (state === "level-complete" || state === "game-complete" || (reunited && rectanglesOverlap(players.esther, players.viktor))) {
+    const reunited = rectanglesOverlap(players.esther, players.viktor);
+    if (state === "level-complete" || state === "game-complete" || reunited) {
       drawHeart((players.esther.x + players.viktor.x) / 2 + 5, Math.min(players.esther.y, players.viktor.y) - 17 - Math.sin(animationTime / 100) * 3);
     }
   }
@@ -328,15 +401,12 @@ function frame(time) {
   animationTime = time;
 
   if (state === "playing") {
+    updateFragilePlatforms(time);
     movePlayer(players.esther, { left: "a", right: "d", jump: "w" }, delta);
     movePlayer(players.viktor, { left: "j", right: "l", jump: "i" }, delta);
     if (playerIsDead(players.esther)) setFailure(players.esther);
     else if (playerIsDead(players.viktor)) setFailure(players.viktor);
-    else if (
-      playerHasProgressed(players.esther) &&
-      playerHasProgressed(players.viktor) &&
-      rectanglesOverlap(players.esther, players.viktor)
-    ) completeLevel();
+    else if (rectanglesOverlap(players.esther, players.viktor)) completeLevel();
   }
 
   render();
@@ -347,6 +417,11 @@ function frame(time) {
 function advanceLevel() {
   if (state !== "level-complete") return;
   levelIndex += 1;
+  startLevel();
+}
+
+function returnToStart() {
+  levelIndex = 0;
   startLevel();
 }
 
@@ -367,6 +442,7 @@ window.addEventListener("blur", () => {
 document.querySelector("#reset-button").addEventListener("click", startLevel);
 document.querySelector("#retry-button").addEventListener("click", startLevel);
 ui.nextButton.addEventListener("click", advanceLevel);
+ui.homeButton.addEventListener("click", returnToStart);
 
 Promise.all(SPRITE_FILES.map(loadSprite))
   .then((loadedSprites) => {
