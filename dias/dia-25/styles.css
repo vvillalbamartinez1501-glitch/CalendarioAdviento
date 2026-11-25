@@ -155,8 +155,8 @@ h1 span { color: var(--coral); }
 .progress-segment span { display: block; width: 0; height: 100%; background: var(--ink); transition: width .18s ease; }
 .progress-segment.is-active span, .progress-segment.is-complete span { width: 100%; }
 
-.slide-stage { min-height: 445px; }
-.wrapped-slide { position: relative; display: flex; min-height: 445px; align-items: center; justify-content: space-between; gap: 36px; overflow: hidden; padding: clamp(28px, 6vw, 68px); }
+.slide-stage { height: 680px; }
+.wrapped-slide { position: relative; display: flex; height: 100%; min-height: 0; align-items: center; justify-content: space-between; gap: 36px; overflow: hidden; padding: clamp(28px, 6vw, 68px); }
 .wrapped-slide[hidden] { display: none; }
 .slide-cover { background: var(--yellow); }
 .slide-record { flex-direction: column; align-items: flex-start; justify-content: center; background: var(--pink); }
@@ -357,7 +357,7 @@ h1 span { color: var(--coral); }
   h1 { font-size: clamp(3.2rem, 14vw, 5.5rem); }
   .section-heading { align-items: flex-start; flex-direction: column; gap: 12px; margin-bottom: 19px; }
   .section-heading h2 { font-size: clamp(1.8rem, 8vw, 2.5rem); }
-  .wrapped-slide { min-height: 540px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 24px; padding: 30px 24px; }
+  .wrapped-slide { flex-direction: column; align-items: flex-start; justify-content: center; gap: 24px; padding: 30px 24px; }
   .slide-copy, .star-copy { flex: none; }
   .slide-copy h3 { font-size: clamp(2.7rem, 12vw, 4rem); }
   .round-sticker { right: 7%; bottom: -13px; width: 65px; font-size: 1.15rem; }

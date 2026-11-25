@@ -148,7 +148,7 @@ const NTFY_TOPIC = "adviento-esther-viktor-2026-x9k2";
 
       const description = document.createElement("p");
       description.textContent =
-        "Acepta para poder usar github pages de forma correcta";
+        "Acepta para poder usar github pages con analíticas";
 
       panel.replaceChildren(title, description);
       if (consent === "granted") {
