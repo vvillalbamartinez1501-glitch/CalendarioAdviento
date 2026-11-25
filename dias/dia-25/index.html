@@ -175,7 +175,7 @@
       </div>
     </section>
 
-    <!-- PERSONALIZAR AQUÍ: ajusta fechas, títulos, historias y fotos de los seis hitos. -->
+    <!-- PERSONALIZAR AQUÍ: ajusta fechas, títulos, historias y fotos de la línea del tiempo. -->
     <section class="section-block page-width" id="historia" aria-labelledby="timeline-heading">
       <div class="section-heading">
         <div>
@@ -184,13 +184,30 @@
         </div>
         <span class="section-badge badge-yellow">CAPÍTULO A CAPÍTULO</span>
       </div>
-      <ol class="timeline">
+      <section class="timeline-group" aria-labelledby="timeline-before-heading">
+        <h3 class="timeline-group-heading" id="timeline-before-heading">Antes de encontrarnos</h3>
+        <ol class="timeline" aria-label="Antes de encontrarnos">
+          <li class="timeline-item">
+            <span class="timeline-date date-blue">FECHA · DD/MM/AA</span>
+            <article class="card-3d timeline-card">
+              <div class="timeline-card-head head-blue"><span>00</span><span>Dos caminos</span></div>
+              <div class="timeline-content timeline-content-text-only">
+                <h4>Antes de cruzarnos</h4>
+                <p>Cada uno recorría su propio camino, sin imaginar la historia que pronto empezaría.</p>
+              </div>
+            </article>
+          </li>
+        </ol>
+      </section>
+      <section class="timeline-group" aria-labelledby="timeline-current-heading">
+        <h3 class="timeline-group-heading" id="timeline-current-heading">Nuestra historia</h3>
+        <ol class="timeline" aria-label="Nuestra historia">
         <li class="timeline-item">
           <span class="timeline-date date-pink">FECHA · DD/MM/AA</span>
           <article class="card-3d timeline-card">
             <div class="timeline-card-head head-pink"><span>01</span><span>Todo empezó</span></div>
             <div class="timeline-content">
-              <h3>La primera página de lo nuestro</h3>
+              <h4>La primera página de lo nuestro</h4>
               <p>Ese primer momento en que algo hizo clic y empezó una historia que no sabíamos cuánto íbamos a querer.</p>
               <figure class="timeline-photo"><!-- HUECO FOTO HITO 1 --><img src="../../assets/images/nosotros01.jpg" alt="El comienzo de nuestra historia"></figure>
             </div>
@@ -201,7 +218,7 @@
           <article class="card-3d timeline-card">
             <div class="timeline-card-head head-green"><span>02</span><span>Una aventura más</span></div>
             <div class="timeline-content">
-              <h3>Salir a descubrir el mundo</h3>
+              <h4>Salir a descubrir el mundo</h4>
               <p>Un paseo, una conversación que se alargó y esa sensación de que cualquier lugar es el indicado si vamos juntos.</p>
               <figure class="timeline-photo"><!-- HUECO FOTO HITO 2 --><img src="../../assets/images/nosotros02.jpg" alt="Un plan para descubrir juntos"></figure>
             </div>
@@ -212,7 +229,7 @@
           <article class="card-3d timeline-card">
             <div class="timeline-card-head head-blue"><span>03</span><span>Risa compartida</span></div>
             <div class="timeline-content">
-              <h3>Cuando no podíamos parar de reír</h3>
+              <h4>Cuando no podíamos parar de reír</h4>
               <p>Una de esas anécdotas que seguro vamos a volver a contar, aunque ya sepamos el final.</p>
               <figure class="timeline-photo"><!-- HUECO FOTO HITO 3 --><img src="../../assets/images/nosotros03.jpg" alt="Un momento feliz compartido"></figure>
             </div>
@@ -223,7 +240,7 @@
           <article class="card-3d timeline-card">
             <div class="timeline-card-head head-yellow"><span>04</span><span>Un recuerdo favorito</span></div>
             <div class="timeline-content">
-              <h3>Un día normal que fue perfecto</h3>
+              <h4>Un día normal que fue perfecto</h4>
               <p>Sin grandes planes ni prisa: solo nosotros, guardando otro recuerdo para la colección.</p>
               <figure class="timeline-photo"><!-- HUECO FOTO HITO 4 --><img src="../../assets/images/jackysally.jpg" alt="Un recuerdo favorito de los dos"></figure>
             </div>
@@ -234,7 +251,7 @@
           <article class="card-3d timeline-card">
             <div class="timeline-card-head head-coral"><span>05</span><span>Mucho cariño</span></div>
             <div class="timeline-content">
-              <h3>Los detalles que dicen “te quiero”</h3>
+              <h4>Los detalles que dicen “te quiero”</h4>
               <p>Estar, escuchar, acompañarnos y elegirnos también en los días de siempre.</p>
               <figure class="timeline-photo"><!-- HUECO FOTO HITO 5 --><img src="../../assets/images/jackysallyheart.jpg" alt="Un detalle lleno de cariño"></figure>
             </div>
@@ -245,13 +262,71 @@
           <article class="card-3d timeline-card">
             <div class="timeline-card-head head-pink"><span>06</span><span>Continuará...</span></div>
             <div class="timeline-content">
-              <h3>El capítulo que empieza ahora</h3>
+              <h4>El capítulo que empieza ahora</h4>
               <p>Más planes, más abrazos y todas las aventuras que todavía nos esperan.</p>
               <figure class="timeline-photo"><!-- HUECO FOTO HITO 6 --><img src="../../assets/images/sally.webp" alt="Una imagen para el capítulo que viene"></figure>
             </div>
           </article>
         </li>
       </ol>
+      </section>
+      <section class="timeline-group" aria-labelledby="timeline-next-heading">
+        <h3 class="timeline-group-heading" id="timeline-next-heading">Actualidad</h3>
+        <ol class="timeline" aria-label="Actualidad">
+          <li class="timeline-item">
+            <span class="timeline-date date-yellow">FECHA · DD/MM/AA</span>
+            <article class="card-3d timeline-card">
+              <div class="timeline-card-head head-yellow"><span>07</span><span>El reencuentro</span></div>
+              <div class="timeline-content timeline-content-full">
+                <h4>Como que "?" 😭</h4>
+                <iframe class="timeline-map" src="https://wplace.live/?lat=40.26483975060364&amp;lng=-4.039013671874999&amp;zoom=14.846727331780434" title="Mapa del lugar del reencuentro" allowfullscreen></iframe>
+              </div>
+            </article>
+          </li>
+          <li class="timeline-item">
+            <span class="timeline-date date-pink">FECHA · DD/MM/AA</span>
+            <article class="card-3d timeline-card">
+              <div class="timeline-card-head head-pink"><span>08</span><span>Playlists</span></div>
+              <div class="timeline-content timeline-content-full">
+                <div class="timeline-playlists">
+                  <iframe src="https://open.spotify.com/embed/playlist/045OTF0i1mWgla764zxfJu?utm_source=generator&amp;si=189073e98e0a4607" title="Primera playlist compartida" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                  <iframe src="https://open.spotify.com/embed/playlist/7FCGipQWgcWajpF2Y2OXkv?utm_source=generator&amp;si=9b336b22ce864a63" title="Segunda playlist compartida" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+              </div>
+            </article>
+          </li>
+          <li class="timeline-item">
+            <span class="timeline-date date-green">FECHA · DD/MM/AA</span>
+            <article class="card-3d timeline-card">
+              <div class="timeline-card-head head-green"><span>09</span><span>Al baño sin luz</span></div>
+              <div class="timeline-content">
+                <h4>El segundo primer beso</h4>
+                <figure class="timeline-photo"><img src="../../assets/images/us01.jpg" alt="El segundo primer beso"></figure>
+              </div>
+            </article>
+          </li>
+          <li class="timeline-item">
+            <span class="timeline-date date-coral">FECHA · DD/MM/AA</span>
+            <article class="card-3d timeline-card">
+              <div class="timeline-card-head head-coral"><span>10</span><span>Otro sitio especial</span></div>
+              <div class="timeline-content">
+                <h4>Un recuerdo para guardar</h4>
+                <figure class="timeline-photo"><img src="../../assets/images/us02.jpg" alt="Un recuerdo especial juntos"></figure>
+              </div>
+            </article>
+          </li>
+          <li class="timeline-item">
+            <span class="timeline-date date-blue">FECHA · DD/MM/AA</span>
+            <article class="card-3d timeline-card">
+              <div class="timeline-card-head head-blue"><span>11</span><span>Y otro más</span></div>
+              <div class="timeline-content">
+                <h4>Más momentos juntos</h4>
+                <figure class="timeline-photo"><img src="../../assets/images/us03.jpg" alt="Otro momento juntos"></figure>
+              </div>
+            </article>
+          </li>
+        </ol>
+      </section>
     </section>
 
     <!-- PERSONALIZAR AQUÍ: sustituye los rankings por recuerdos y detalles vuestros. -->
