@@ -1,5 +1,5 @@
 const DEBUG_UNLOCK_ALL = true; // true = desbloquea las 24 constelaciones como disponibles
-const DEBUG_DAY_25 = false;     // true = agranda el Sol y lo activa como Día 25 disponible
+const DEBUG_DAY_25 = true;     // true = agranda el Sol y lo activa como Día 25 disponible
 const ORBIT_SPEED_MULTIPLIER = 0.5; // < 1 ralentiza las órbitas; > 1 las acelera
 
 const OPENED_STORAGE_KEY = "nuestro-adviento-dias-abiertos";
@@ -200,7 +200,7 @@ function renderPlanets() {
     orbit.style.setProperty("--orbit-width-active", `${planet.activeWidth}%`);
     orbit.style.setProperty("--orbit-height-active", `${planet.activeHeight}%`);
     orbit.style.setProperty("--orbit-duration", `${planet.duration / ORBIT_SPEED_MULTIPLIER}s`);
-    orbit.style.setProperty("--orbit-angle", `${planet.angle}deg`);
+    orbit.style.setProperty("--orbit-start", `${(planet.angle / 360) * 100}%`);
 
     const motion = document.createElement("div");
     motion.className = "planet-orbit__motion";
@@ -229,7 +229,7 @@ function renderDay25() {
   day25Sun.classList.toggle("day25-sun--new", !opened);
   day25Sun.classList.toggle("day25-sun--opened", opened);
   day25State.textContent = opened ? "★ Abierto" : "Nuevo";
-  day25Sun.setAttribute("aria-label", `Día 25: El Sol, último regalo, ${state}`);
+  day25Sun.setAttribute("aria-label", `Día 25: El Sol, ${state}`);
 }
 
 function renderCalendar() {
