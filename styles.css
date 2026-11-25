@@ -339,7 +339,7 @@ a { color: inherit; }
   transition: all .8s cubic-bezier(.22, 1, .36, 1);
 }
 
-.day25-sun__number { font-size: .72rem; font-weight: 700; letter-spacing: .13em; }
+.day25-sun__number { padding: 4px 9px; border: 1px solid rgba(255, 247, 205, .8); border-radius: 999px; color: #fff9dc; background: rgba(91, 42, 9, .76); box-shadow: 0 0 14px rgba(255, 223, 125, .72); font-size: .72rem; font-weight: 800; letter-spacing: .14em; }
 .day25-sun__name { margin-top: 2px; font-family: Cinzel, Georgia, serif; font-size: .82rem; font-weight: 700; }
 .day25-sun__final { margin-top: 5px; color: #fff4c2; font-size: .54rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 0 9px rgba(255, 228, 143, .9); white-space: nowrap; }
 .day25-sun .day-state { margin-top: 4px; color: #fff0c1; font-size: .58rem; }
