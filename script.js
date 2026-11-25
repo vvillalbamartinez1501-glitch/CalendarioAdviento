@@ -1,5 +1,6 @@
-const DEBUG_UNLOCK_ALL = false; // true = desbloquea las 24 constelaciones como disponibles
+const DEBUG_UNLOCK_ALL = true; // true = desbloquea las 24 constelaciones como disponibles
 const DEBUG_DAY_25 = false;     // true = agranda el Sol y lo activa como Día 25 disponible
+const ORBIT_SPEED_MULTIPLIER = 0.5; // < 1 ralentiza las órbitas; > 1 las acelera
 
 const OPENED_STORAGE_KEY = "nuestro-adviento-dias-abiertos";
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -198,7 +199,7 @@ function renderPlanets() {
     orbit.style.setProperty("--orbit-height", `${planet.height}%`);
     orbit.style.setProperty("--orbit-width-active", `${planet.activeWidth}%`);
     orbit.style.setProperty("--orbit-height-active", `${planet.activeHeight}%`);
-    orbit.style.setProperty("--orbit-duration", `${planet.duration}s`);
+    orbit.style.setProperty("--orbit-duration", `${planet.duration / ORBIT_SPEED_MULTIPLIER}s`);
     orbit.style.setProperty("--orbit-angle", `${planet.angle}deg`);
 
     const motion = document.createElement("div");
