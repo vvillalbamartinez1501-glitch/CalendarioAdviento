@@ -34,15 +34,15 @@ const CONSTELLATIONS = [
 
 const DAY_25 = { day: 25, name: "El Sol", url: "dias/dia-25/index.html" };
 const PLANETS = [
-  { type: "mercury", size: 7, width: 32, height: 34, activeWidth: 56, activeHeight: 58, duration: 6, angle: 0 },
-  { type: "venus", size: 10, width: 39, height: 40, activeWidth: 61, activeHeight: 63, duration: 9, angle: 42 },
-  { type: "earth", size: 12, width: 46, height: 46, activeWidth: 66, activeHeight: 68, duration: 12, angle: 83 },
-  { type: "mars", size: 9, width: 53, height: 52, activeWidth: 71, activeHeight: 73, duration: 18, angle: 126 },
-  { type: "jupiter", size: 27, width: 60, height: 58, activeWidth: 76, activeHeight: 78, duration: 30, angle: 169 },
-  { type: "saturn", size: 23, width: 67, height: 64, activeWidth: 81, activeHeight: 83, duration: 42, angle: 211 },
-  { type: "uranus", size: 16, width: 74, height: 70, activeWidth: 86, activeHeight: 88, duration: 58, angle: 253 },
-  { type: "neptune", size: 16, width: 81, height: 76, activeWidth: 91, activeHeight: 92, duration: 74, angle: 300 },
-  { type: "pluto", size: 6, width: 88, height: 82, activeWidth: 96, activeHeight: 97, duration: 90, angle: 340 }
+  { type: "mercury", size: 7, width: 32, height: 34, duration: 6, angle: 0 },
+  { type: "venus", size: 10, width: 39, height: 40, duration: 9, angle: 42 },
+  { type: "earth", size: 12, width: 46, height: 46, duration: 12, angle: 83 },
+  { type: "mars", size: 9, width: 53, height: 52, duration: 18, angle: 126 },
+  { type: "jupiter", size: 27, width: 60, height: 58, duration: 30, angle: 169 },
+  { type: "saturn", size: 23, width: 67, height: 64, duration: 42, angle: 211 },
+  { type: "uranus", size: 16, width: 74, height: 70, duration: 58, angle: 253 },
+  { type: "neptune", size: 16, width: 81, height: 76, duration: 74, angle: 300 },
+  { type: "pluto", size: 6, width: 88, height: 82, duration: 90, angle: 340 }
 ];
 const constellationNodes = document.querySelector("#constellation-nodes");
 const planetOrbits = document.querySelector("#planet-orbits");
@@ -197,8 +197,6 @@ function renderPlanets() {
     orbit.className = "planet-orbit";
     orbit.style.setProperty("--orbit-width", `${planet.width}%`);
     orbit.style.setProperty("--orbit-height", `${planet.height}%`);
-    orbit.style.setProperty("--orbit-width-active", `${planet.activeWidth}%`);
-    orbit.style.setProperty("--orbit-height-active", `${planet.activeHeight}%`);
     orbit.style.setProperty("--orbit-duration", `${planet.duration / ORBIT_SPEED_MULTIPLIER}s`);
     orbit.style.setProperty("--orbit-start", `${(planet.angle / 360) * 100}%`);
 

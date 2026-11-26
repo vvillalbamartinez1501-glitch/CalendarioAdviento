@@ -3,6 +3,11 @@ const progressSegments = Array.from(document.querySelectorAll(".progress-segment
 const previousButton = document.querySelector("#previous-slide");
 const nextButton = document.querySelector("#next-slide");
 const slideCounter = document.querySelector("#slide-counter");
+const playbackButton = document.querySelector("#toggle-playback");
+const durationInput = document.querySelector("#slide-duration");
+const durationValue = document.querySelector("#slide-duration-value");
+const timeProgress = document.querySelector("#slide-time-progress");
+const playbackStatus = document.querySelector("#playback-status");
 const wishForm = document.querySelector("#wish-form");
 const wishInput = document.querySelector("#wish-input");
 const wishColor = document.querySelector("#wish-color");
@@ -11,9 +16,18 @@ const wishStatus = document.querySelector("#wish-status");
 const saveWishButton = document.querySelector("#save-wish");
 const cancelEditButton = document.querySelector("#cancel-edit");
 const WISHES_STORAGE_KEY = "dia25-wrapped-deseos-v1";
+const DURATIONS_STORAGE_KEY = "dia25-wrapped-durations-v1";
+const MIN_SLIDE_DURATION = 3;
+const MAX_SLIDE_DURATION = 60;
 const WISH_COLORS = new Set(["pink", "yellow", "green", "blue", "coral"]);
 
 let activeSlide = 0;
+let slideDurations = readSlideDurations();
+let remainingMs = slideDurations[0] * 1000;
+let playbackDeadline = 0;
+let isPlaying = false;
+let advanceTimeout = null;
+let progressInterval = null;
 let editingWishId = null;
 let wishes = readWishes();
 
@@ -38,6 +52,115 @@ function showSlide(index) {
   slideCounter.innerHTML = `${String(activeSlide + 1).padStart(2, "0")} <span>/</span> ${String(slides.length).padStart(2, "0")}`;
   previousButton.disabled = activeSlide === 0;
   nextButton.disabled = activeSlide === slides.length - 1;
+  remainingMs = slideDurations[activeSlide] * 1000;
+  durationInput.value = String(slideDurations[activeSlide]);
+  durationValue.value = `${slideDurations[activeSlide]} s`;
+  updateTimeProgress();
+
+  if (isPlaying) scheduleAdvance();
+}
+
+function readSlideDurations() {
+  const defaults = slides.map((slide) => {
+    const duration = Number(slide.dataset.duration);
+    return Number.isInteger(duration)
+      ? Math.max(MIN_SLIDE_DURATION, Math.min(duration, MAX_SLIDE_DURATION))
+      : 10;
+  });
+
+  try {
+    const stored = localStorage.getItem(DURATIONS_STORAGE_KEY);
+    if (!stored) return defaults;
+
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed) || parsed.length !== slides.length) {
+      playbackStatus.textContent = "No se pudieron cargar los tiempos personalizados; se usarán los tiempos iniciales.";
+      return defaults;
+    }
+
+    return parsed.map((duration, index) => (
+      Number.isInteger(duration) && duration >= MIN_SLIDE_DURATION && duration <= MAX_SLIDE_DURATION
+        ? duration
+        : defaults[index]
+    ));
+  } catch (error) {
+    console.error("No se pudieron cargar los tiempos del Wrapped del Día 25.", error);
+    playbackStatus.textContent = "No se pudieron cargar los tiempos guardados; se usarán los tiempos iniciales.";
+    return defaults;
+  }
+}
+
+function saveSlideDurations() {
+  try {
+    localStorage.setItem(DURATIONS_STORAGE_KEY, JSON.stringify(slideDurations));
+    return true;
+  } catch (error) {
+    console.error("No se pudieron guardar los tiempos del Wrapped del Día 25.", error);
+    return false;
+  }
+}
+
+function updateTimeProgress() {
+  const durationMs = slideDurations[activeSlide] * 1000;
+  const currentRemaining = isPlaying ? Math.max(0, playbackDeadline - Date.now()) : remainingMs;
+  const elapsed = Math.max(0, durationMs - currentRemaining);
+  timeProgress.style.width = `${Math.min(100, (elapsed / durationMs) * 100)}%`;
+}
+
+function clearPlaybackTimers() {
+  window.clearTimeout(advanceTimeout);
+  window.clearInterval(progressInterval);
+  advanceTimeout = null;
+  progressInterval = null;
+}
+
+function scheduleAdvance() {
+  clearPlaybackTimers();
+  playbackDeadline = Date.now() + remainingMs;
+  updateTimeProgress();
+  progressInterval = window.setInterval(updateTimeProgress, 100);
+  advanceTimeout = window.setTimeout(() => {
+    clearPlaybackTimers();
+
+    if (activeSlide === slides.length - 1) {
+      isPlaying = false;
+      remainingMs = 0;
+      updateTimeProgress();
+      playbackButton.textContent = "▶ Reproducir";
+      playbackButton.setAttribute("aria-label", "Volver a reproducir el Wrapped");
+      playbackButton.setAttribute("aria-pressed", "false");
+      playbackStatus.textContent = "Wrapped terminado. Puedes volver a reproducirlo cuando quieras.";
+      return;
+    }
+
+    showSlide(activeSlide + 1);
+  }, remainingMs);
+}
+
+function startPlayback() {
+  if (activeSlide === slides.length - 1 && remainingMs === 0) {
+    showSlide(0);
+  }
+
+  isPlaying = true;
+  playbackButton.textContent = "⏸ Pausar";
+  playbackButton.setAttribute("aria-label", "Pausar el Wrapped");
+  playbackButton.setAttribute("aria-pressed", "true");
+  playbackStatus.textContent = "Reproduciendo. Puedes pausar cuando quieras.";
+  scheduleAdvance();
+}
+
+function pausePlayback(message = "Reproducción pausada. Pulsa Reproducir para continuar.") {
+  if (isPlaying) {
+    remainingMs = Math.max(0, playbackDeadline - Date.now());
+  }
+  isPlaying = false;
+  clearPlaybackTimers();
+  playbackButton.textContent = "▶ Reproducir";
+  playbackButton.setAttribute("aria-label", "Reanudar el Wrapped");
+  playbackButton.setAttribute("aria-pressed", "false");
+  playbackStatus.textContent = message;
+  updateTimeProgress();
 }
 
 function readWishes() {
@@ -131,6 +254,30 @@ function cancelEditing() {
 
 previousButton.addEventListener("click", () => showSlide(activeSlide - 1));
 nextButton.addEventListener("click", () => showSlide(activeSlide + 1));
+playbackButton.addEventListener("click", () => {
+  if (isPlaying) pausePlayback();
+  else startPlayback();
+});
+
+durationInput.addEventListener("input", () => {
+  slideDurations[activeSlide] = Number(durationInput.value);
+  durationValue.value = `${slideDurations[activeSlide]} s`;
+  remainingMs = slideDurations[activeSlide] * 1000;
+
+  const wasSaved = saveSlideDurations();
+  playbackStatus.textContent = wasSaved
+    ? `Tiempo de lectura actualizado: ${slideDurations[activeSlide]} segundos.`
+    : `Tiempo actualizado a ${slideDurations[activeSlide]} segundos, pero no se pudo guardar en este navegador.`;
+
+  if (isPlaying) scheduleAdvance();
+  else updateTimeProgress();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && isPlaying) {
+    pausePlayback("Reproducción pausada al cambiar de pestaña. Pulsa Reproducir para continuar.");
+  }
+});
 
 progressSegments.forEach((segment, index) => {
   segment.addEventListener("click", () => showSlide(index));
@@ -190,5 +337,6 @@ cancelEditButton.addEventListener("click", () => {
   wishStatus.textContent = "Edición cancelada.";
 });
 
+playbackButton.setAttribute("aria-label", "Reproducir el Wrapped");
 showSlide(0);
 renderWishes();

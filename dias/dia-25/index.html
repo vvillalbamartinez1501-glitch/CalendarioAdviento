@@ -41,7 +41,7 @@
       <p class="intro-copy">Un resumen cortito de una historia bastante larga. <strong></strong></p>
     </section>
 
-    <!-- PERSONALIZAR AQUÍ: cambia titulares, cifras, fotos y textos de cada diapositiva. -->
+    <!-- PERSONALIZAR AQUÍ: cambia titulares, cifras, fotos, textos y data-duration (segundos, 3–60) de cada diapositiva. -->
     <section class="wrapped-section page-width" id="wrapped" aria-labelledby="wrapped-heading">
       <div class="section-heading wrapped-heading">
         <div>
@@ -62,7 +62,7 @@
 
         <div class="slide-stage" aria-live="polite">
           <!-- PERSONALIZAR AQUÍ: portada del Wrapped. -->
-          <article class="wrapped-slide slide-cover" data-slide="0" aria-labelledby="slide-title-1">
+          <article class="wrapped-slide slide-cover" data-slide="0" data-duration="10" aria-labelledby="slide-title-1">
             <div class="slide-copy">
               <span class="sticker sticker-black">EDICIÓN NOSTALGIA</span>
               <h3 id="slide-title-1">Este ha sido<br><span>nuestro año.</span></h3>
@@ -77,7 +77,7 @@
           </article>
 
           <!-- PERSONALIZAR AQUÍ: actualiza las cifras para que cuenten vuestra historia. -->
-          <article class="wrapped-slide slide-record" data-slide="1" aria-labelledby="slide-title-2" hidden>
+          <article class="wrapped-slide slide-record" data-slide="1" data-duration="8" aria-labelledby="slide-title-2" hidden>
             <span class="sticker">NUESTRO RÉCORD</span>
             <p class="giant-stat">365 <span>DÍAS</span></p>
             <h3 id="slide-title-2">y un montón de razones para elegirnos.</h3>
@@ -86,7 +86,7 @@
           </article>
 
           <!-- PERSONALIZAR AQUÍ: sustituye estos tres vibes por vuestros favoritos. -->
-          <article class="wrapped-slide slide-vibes" data-slide="2" aria-labelledby="slide-title-3" hidden>
+          <article class="wrapped-slide slide-vibes" data-slide="2" data-duration="12" aria-labelledby="slide-title-3" hidden>
             <span class="sticker">EN REPEAT</span>
             <h3 id="slide-title-3">Nuestra banda sonora</h3>
             <p class="slide-note">Tres vibes que siempre suenan a nosotros.</p>
@@ -98,7 +98,7 @@
           </article>
 
           <!-- PERSONALIZAR AQUÍ: cuenta el momento que te gustaría volver a vivir. -->
-          <article class="wrapped-slide slide-star" data-slide="3" aria-labelledby="slide-title-4" hidden>
+          <article class="wrapped-slide slide-star" data-slide="3" data-duration="12" aria-labelledby="slide-title-4" hidden>
             <div class="star-copy">
               <span class="sticker">EL MOMENTO ESTRELLA</span>
               <h3 id="slide-title-4">Ese día que<br>se quedó con nosotros.</h3>
@@ -113,7 +113,7 @@
           </article>
 
           <!-- PERSONALIZAR AQUÍ: modifica el porcentaje y las pegatinas del veredicto. -->
-          <article class="wrapped-slide slide-verdict" data-slide="4" aria-labelledby="slide-title-5" hidden>
+          <article class="wrapped-slide slide-verdict" data-slide="4" data-duration="10" aria-labelledby="slide-title-5" hidden>
             <span class="sticker sticker-black">EL VEREDICTO</span>
             <h3 id="slide-title-5">Compatibilidad<br>de otro planeta.</h3>
             <p class="compatibility">100<span>%</span></p>
@@ -129,7 +129,16 @@
         <div class="player-controls">
           <button class="btn-3d btn-secondary" id="previous-slide" type="button" aria-label="Diapositiva anterior">← Anterior</button>
           <span class="slide-counter" id="slide-counter" aria-live="polite">01 <span>/</span> 05</span>
+          <button class="btn-3d btn-secondary" id="toggle-playback" type="button" aria-pressed="false">▶ Reproducir</button>
           <button class="btn-3d btn-primary" id="next-slide" type="button">Siguiente →</button>
+        </div>
+        <div class="playback-settings">
+          <div class="slide-time-track" aria-hidden="true"><span id="slide-time-progress"></span></div>
+          <div class="playback-settings-row">
+            <label for="slide-duration">Tiempo para leer esta diapositiva: <output id="slide-duration-value" for="slide-duration">10 s</output></label>
+            <input id="slide-duration" type="range" min="3" max="60" step="1" value="10">
+          </div>
+          <p class="playback-status" id="playback-status" role="status" aria-live="polite">Pulsa Reproducir para ver el Wrapped a tu ritmo.</p>
         </div>
       </div>
     </section>

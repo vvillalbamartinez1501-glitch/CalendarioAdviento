@@ -271,13 +271,10 @@ a { color: inherit; }
   left: 50%;
   width: var(--orbit-width);
   height: var(--orbit-height);
-  border: 1px solid rgba(129, 165, 207, .2);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width .8s cubic-bezier(.22, 1, .36, 1), height .8s cubic-bezier(.22, 1, .36, 1);
 }
 
-.solar-system--day25 .planet-orbit { width: var(--orbit-width-active); height: var(--orbit-height-active); }
 .planet-orbit__motion {
   position: absolute;
   inset: 0;

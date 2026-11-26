@@ -225,6 +225,14 @@ h1 span { color: var(--coral); }
 .btn-secondary { background: var(--paper); }
 .slide-counter { font-family: var(--font-display); font-size: .85rem; }
 .slide-counter span { padding-inline: 5px; }
+.playback-settings { padding: 0 17px 14px; background: var(--paper); }
+.slide-time-track { height: 5px; overflow: hidden; border: 1px solid var(--ink); border-radius: 9999px; background: var(--canvas); }
+.slide-time-track span { display: block; width: 0; height: 100%; background: var(--coral); }
+.playback-settings-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 10px; }
+.playback-settings-row label { font-size: .75rem; font-weight: 700; }
+.playback-settings-row output { font-family: var(--font-display); }
+.playback-settings-row input { width: min(230px, 42%); accent-color: var(--coral); cursor: pointer; }
+.playback-status { min-height: 1.4em; margin: 4px 0 0; color: #536258; font-size: .7rem; }
 
 .section-block { padding-top: 96px; }
 .stats-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 17px; }
@@ -374,8 +382,15 @@ h1 span { color: var(--coral); }
   .slide-verdict { align-items: center; }
   .slide-verdict h3 { font-size: clamp(1.9rem, 8vw, 2.8rem); }
   .compatibility { font-size: clamp(6rem, 30vw, 9rem); }
-  .player-controls { padding-inline: 11px; }
+  .player-controls { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; padding-inline: 11px; }
+  #previous-slide { grid-column: 1; grid-row: 1; justify-self: start; }
+  #slide-counter { grid-column: 2; grid-row: 1; }
+  #next-slide { grid-column: 3; grid-row: 1; justify-self: end; }
+  #toggle-playback { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
   .btn-3d { min-height: 42px; padding-inline: 12px; font-size: .75rem; }
+  .playback-settings { padding-inline: 11px; }
+  .playback-settings-row { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .playback-settings-row input { width: 100%; }
   .section-block { padding-top: 70px; }
   .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .stat-card, .stat-card:nth-child(4), .stat-card:nth-child(5) { min-height: 208px; grid-column: span 1; padding: 14px; }
