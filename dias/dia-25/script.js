@@ -15,6 +15,7 @@ const wishBoard = document.querySelector("#wish-board");
 const wishStatus = document.querySelector("#wish-status");
 const saveWishButton = document.querySelector("#save-wish");
 const cancelEditButton = document.querySelector("#cancel-edit");
+const daysSinceElement = document.querySelector("#days-since");
 const WISHES_STORAGE_KEY = "dia25-wrapped-deseos-v1";
 const DURATIONS_STORAGE_KEY = "dia25-wrapped-durations-v1";
 const MIN_SLIDE_DURATION = 3;
@@ -30,6 +31,15 @@ let advanceTimeout = null;
 let progressInterval = null;
 let editingWishId = null;
 let wishes = readWishes();
+
+function updateDaysSince() {
+  const startDate = Date.UTC(2025, 7, 30);
+  const today = new Date();
+  const todayDate = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const daysSince = Math.floor((todayDate - startDate) / (24 * 60 * 60 * 1000));
+
+  daysSinceElement.firstChild.textContent = `${daysSince} `;
+}
 
 function showSlide(index) {
   activeSlide = Math.max(0, Math.min(index, slides.length - 1));
@@ -338,5 +348,6 @@ cancelEditButton.addEventListener("click", () => {
 });
 
 playbackButton.setAttribute("aria-label", "Reproducir el Wrapped");
+updateDaysSince();
 showSlide(0);
 renderWishes();
