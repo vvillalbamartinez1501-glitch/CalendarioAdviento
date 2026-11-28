@@ -155,18 +155,18 @@ window.DIA25_CONTENT = {
   moments: {
     eyebrow: "04 / Favoritos del año",
     heading: "Los tops de nuestro corazón",
-    badge: "SIN ORDEN DE IMPORTANCIA",
+    badge: "El único top sin orden de importancia",
     momentsTitle: "Top 5 momentos inolvidables",
     moments: [
-      { title: "La primera gran aventura", description: "Un recuerdo que siempre vuelve", icon: "↗", color: "rank-pink" },
-      { title: "Ese ataque de risa", description: "Y no podíamos parar", icon: "☻", color: "rank-green" },
-      { title: "El plan improvisado", description: "El mejor “¿y si vamos?”", icon: "✦", color: "rank-yellow" },
-      { title: "Una tarde sin mirar la hora", description: "Solo nosotros y el momento", icon: "♡", color: "rank-blue" },
-      { title: "Cada abrazo de “ya estoy aquí”", description: "Mi lugar favorito", icon: "♥", color: "rank-coral" }
+      { title: "El primer beso", description: "Un recuerdo que atesoraré siempre", icon: "↗", color: "rank-pink" },
+      { title: "Charlas", description: "Poder hablar por horas de cualquier cosa, las mejores noches", icon: "☻", color: "rank-green" },
+      { title: "''Puede''", description: "La mejor forma de comenzar una segunda oportunidad", icon: "✦", color: "rank-yellow" },
+      { title: "Los días de vc", description: "Llamadas de horas donde todo lo demás deja de importar", icon: "♡", color: "rank-blue" },
+      { title: "Cada abrazo que nos damos", description: "Mi lugar favorito", icon: "♥", color: "rank-coral" }
     ],
     loveTitle: "Top 5 cosas que amo de ti",
     love: [
-      { title: "Tu forma de hacerme reír", description: "Mi sonido favorito", icon: "♥", color: "love-pink" },
+      { title: "Nuestro latir al estar juntos", description: "Mi sonido favorito", icon: "♥", color: "love-pink" },
       { title: "Cómo cuidas los detalles", description: "Siempre tienes un gesto bonito", icon: "✿", color: "love-green" },
       { title: "Tu manera de escuchar", description: "Contigo puedo ser yo", icon: "✦", color: "love-yellow" },
       { title: "La calma que me das", description: "Un abrazo y todo está bien", icon: "☻", color: "love-blue" },
