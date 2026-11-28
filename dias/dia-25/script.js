@@ -21,6 +21,10 @@ const DURATIONS_STORAGE_KEY = "dia25-wrapped-durations-v1";
 const MIN_SLIDE_DURATION = 3;
 const MAX_SLIDE_DURATION = 60;
 const WISH_COLORS = new Set(["pink", "yellow", "green", "blue", "coral"]);
+const TIMELINE_TEXT_MIN_LENGTH = 80;
+const TIMELINE_TEXT_MAX_LENGTH = 320;
+const TIMELINE_TEXT_MAX_GAP = 24;
+const TIMELINE_TEXT_MIN_GAP = 8;
 
 let activeSlide = 0;
 let slideDurations = readSlideDurations();
@@ -39,6 +43,20 @@ function updateDaysSince() {
   const daysSince = Math.floor((todayDate - startDate) / (24 * 60 * 60 * 1000));
 
   daysSinceElement.firstChild.textContent = `${daysSince} `;
+}
+
+function updateTimelineTextSpacing() {
+  document.querySelectorAll(".timeline-content:not(.timeline-content-full)").forEach((content) => {
+    const textLength = Array.from(content.querySelectorAll("h4, p"))
+      .reduce((total, element) => total + element.textContent.trim().length, 0);
+    const textRatio = Math.min(1, Math.max(
+      0,
+      (textLength - TIMELINE_TEXT_MIN_LENGTH) / (TIMELINE_TEXT_MAX_LENGTH - TIMELINE_TEXT_MIN_LENGTH)
+    ));
+    const gap = TIMELINE_TEXT_MAX_GAP - textRatio * (TIMELINE_TEXT_MAX_GAP - TIMELINE_TEXT_MIN_GAP);
+
+    content.style.setProperty("--timeline-text-gap", `${gap}px`);
+  });
 }
 
 function showSlide(index) {
@@ -349,5 +367,6 @@ cancelEditButton.addEventListener("click", () => {
 
 playbackButton.setAttribute("aria-label", "Reproducir el Wrapped");
 updateDaysSince();
+updateTimelineTextSpacing();
 showSlide(0);
 renderWishes();
