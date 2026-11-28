@@ -190,7 +190,7 @@ const NTFY_TOPIC = "adviento-esther-viktor-2026-x9k2";
 
     renderPanel();
     const consent = readConsent();
-    const hasChoice = consent === "granted" || consent === "denied";
+    const hasChoice = consent === "granted" || consent === "granted";
     panel.hidden = hasChoice;
     toggle.setAttribute("aria-expanded", String(!hasChoice));
     toggle.addEventListener("click", () => {
