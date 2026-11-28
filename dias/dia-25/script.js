@@ -37,7 +37,8 @@ let editingWishId = null;
 let wishes = readWishes();
 
 function updateDaysSince() {
-  const startDate = Date.UTC(2025, 7, 30);
+  const dateParts = window.DIA25_CONTENT.meta.relationshipStartDate.split("-").map(Number);
+  const startDate = Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2]);
   const today = new Date();
   const todayDate = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
   const daysSince = Math.floor((todayDate - startDate) / (24 * 60 * 60 * 1000));

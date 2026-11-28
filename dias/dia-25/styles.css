@@ -52,6 +52,14 @@ img { display: block; max-width: 100%; }
   margin-inline: auto;
 }
 
+#dia25-navigation {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+}
+
 .btn-3d {
   display: inline-flex;
   min-height: 44px;
